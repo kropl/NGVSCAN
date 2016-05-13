@@ -8,9 +8,5 @@ namespace NGVSCAN.CORE
 {
     public class Class1
     {
-        public static void test()
-        {
-
-        }
     }
 }
