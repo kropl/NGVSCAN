@@ -48,6 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\NGVSCANContext.cs" />
+    <Compile Include="EntityConfigurations\Common\EntityConfiguration.cs" />
+    <Compile Include="EntityConfigurations\EstimatorConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FieldConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecConfiguration.cs" />
+    <Compile Include="EntityConfigurations\ROC809Configuration.cs" />
+    <Compile Include="Migrations\201605141507267_InitialMigration.cs" />
+    <Compile Include="Migrations\201605141507267_InitialMigration.Designer.cs">
+      <DependentUpon>201605141507267_InitialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +70,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201605141507267_InitialMigration.resx">
+      <DependentUpon>201605141507267_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

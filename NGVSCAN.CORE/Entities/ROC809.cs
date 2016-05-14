@@ -10,8 +10,8 @@
 
         public int ROCGroup { get; set; }
 
-        public int HostUnit { get; set}
+        public int HostUnit { get; set; }
 
-        public int HostGroup { get; set}
+        public int HostGroup { get; set; }
     }
 }
