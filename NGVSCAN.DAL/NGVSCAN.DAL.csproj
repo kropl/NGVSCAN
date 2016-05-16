@@ -60,11 +60,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\Repository.cs" />
-    <Compile Include="Services\DataService.cs" />
-    <Compile Include="Services\IDataService.cs" />
-    <Compile Include="UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="Repositories\DbfRepository.cs" />
+    <Compile Include="Repositories\SqlRepository.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
