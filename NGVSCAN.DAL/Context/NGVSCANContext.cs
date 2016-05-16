@@ -65,6 +65,9 @@ namespace NGVSCAN.DAL.Context
 
             // Добавление конфигурации вычислителей ROC809
             modelBuilder.Configurations.Add(new ROC809Configuration());
+
+            // Добавление конфигурации точек измерения вычислителей ROC809
+            modelBuilder.Configurations.Add(new ROC809MeasurePointConfiguration());
         }
     }
 }

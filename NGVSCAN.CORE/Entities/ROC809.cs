@@ -6,6 +6,8 @@ namespace NGVSCAN.CORE.Entities
     /// </summary>
     public class ROC809 : Estimator
     {
+        #region Свойства
+
         /// <summary>
         /// Адрес вычислителя ROC809
         /// </summary>
@@ -35,5 +37,7 @@ namespace NGVSCAN.CORE.Entities
         /// HostGroup вычислителя ROC809
         /// </summary>
         public int HostGroup { get; set; }
+
+        #endregion
     }
 }
