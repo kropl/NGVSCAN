@@ -32,6 +32,11 @@ namespace NGVSCAN.DAL.Context
         /// </summary>
         public IDbSet<MeasureLine> MeasureLines { get; set; }
 
+        /// <summary>
+        /// Часовые данные вычислителей ФЛОУТЭК
+        /// </summary>
+        public IDbSet<FloutecHourlyData> FloutecHourlyData { get; set; }
+
         #endregion
 
         /// <summary>
@@ -54,6 +59,9 @@ namespace NGVSCAN.DAL.Context
 
             // Добавление конфигурации линий измерения вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecMeasureLineConfiguration());
+
+            // Добавление конфигурации часовых данных вычислителей ФЛОУТЭК
+            modelBuilder.Configurations.Add(new FloutecHourlyDataConfiguration());
 
             // Добавление конфигурации вычислителей ROC809
             modelBuilder.Configurations.Add(new ROC809Configuration());

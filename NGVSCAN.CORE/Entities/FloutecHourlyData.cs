@@ -54,7 +54,60 @@ namespace NGVSCAN.CORE.Entities
 
         #region Свойства
 
+        /// <summary>
+        /// Дата и время начала периода накопления
+        /// </summary>
+        public DateTime DAT { get; set; }
 
+        /// <summary>
+        /// Дата и время окончания периода накопления
+        /// </summary>
+        public DateTime DAT_END { get; set; }
+
+        /// <summary>
+        /// Количество, м3 или т
+        /// </summary>
+        public double RASX { get; set; }
+
+        /// <summary>
+        /// Среднее давление
+        /// </summary>
+        public double DAVL { get; set; }
+
+        /// <summary>
+        /// Признак константы среднего давления (* - константа, ' - ЗПЗ)
+        /// </summary>
+        public string PD { get; set; }
+
+        /// <summary>
+        /// Средняя температура
+        /// </summary>
+        public double TEMP { get; set; }
+
+        /// <summary>
+        /// Признак константы средней температуры (* - константа, ' - ЗПЗ)
+        /// </summary>
+        public string PT { get; set; }
+
+        /// <summary>
+        /// Средний перепад давления
+        /// </summary>
+        public double PEREP { get; set; }
+
+        /// <summary>
+        /// Признак константы среднего перепада давления (* - константа, ' - ЗПЗ)
+        /// </summary>
+        public string PP { get; set; }
+
+        /// <summary>
+        /// Средняя плотность
+        /// </summary>
+        public double PLOTN { get; set; }
+
+        /// <summary>
+        /// Признак константы средней плотности (* - константа, ' - ЗПЗ)
+        /// </summary>
+        public string PL { get; set; }
 
         #endregion
 
