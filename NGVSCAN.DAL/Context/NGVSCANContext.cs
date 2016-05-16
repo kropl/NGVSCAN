@@ -27,6 +27,11 @@ namespace NGVSCAN.DAL.Context
         /// </summary>
         public IDbSet<Estimator> Estimators { get; set; }
 
+        /// <summary>
+        /// Линии (нитки, точки ...) измерения
+        /// </summary>
+        public IDbSet<MeasureLine> MeasureLines { get; set; }
+
         #endregion
 
         /// <summary>
@@ -41,8 +46,14 @@ namespace NGVSCAN.DAL.Context
             // Добавление конфигурации вычислителей
             modelBuilder.Configurations.Add(new EstimatorConfiguration());
 
+            // Добавление конфигурации линий измерения
+            modelBuilder.Configurations.Add(new MeasureLineConfiguration());
+
             // Добавление конфигурации вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecConfiguration());
+
+            // Добавление конфигурации линий измерения вычислителей ФЛОУТЭК
+            modelBuilder.Configurations.Add(new FloutecMeasureLineConfiguration());
 
             // Добавление конфигурации вычислителей ROC809
             modelBuilder.Configurations.Add(new ROC809Configuration());

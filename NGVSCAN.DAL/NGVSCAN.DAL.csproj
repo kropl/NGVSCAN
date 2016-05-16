@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Context\NGVSCANContext.cs" />
     <Compile Include="EntityConfigurations\Common\EntityConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecMeasureLineConfiguration.cs" />
+    <Compile Include="EntityConfigurations\MeasureLineConfiguration.cs" />
     <Compile Include="EntityConfigurations\EstimatorConfiguration.cs" />
     <Compile Include="EntityConfigurations\FieldConfiguration.cs" />
     <Compile Include="EntityConfigurations\FloutecConfiguration.cs" />

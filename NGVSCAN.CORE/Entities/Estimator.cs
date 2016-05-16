@@ -1,5 +1,6 @@
 ﻿using NGVSCAN.CORE.Entities.Common;
 using System;
+using System.Collections.Generic;
 
 namespace NGVSCAN.CORE.Entities
 {
@@ -8,6 +9,16 @@ namespace NGVSCAN.CORE.Entities
     /// </summary>
     public abstract class Estimator : IEntity
     {
+        #region Конструктор и поля
+
+        public Estimator()
+        {
+            // Инициализация коллекции линий измерения
+            MeasureLines = new HashSet<MeasureLine>();
+        }
+
+        #endregion
+
         #region Общие свойства
 
         /// <summary>
@@ -62,6 +73,11 @@ namespace NGVSCAN.CORE.Entities
         /// Установка вычислителя
         /// </summary>
         public virtual Field Field { get; set; }
+
+        /// <summary>
+        /// Коллекция линий (ниток, точек ...) измерения
+        /// </summary>
+        public virtual ICollection<MeasureLine> MeasureLines { get; set; }
 
         #endregion
     }

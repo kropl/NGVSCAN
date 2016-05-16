@@ -13,13 +13,16 @@ namespace NGVSCAN.DAL.EntityConfigurations
         /// </summary>
         public EstimatorConfiguration()
         {
-            // Свойство Name выичслителя - обязательно (не допускает значений NULL), 
+            // Свойство Name вычислителя - обязательно (не допускает значений NULL), 
             // максимальная длина строки - 25 символов
             Property(e => e.Name).IsRequired().HasMaxLength(25);
 
-            // Свойство Description выичслителя - обязательно (не допускает значений NULL), 
+            // Свойство Description вычислителя - обязательно (не допускает значений NULL), 
             // максимальная длина строки - 200 символов
             Property(e => e.Description).IsRequired().HasMaxLength(200);
+
+            // Вычислитель имеет отношение один-ко-многим с линиями измерения
+            HasMany(e => e.MeasureLines).WithRequired(m => m.Estimator);
         }
     }
 }

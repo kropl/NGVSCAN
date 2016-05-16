@@ -43,6 +43,8 @@
     <Compile Include="Entities\Estimator.cs" />
     <Compile Include="Entities\Field.cs" />
     <Compile Include="Entities\Floutec.cs" />
+    <Compile Include="Entities\FloutecMeasureLine.cs" />
+    <Compile Include="Entities\MeasureLine.cs" />
     <Compile Include="Entities\ROC809.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
