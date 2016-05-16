@@ -66,6 +66,10 @@
     <Compile Include="Migrations\201605162022165_AddedFloutecHourlyData.Designer.cs">
       <DependentUpon>201605162022165_AddedFloutecHourlyData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605162050462_AddedROC809MeasurePoint.cs" />
+    <Compile Include="Migrations\201605162050462_AddedROC809MeasurePoint.Designer.cs">
+      <DependentUpon>201605162050462_AddedROC809MeasurePoint.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\SqlRepository.cs" />
@@ -87,6 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605162022165_AddedFloutecHourlyData.resx">
       <DependentUpon>201605162022165_AddedFloutecHourlyData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605162050462_AddedROC809MeasurePoint.resx">
+      <DependentUpon>201605162050462_AddedROC809MeasurePoint.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
