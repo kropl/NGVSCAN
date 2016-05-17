@@ -28,9 +28,29 @@ namespace NGVSCAN.DAL.Context
         public IDbSet<Estimator> Estimators { get; set; }
 
         /// <summary>
+        /// Вычислители ФЛОУТЭК
+        /// </summary>
+        public IDbSet<Floutec> Floutecs { get; set; }
+
+        /// <summary>
+        /// Вычислители ROC809
+        /// </summary>
+        public IDbSet<ROC809> ROC809s { get; set; }
+
+        /// <summary>
         /// Линии (нитки, точки ...) измерения
         /// </summary>
         public IDbSet<MeasureLine> MeasureLines { get; set; }
+
+        /// <summary>
+        /// Линии измерения вычислителей ФЛОУТЭК
+        /// </summary>
+        public IDbSet<FloutecMeasureLine> FloutecMeasureLines { get; set; }
+
+        /// <summary>
+        /// Точки измерения вычислителей ROC809
+        /// </summary>
+        public IDbSet<ROC809MeasurePoint> ROC809MeasurePoints { get; set; }
 
         /// <summary>
         /// Часовые данные вычислителей ФЛОУТЭК

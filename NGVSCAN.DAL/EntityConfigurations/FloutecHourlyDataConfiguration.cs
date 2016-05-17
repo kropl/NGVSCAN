@@ -52,6 +52,9 @@ namespace NGVSCAN.DAL.EntityConfigurations
             // Свойство PL вычислителя - обязательно (не допускает значений NULL), 
             // максимальная длина строки - 1 символ
             Property(h => h.PL).IsRequired().HasMaxLength(1);
+
+            // Задание названия таблицы
+            ToTable("FloutecHourlyData");
         }
     }
 }

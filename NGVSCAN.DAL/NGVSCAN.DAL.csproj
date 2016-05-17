@@ -71,6 +71,14 @@
     <Compile Include="Migrations\201605162050462_AddedROC809MeasurePoint.Designer.cs">
       <DependentUpon>201605162050462_AddedROC809MeasurePoint.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605170900412_AddedFloutecIdentData.cs" />
+    <Compile Include="Migrations\201605170900412_AddedFloutecIdentData.Designer.cs">
+      <DependentUpon>201605170900412_AddedFloutecIdentData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605170903269_RemovedPluralFromFloutecDataTables.cs" />
+    <Compile Include="Migrations\201605170903269_RemovedPluralFromFloutecDataTables.Designer.cs">
+      <DependentUpon>201605170903269_RemovedPluralFromFloutecDataTables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\SqlRepository.cs" />
@@ -95,6 +103,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605162050462_AddedROC809MeasurePoint.resx">
       <DependentUpon>201605162050462_AddedROC809MeasurePoint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605170900412_AddedFloutecIdentData.resx">
+      <DependentUpon>201605170900412_AddedFloutecIdentData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605170903269_RemovedPluralFromFloutecDataTables.resx">
+      <DependentUpon>201605170903269_RemovedPluralFromFloutecDataTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
