@@ -16,8 +16,14 @@ namespace NGVSCAN.DAL.EntityConfigurations
             // Свойство Number линии измерения - обязательно (не допускает значений NULL)
             Property(m => m.Number).IsRequired();
 
+            // Свойство SensorType линии измерения - обязательно (не допускает значений NULL)
+            Property(m => m.SensorType).IsRequired();
+
             // Линия измерения имеет отношение один-ко-многим с часовыми данными
             HasMany(m => m.HourlyData).WithRequired(m => m.MeasureLine);
+
+            // Линия измерения имеет отношение один-ко-многим с данными идентификации
+            HasMany(m => m.IdentData).WithRequired(m => m.MeasureLine);
 
             /*
                 Кофигурация имени таблицы для линий измерения вычислителей ФЛОУТЭК:

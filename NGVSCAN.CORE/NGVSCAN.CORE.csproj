@@ -45,10 +45,12 @@
     <Compile Include="Entities\Field.cs" />
     <Compile Include="Entities\Floutec.cs" />
     <Compile Include="Entities\FloutecHourlyData.cs" />
+    <Compile Include="Entities\FloutecIdentData.cs" />
     <Compile Include="Entities\FloutecMeasureLine.cs" />
     <Compile Include="Entities\MeasureLine.cs" />
     <Compile Include="Entities\ROC809.cs" />
     <Compile Include="Entities\ROC809MeasurePoint.cs" />
+    <Compile Include="Enums\SensorTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

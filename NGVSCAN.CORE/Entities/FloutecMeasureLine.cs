@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NGVSCAN.CORE.Enums;
+using System.Collections.Generic;
 
 namespace NGVSCAN.CORE.Entities
 {
@@ -13,6 +14,9 @@ namespace NGVSCAN.CORE.Entities
         {
             // Инициализация коллекции часовых данных
             HourlyData = new HashSet<FloutecHourlyData>();
+
+            // Инициализация коллекции данных идентификации
+            IdentData = new HashSet<FloutecIdentData>();
         }
 
         #endregion
@@ -24,6 +28,11 @@ namespace NGVSCAN.CORE.Entities
         /// </summary>
         public int Number { get; set; }
 
+        /// <summary>
+        /// Тип датчика: <see cref="SensorTypeEnum"/>
+        /// </summary>
+        public SensorTypeEnum SensorType { get; set; }
+
         #endregion
 
         #region Навигационные свойства
@@ -32,6 +41,11 @@ namespace NGVSCAN.CORE.Entities
         /// Коллекция часовых данных 
         /// </summary>
         public virtual ICollection<FloutecHourlyData> HourlyData { get; set; }
+
+        /// <summary>
+        /// Коллекция данных идентификации 
+        /// </summary>
+        public virtual ICollection<FloutecIdentData> IdentData { get; set; }
 
         #endregion
     }
