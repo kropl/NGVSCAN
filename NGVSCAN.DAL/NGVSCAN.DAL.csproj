@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Context\NGVSCANContext.cs" />
     <Compile Include="EntityConfigurations\Common\EntityConfiguration.cs" />
+    <Compile Include="EntityConfigurations\Common\EntityConfigurationExtensions.cs" />
     <Compile Include="EntityConfigurations\FloutecHourlyDataConfiguration.cs" />
     <Compile Include="EntityConfigurations\FloutecIdentDataConfiguration.cs" />
     <Compile Include="EntityConfigurations\ROC809MeasurePointConfiguration.cs" />
@@ -78,6 +79,10 @@
     <Compile Include="Migrations\201605170903269_RemovedPluralFromFloutecDataTables.cs" />
     <Compile Include="Migrations\201605170903269_RemovedPluralFromFloutecDataTables.Designer.cs">
       <DependentUpon>201605170903269_RemovedPluralFromFloutecDataTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605180720479_AddedIndexesToEntities.cs" />
+    <Compile Include="Migrations\201605180720479_AddedIndexesToEntities.Designer.cs">
+      <DependentUpon>201605180720479_AddedIndexesToEntities.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -109,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605170903269_RemovedPluralFromFloutecDataTables.resx">
       <DependentUpon>201605170903269_RemovedPluralFromFloutecDataTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605180720479_AddedIndexesToEntities.resx">
+      <DependentUpon>201605180720479_AddedIndexesToEntities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

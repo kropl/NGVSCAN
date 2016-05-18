@@ -14,52 +14,123 @@ using System.Windows.Forms;
 
 namespace NGVSCAN.EXEC
 {
+    /// <summary>
+    /// Главная форма приложения
+    /// </summary>
     public partial class MainForm : Form
     {
+        #region Конструктор и поля
+
+        // Unit of work
         private UnitOfWork unitOfWork;
 
+        // Установка
+        private Field field;
+
+        // Коллекция вычислителей ФЛОУТЭК данной установки
+        private List<Floutec> floutecs;
+
+        // Коллекция линий измерений вычислителей ФЛОУТЭК данной установки
+        private List<FloutecMeasureLine> floutecLines;
+
+        // Конструктор формы
         public MainForm()
         {
+            // Инициализация содержимого формы
             InitializeComponent();
 
+            // Инициализация unit of work
             unitOfWork = new UnitOfWork();
+
+            /*
+                Обновление данных:
+                необходимые данные загружаются в память, и в дальнейшем приложение
+                осуществляет доступ к данным не в базе данных, а в памяти
+            */
+            UpdateData(unitOfWork);
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        #endregion
+
+        #region Вспомогательные методы
+
+        /// <summary>
+        /// Обновление данных
+        /// </summary>
+        /// <param name="unitOfWork">Unit of work</param>
+        private void UpdateData(UnitOfWork unitOfWork)
         {
-            FillFloutecsTree();
+            // Инициализация установки
+// FAKE        !!! Имя установки задано жёстко временно !!!
+            field = unitOfWork.Repository<Field>().GetAll().Where(f => f.Name.Equals("SEM-SRV")).SingleOrDefault();
+
+            // Инициализация коллекции вычислителей ФЛОУТЭК данной установки
+            floutecs = field.Estimators.Where(e => e is Floutec).Select(f => f as Floutec).ToList();
+
+            // Инициализация коллекции линий измерения вычислителей ФЛОУТЭК данной установки
+            floutecLines = floutecs.Select(f => f.MeasureLines as FloutecMeasureLine).ToList();
         }
 
-        private void FillFloutecsTree()
+        /// <summary>
+        /// Заполнение дерева объектов на закладке вычислителей ФЛОУТЭК
+        /// </summary>
+        /// <param name="field">Установка</param>
+        /// <param name="floutecs">Коллекция вычислителей</param>
+        /// <param name="lines">Коллекция линий измерения</param>
+        private void FillFloutecsTree(Field field, List<Floutec> floutecs, List<FloutecMeasureLine> lines)
         {
+            // Очистка дерева
             treeFloutecs.Nodes.Clear();
 
-            var field = unitOfWork.Repository<Field>().GetAll().Where(f => f.Name.Equals("SEM-SRV")).SingleOrDefault();
-
-            TreeNode root;
-
+            // Если установка определена ...
             if (field != null)
             {
-                root = treeFloutecs.Nodes.Add(field.Name);
+                // Добавление установки
+                TreeNode root = treeFloutecs.Nodes.Add(field.Name);
 
-                var floutecs = unitOfWork.Repository<Floutec>().GetAll().Where(f => f.FieldId == field.Id).ToList();
-
-                TreeNode child1;
-
-                foreach (var floutec in floutecs)
+                // Для каждого вычислителя
+                floutecs.ForEach((f) =>
                 {
-                    child1 = root.Nodes.Add(floutec.Address + " " + floutec.Name);
-
-                    TreeNode child2;
-
-                    var lines = unitOfWork.Repository<FloutecMeasureLine>().GetAll().Where(l => l.EstimatorId == floutec.Id);
-
-                    foreach (var line in lines)
+                    // Если вычислитель определён ...
+                    if (f != null)
                     {
-                        child2 = child1.Nodes.Add(line.Number + " " + line.Name);
+                        // Добавление вычислителя в коллекцию вложенных элементов установки
+                        TreeNode child = root.Nodes.Add(f.Address + " " + f.Name);
+
+                        // Для каждой линии измерения
+                        lines.ForEach((l) =>
+                        {
+                            // Если линия определена и принадлежит текущему вычислителю ...
+                            if (l != null && l.EstimatorId == f.Id)
+
+                                // Добавление линии в коллекцию дочерных элементов текущего вычислителя
+                                child.Nodes.Add(l.Number + " " + l.Name);
+                        });
                     }
-                }
+                });
             }
+        }
+
+        #endregion       
+
+        #region События формы
+
+        /// <summary>
+        /// Событие загрузки главной формы
+        /// </summary>
+        /// <param name="sender">Объект события</param>
+        /// <param name="e">Аргументы события</param>
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // Заполнение дерева объектов на закладке вычислителей ФЛОУТЭК
+            FillFloutecsTree(field, floutecs, floutecLines);
+        }
+
+        private void contextMenuFloutecs_Opening(object sender, CancelEventArgs e)
+        {
+            contextMenuFloutecs.Items[0].Enabled = treeFloutecs.SelectedNode.Level == 0 ? true : false;
+            contextMenuFloutecs.Items[1].Enabled = treeFloutecs.SelectedNode.Level == 1 ? true : false;
+            contextMenuFloutecs.Items[3].Enabled = treeFloutecs.SelectedNode.Level > 0 ? true : false;
         }
 
         private void treeFloutecs_AfterSelect(object sender, TreeViewEventArgs e)
@@ -68,17 +139,13 @@ namespace NGVSCAN.EXEC
 
             if (tree.SelectedNode.Level == 0)
             {
-                treeFloutecs.ContextMenuStrip.Items.Find("menuAddFloutecLine", false).SingleOrDefault().Enabled = false;
-                treeFloutecs.ContextMenuStrip.Items.Find("menuAddFloutec", false).SingleOrDefault().Enabled = true;
-                treeFloutecs.ContextMenuStrip.Items.Find("menuDeleteFloutec", false).SingleOrDefault().Enabled = false;
+                
 
                 groupFloutecsProperties.Controls.Clear();
             }
             else if (tree.SelectedNode.Level == 1)
             {
-                treeFloutecs.ContextMenuStrip.Items.Find("menuAddFloutec", false).SingleOrDefault().Enabled = false;
-                treeFloutecs.ContextMenuStrip.Items.Find("menuAddFloutecLine", false).SingleOrDefault().Enabled = true;
-                treeFloutecs.ContextMenuStrip.Items.Find("menuDeleteFloutec", false).SingleOrDefault().Enabled = true;
+                
 
                 groupFloutecsProperties.Controls.Clear();
                 FloutecDetails floutecDetails = new FloutecDetails();
@@ -92,9 +159,7 @@ namespace NGVSCAN.EXEC
             }
             else
             {
-                treeFloutecs.ContextMenuStrip.Items.Find("menuAddFloutec", false).SingleOrDefault().Enabled = false;
-                treeFloutecs.ContextMenuStrip.Items.Find("menuAddFloutecLine", false).SingleOrDefault().Enabled = false;
-                treeFloutecs.ContextMenuStrip.Items.Find("menuDeleteFloutec", false).SingleOrDefault().Enabled = true;
+                
 
                 groupFloutecsProperties.Controls.Clear();
             }
@@ -127,7 +192,7 @@ namespace NGVSCAN.EXEC
                     unitOfWork.Repository<Field>().Update(field);
                     unitOfWork.Commit();
 
-                    FillFloutecsTree();
+                    FillFloutecsTree(field, floutecs, floutecLines);
                 }
             }
             else if (menuItem.Equals("menuAddFloutecLine"))
@@ -150,12 +215,14 @@ namespace NGVSCAN.EXEC
                         unitOfWork.Repository<Floutec>().Delete(floutec.Id);
                         unitOfWork.Commit();
 
-                        FillFloutecsTree();
+                        FillFloutecsTree(field, floutecs, floutecLines);
                     }
 
                     
                 }
             }
         }
+
+        #endregion
     }
 }
