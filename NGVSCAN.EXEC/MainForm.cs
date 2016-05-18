@@ -262,7 +262,6 @@ namespace NGVSCAN.EXEC
                         FillFloutecsTree(field, floutecs, floutecLines);
                     }
                 }
-                
             }
             else if (menuItem.Equals("menuAddFloutecLine"))
             {
