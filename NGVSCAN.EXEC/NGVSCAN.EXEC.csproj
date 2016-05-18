@@ -66,6 +66,12 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NGVSCAN.cs" />
+    <Compile Include="Popups\AddFloutecLinePopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popups\AddFloutecLinePopup.Designer.cs">
+      <DependentUpon>AddFloutecLinePopup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Popups\AddFloutecPopup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popups\AddFloutecLinePopup.resx">
+      <DependentUpon>AddFloutecLinePopup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Popups\AddFloutecPopup.resx">
       <DependentUpon>AddFloutecPopup.cs</DependentUpon>

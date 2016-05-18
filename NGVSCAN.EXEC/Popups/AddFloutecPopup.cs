@@ -8,6 +8,8 @@ namespace NGVSCAN.EXEC.Popups
     {
         public Floutec Floutec { get; set; }
 
+        public bool IsEdit { get; set; }
+
         public AddFloutecPopup()
         {
             InitializeComponent();
@@ -30,23 +32,38 @@ namespace NGVSCAN.EXEC.Popups
 
             if (!labelNameError.Visible && !labelDescriptionError.Visible)
             {
-                Floutec = new Floutec();
+                if (!IsEdit)
+                {
+                    Floutec = new Floutec();
+                }
 
                 Floutec.Address = (int)numericAddress.Value;
                 Floutec.Name = textName.Text;
                 Floutec.Description = textDescription.Text;
 
-                this.DialogResult = DialogResult.OK;
+                DialogResult = DialogResult.OK;
 
-                this.Close();
+                Close();
             }
         }
 
         private void buttonCancelAddFloutec_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
 
-            this.Close();
+            Close();
+        }
+
+        private void AddFloutecPopup_Load(object sender, EventArgs e)
+        {
+            Text = IsEdit ? "Изменение вычислителя ФЛОУТЭК" : "Добавление вычислителя ФЛОУТЭК";
+
+            if (IsEdit)
+            {
+                numericAddress.Value = Floutec.Address;
+                textName.Text = Floutec.Name;
+                textDescription.Text = Floutec.Description;
+            }
         }
     }
 }

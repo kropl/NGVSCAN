@@ -65,10 +65,14 @@ namespace NGVSCAN.EXEC
             field = unitOfWork.Repository<Field>().GetAll().Where(f => f.Name.Equals("SEM-SRV")).SingleOrDefault();
 
             // Инициализация коллекции вычислителей ФЛОУТЭК данной установки
-            floutecs = field.Estimators.Where(e => e is Floutec).Select(f => f as Floutec).ToList();
+            floutecs = field.Estimators.Where(e => e is Floutec).Select(e => e as Floutec).ToList();
 
             // Инициализация коллекции линий измерения вычислителей ФЛОУТЭК данной установки
-            floutecLines = floutecs.Select(f => f.MeasureLines as FloutecMeasureLine).ToList();
+            floutecLines = new List<FloutecMeasureLine>();
+            floutecs.ForEach((f) =>
+            {
+                floutecLines.AddRange(f.MeasureLines.Select(l => l as FloutecMeasureLine).ToList());
+            });
         }
 
         /// <summary>
@@ -115,69 +119,100 @@ namespace NGVSCAN.EXEC
 
         #region События формы
 
-        /// <summary>
-        /// Событие загрузки главной формы
-        /// </summary>
-        /// <param name="sender">Объект события</param>
-        /// <param name="e">Аргументы события</param>
+        // Событие загрузки главной формы
         private void MainForm_Load(object sender, EventArgs e)
         {
             // Заполнение дерева объектов на закладке вычислителей ФЛОУТЭК
             FillFloutecsTree(field, floutecs, floutecLines);
         }
 
+        // Событие открытия контекстного меню дерева объектов на закладке вычислителей ФЛОУТЭК
         private void contextMenuFloutecs_Opening(object sender, CancelEventArgs e)
         {
+            // Определение объекта, на котором было вызвано контекстное меню
+            TreeNode nodeAtMousePosition = treeFloutecs.GetNodeAt(treeFloutecs.PointToClient(MousePosition));
+
+            // Определение текущего выбранного объекта
+            TreeNode selectedNode = treeFloutecs.SelectedNode;
+
+            // Переопределение текущего выбранного объекта
+            if (nodeAtMousePosition != null)
+            {
+                if (nodeAtMousePosition != selectedNode)
+                    treeFloutecs.SelectedNode = nodeAtMousePosition;
+            }
+
+            // Пункт меню "Добавить вычислитель" доступен только для установки
             contextMenuFloutecs.Items[0].Enabled = treeFloutecs.SelectedNode.Level == 0 ? true : false;
+
+            // Пункт меню "Добавить нитку" доступен только для вычислителей
             contextMenuFloutecs.Items[1].Enabled = treeFloutecs.SelectedNode.Level == 1 ? true : false;
-            contextMenuFloutecs.Items[3].Enabled = treeFloutecs.SelectedNode.Level > 0 ? true : false;
+
+            // Пункт меню "Изменить" доступен для всех объектов
+
+            // Пункт меню "Удалить" доступен для вычислителей и ниток вычислителей
+            contextMenuFloutecs.Items[5].Enabled = treeFloutecs.SelectedNode.Level > 0 ? true : false;
         }
 
+        // Событие выбора объекта в дереве объектов на закладке вычислителей ФЛОУТЭК
         private void treeFloutecs_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            TreeView tree = (TreeView)sender;
+            // Очистка содержимого панели свойств выбранного объекта
+            groupFloutecsProperties.Controls.Clear();
 
-            if (tree.SelectedNode.Level == 0)
+            // Вывод информации на панель свойств в зависимости от уровня вложенности выбранного объекта
+            switch (treeFloutecs.SelectedNode.Level)
             {
-                
+                // Для установки (уровень вложенности = 0)
+                case 0:
+                    {
+                        break;
+                    }
+                // Для вычислителей (уровень вложенности = 1)
+                case 1:
+                    {
+                        // Инициализация экземпляра элемента управления FloutecDetails
+                        FloutecDetails floutecDetails = new FloutecDetails();
 
-                groupFloutecsProperties.Controls.Clear();
-            }
-            else if (tree.SelectedNode.Level == 1)
-            {
-                
+                        // Вывод элемента будет осуществлятся заполнением
+                        floutecDetails.Dock = DockStyle.Fill;
 
-                groupFloutecsProperties.Controls.Clear();
-                FloutecDetails floutecDetails = new FloutecDetails();
-                floutecDetails.Dock = DockStyle.Fill;
-                string[] tokens = tree.SelectedNode.Text.Split(' ');
-                int address = int.Parse(tokens[0]);
+                        // Определение адреса выбранного вычислителя
+                        string[] props = treeFloutecs.SelectedNode.Text.Split(' ');
+                        int address = int.Parse(props[0]);
 
-                var floutec = unitOfWork.Repository<Floutec>().GetAll().Where(f => f.Address.Equals(address)).SingleOrDefault();
-                floutecDetails.Floutec = floutec;
-                groupFloutecsProperties.Controls.Add(floutecDetails);
-            }
-            else
-            {
-                
+                        // Выбор вычислителя из коллекции по адресу
+                        Floutec floutec = floutecs.Where(f => f.Address == address).SingleOrDefault();
 
-                groupFloutecsProperties.Controls.Clear();
+                        // Передача вычислителя в элемент управления
+                        floutecDetails.Floutec = floutec;
+
+                        // Добавление элемента управления на панель свойств
+                        groupFloutecsProperties.Controls.Add(floutecDetails);
+
+                        break;
+                    }
+                // Для ниток (уровень вложенности = 2)
+                case 2:
+                    {
+                        break;
+                    }
+                // По умолчанию
+                default:
+                    break;
             }
         }
 
+        // Событие выбора команды контекстного меню
         private void contextMenuFloutecs_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             string menuItem = e.ClickedItem.Name;
 
-            TreeView tree = (TreeView)contextMenuFloutecs.SourceControl;
-
             if (menuItem.Equals("menuAddFloutec"))
-            {
-                
-
-                var field = unitOfWork.Repository<Field>().GetAll().Where(f => f.Name.Equals(tree.SelectedNode.Text)).SingleOrDefault();
-
+            {               
                 AddFloutecPopup popup = new AddFloutecPopup();
+
+                popup.IsEdit = false;
 
                 DialogResult dialogResult = popup.ShowDialog();
 
@@ -192,21 +227,82 @@ namespace NGVSCAN.EXEC
                     unitOfWork.Repository<Field>().Update(field);
                     unitOfWork.Commit();
 
+                    UpdateData(unitOfWork);
+
                     FillFloutecsTree(field, floutecs, floutecLines);
                 }
             }
+            else if (menuItem.Equals("menuEditFloutec"))
+            {
+                if (treeFloutecs.SelectedNode.Level == 1)
+                {
+                    AddFloutecPopup popup = new AddFloutecPopup();
+
+                    popup.IsEdit = true;
+
+                    string[] tokens = treeFloutecs.SelectedNode.Text.Split(' ');
+                    int address = int.Parse(tokens[0]);
+
+                    var floutec = floutecs.Where(f => f.Address.Equals(address)).SingleOrDefault();
+
+                    popup.Floutec = floutec;
+
+                    DialogResult dialogResult = popup.ShowDialog();
+
+                    if (dialogResult == DialogResult.OK)
+                    {
+                        floutec = popup.Floutec;
+                        floutec.DateModified = DateTime.Now;
+
+                        unitOfWork.Repository<Floutec>().Update(floutec);
+                        unitOfWork.Commit();
+
+                        UpdateData(unitOfWork);
+
+                        FillFloutecsTree(field, floutecs, floutecLines);
+                    }
+                }
+                
+            }
             else if (menuItem.Equals("menuAddFloutecLine"))
             {
+                string[] tokens = treeFloutecs.SelectedNode.Text.Split(' ');
+                int address = int.Parse(tokens[0]);
 
+                var floutec = floutecs.Where(f => f.Address.Equals(address)).SingleOrDefault();
+
+                AddFloutecLinePopup popup = new AddFloutecLinePopup();
+
+                popup.IsEdit = false;
+
+                DialogResult dialogResult = popup.ShowDialog();
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    FloutecMeasureLine line = popup.FloutecLine;
+                    line.DateCreated = DateTime.Now;
+                    line.DateModified = DateTime.Now;
+
+                    floutec.MeasureLines.Add(line);
+
+                    unitOfWork.Repository<Floutec>().Update(floutec);
+                    unitOfWork.Commit();
+
+                    UpdateData(unitOfWork);
+
+                    FillFloutecsTree(field, floutecs, floutecLines);
+                }
             }
             else if (menuItem.Equals("menuDeleteFloutec"))
             {
-                if (tree.SelectedNode.Level == 1)
+                if (treeFloutecs.SelectedNode.Level == 1)
                 {
-                    string[] tokens = tree.SelectedNode.Text.Split(' ');
+                    string[] tokens = treeFloutecs.SelectedNode.Text.Split(' ');
                     int address = int.Parse(tokens[0]);
 
-                    var floutec = unitOfWork.Repository<Floutec>().GetAll().Where(f => f.Address.Equals(address)).SingleOrDefault();
+                    var floutec = floutecs.Where(f => f.Address.Equals(address)).SingleOrDefault();
+
+                    contextMenuFloutecs.Close();
 
                     var confirmResult = MessageBox.Show("Вы действительно хотите удалить вычислитель ФЛОУТЭК с адресом " + floutec.Address, "Удаление вычислителя ФЛОУТЭК", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
@@ -214,6 +310,8 @@ namespace NGVSCAN.EXEC
                     {
                         unitOfWork.Repository<Floutec>().Delete(floutec.Id);
                         unitOfWork.Commit();
+
+                        UpdateData(unitOfWork);
 
                         FillFloutecsTree(field, floutecs, floutecLines);
                     }

@@ -58,6 +58,8 @@
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuEditFloutec = new System.Windows.Forms.ToolStripMenuItem();
             this.tabs.SuspendLayout();
             this.tabFloutecs.SuspendLayout();
             this.groupFloutecs.SuspendLayout();
@@ -150,9 +152,11 @@
             this.menuAddFloutec,
             this.menuAddFloutecLine,
             this.toolStripSeparator1,
+            this.menuEditFloutec,
+            this.toolStripSeparator2,
             this.menuDeleteFloutec});
             this.contextMenuFloutecs.Name = "contextMenuFloutecs";
-            this.contextMenuFloutecs.Size = new System.Drawing.Size(203, 98);
+            this.contextMenuFloutecs.Size = new System.Drawing.Size(203, 126);
             this.contextMenuFloutecs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuFloutecs_Opening);
             this.contextMenuFloutecs.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuFloutecs_ItemClicked);
             // 
@@ -221,6 +225,17 @@
             this.menuAbout.Size = new System.Drawing.Size(94, 20);
             this.menuAbout.Text = "О программе";
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(199, 6);
+            // 
+            // menuEditFloutec
+            // 
+            this.menuEditFloutec.Name = "menuEditFloutec";
+            this.menuEditFloutec.Size = new System.Drawing.Size(202, 22);
+            this.menuEditFloutec.Text = "Изменить";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -265,6 +280,8 @@
         private System.Windows.Forms.GroupBox groupFloutecsLog;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuDeleteFloutec;
+        private System.Windows.Forms.ToolStripMenuItem menuEditFloutec;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
 
