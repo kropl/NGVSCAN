@@ -29,146 +29,146 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("1 Газ на собственные нужды");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("2 Газ на сепаратор С-1");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("185 Расход газа", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("1 Конденсат. Налив в авто");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("2 Пластовая вода. Нали в авто");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("186 Расход жидкостей", new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5});
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("SEM-SRV", new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode6});
-            this.groupFloutecsLog = new System.Windows.Forms.GroupBox();
-            this.groupFloutecsProperties = new System.Windows.Forms.GroupBox();
-            this.groupFloutecs = new System.Windows.Forms.GroupBox();
-            this.treeFloutecs = new System.Windows.Forms.TreeView();
-            this.contextMenuFloutecs = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.menuAddFloutec = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuAddFloutecLine = new System.Windows.Forms.ToolStripMenuItem();
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("1 Газ на собственные нужды");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("2 Газ на сепаратор С-1");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("185 Расход газа", new System.Windows.Forms.TreeNode[] {
+            treeNode8,
+            treeNode9});
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("1 Конденсат. Налив в авто");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("2 Пластовая вода. Нали в авто");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("186 Расход жидкостей", new System.Windows.Forms.TreeNode[] {
+            treeNode11,
+            treeNode12});
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("SEM-SRV", new System.Windows.Forms.TreeNode[] {
+            treeNode10,
+            treeNode13});
+            this.groupEstimatorsLog = new System.Windows.Forms.GroupBox();
+            this.groupEstimatorsProperties = new System.Windows.Forms.GroupBox();
+            this.groupEstimators = new System.Windows.Forms.GroupBox();
+            this.treeEstimators = new System.Windows.Forms.TreeView();
+            this.contextMenuEstimators = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuAddEstimator = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAddMeasureLine = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuEditFloutec = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuDeleteFloutec = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.status = new System.Windows.Forms.StatusStrip();
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupFloutecs.SuspendLayout();
-            this.contextMenuFloutecs.SuspendLayout();
+            this.groupEstimators.SuspendLayout();
+            this.contextMenuEstimators.SuspendLayout();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupFloutecsLog
+            // groupEstimatorsLog
             // 
-            this.groupFloutecsLog.Location = new System.Drawing.Point(12, 403);
-            this.groupFloutecsLog.Name = "groupFloutecsLog";
-            this.groupFloutecsLog.Size = new System.Drawing.Size(860, 133);
-            this.groupFloutecsLog.TabIndex = 2;
-            this.groupFloutecsLog.TabStop = false;
-            this.groupFloutecsLog.Text = "Сообщения";
+            this.groupEstimatorsLog.Location = new System.Drawing.Point(12, 403);
+            this.groupEstimatorsLog.Name = "groupEstimatorsLog";
+            this.groupEstimatorsLog.Size = new System.Drawing.Size(860, 133);
+            this.groupEstimatorsLog.TabIndex = 2;
+            this.groupEstimatorsLog.TabStop = false;
+            this.groupEstimatorsLog.Text = "Сообщения";
             // 
-            // groupFloutecsProperties
+            // groupEstimatorsProperties
             // 
-            this.groupFloutecsProperties.Location = new System.Drawing.Point(318, 27);
-            this.groupFloutecsProperties.Name = "groupFloutecsProperties";
-            this.groupFloutecsProperties.Size = new System.Drawing.Size(554, 370);
-            this.groupFloutecsProperties.TabIndex = 1;
-            this.groupFloutecsProperties.TabStop = false;
-            this.groupFloutecsProperties.Text = "Свойства";
+            this.groupEstimatorsProperties.Location = new System.Drawing.Point(318, 27);
+            this.groupEstimatorsProperties.Name = "groupEstimatorsProperties";
+            this.groupEstimatorsProperties.Size = new System.Drawing.Size(554, 370);
+            this.groupEstimatorsProperties.TabIndex = 1;
+            this.groupEstimatorsProperties.TabStop = false;
+            this.groupEstimatorsProperties.Text = "Свойства";
             // 
-            // groupFloutecs
+            // groupEstimators
             // 
-            this.groupFloutecs.Controls.Add(this.treeFloutecs);
-            this.groupFloutecs.Location = new System.Drawing.Point(12, 27);
-            this.groupFloutecs.Name = "groupFloutecs";
-            this.groupFloutecs.Size = new System.Drawing.Size(300, 370);
-            this.groupFloutecs.TabIndex = 0;
-            this.groupFloutecs.TabStop = false;
-            this.groupFloutecs.Text = "Вычислители";
+            this.groupEstimators.Controls.Add(this.treeEstimators);
+            this.groupEstimators.Location = new System.Drawing.Point(12, 27);
+            this.groupEstimators.Name = "groupEstimators";
+            this.groupEstimators.Size = new System.Drawing.Size(300, 370);
+            this.groupEstimators.TabIndex = 0;
+            this.groupEstimators.TabStop = false;
+            this.groupEstimators.Text = "Вычислители";
             // 
-            // treeFloutecs
+            // treeEstimators
             // 
-            this.treeFloutecs.BackColor = System.Drawing.SystemColors.Control;
-            this.treeFloutecs.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.treeFloutecs.ContextMenuStrip = this.contextMenuFloutecs;
-            this.treeFloutecs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeFloutecs.Location = new System.Drawing.Point(3, 16);
-            this.treeFloutecs.Name = "treeFloutecs";
-            treeNode1.Name = "Node3";
-            treeNode1.Text = "1 Газ на собственные нужды";
-            treeNode2.Name = "Node4";
-            treeNode2.Text = "2 Газ на сепаратор С-1";
-            treeNode3.Name = "Node1";
-            treeNode3.Text = "185 Расход газа";
-            treeNode4.Name = "Node5";
-            treeNode4.Text = "1 Конденсат. Налив в авто";
-            treeNode5.Name = "Node6";
-            treeNode5.Text = "2 Пластовая вода. Нали в авто";
-            treeNode6.Name = "Node2";
-            treeNode6.Text = "186 Расход жидкостей";
-            treeNode7.Name = "Node0";
-            treeNode7.Text = "SEM-SRV";
-            this.treeFloutecs.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7});
-            this.treeFloutecs.Size = new System.Drawing.Size(294, 351);
-            this.treeFloutecs.TabIndex = 0;
-            this.treeFloutecs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeFloutecs_AfterSelect);
+            this.treeEstimators.BackColor = System.Drawing.SystemColors.Control;
+            this.treeEstimators.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.treeEstimators.ContextMenuStrip = this.contextMenuEstimators;
+            this.treeEstimators.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeEstimators.Location = new System.Drawing.Point(3, 16);
+            this.treeEstimators.Name = "treeEstimators";
+            treeNode8.Name = "Node3";
+            treeNode8.Text = "1 Газ на собственные нужды";
+            treeNode9.Name = "Node4";
+            treeNode9.Text = "2 Газ на сепаратор С-1";
+            treeNode10.Name = "Node1";
+            treeNode10.Text = "185 Расход газа";
+            treeNode11.Name = "Node5";
+            treeNode11.Text = "1 Конденсат. Налив в авто";
+            treeNode12.Name = "Node6";
+            treeNode12.Text = "2 Пластовая вода. Нали в авто";
+            treeNode13.Name = "Node2";
+            treeNode13.Text = "186 Расход жидкостей";
+            treeNode14.Name = "Node0";
+            treeNode14.Text = "SEM-SRV";
+            this.treeEstimators.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode14});
+            this.treeEstimators.Size = new System.Drawing.Size(294, 351);
+            this.treeEstimators.TabIndex = 0;
+            this.treeEstimators.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeFloutecs_AfterSelect);
             // 
-            // contextMenuFloutecs
+            // contextMenuEstimators
             // 
-            this.contextMenuFloutecs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuAddFloutec,
-            this.menuAddFloutecLine,
+            this.contextMenuEstimators.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuAddEstimator,
+            this.menuAddMeasureLine,
             this.toolStripSeparator1,
-            this.menuEditFloutec,
+            this.menuEdit,
             this.toolStripSeparator2,
-            this.menuDeleteFloutec});
-            this.contextMenuFloutecs.Name = "contextMenuFloutecs";
-            this.contextMenuFloutecs.Size = new System.Drawing.Size(203, 104);
-            this.contextMenuFloutecs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuFloutecs_Opening);
-            this.contextMenuFloutecs.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuFloutecs_ItemClicked);
+            this.menuDelete});
+            this.contextMenuEstimators.Name = "contextMenuFloutecs";
+            this.contextMenuEstimators.Size = new System.Drawing.Size(203, 104);
+            this.contextMenuEstimators.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuFloutecs_Opening);
+            this.contextMenuEstimators.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuFloutecs_ItemClicked);
             // 
-            // menuAddFloutec
+            // menuAddEstimator
             // 
-            this.menuAddFloutec.Name = "menuAddFloutec";
-            this.menuAddFloutec.Size = new System.Drawing.Size(202, 22);
-            this.menuAddFloutec.Text = "Добавить вычислитель";
+            this.menuAddEstimator.Name = "menuAddEstimator";
+            this.menuAddEstimator.Size = new System.Drawing.Size(202, 22);
+            this.menuAddEstimator.Text = "Добавить вычислитель";
             // 
-            // menuAddFloutecLine
+            // menuAddMeasureLine
             // 
-            this.menuAddFloutecLine.Name = "menuAddFloutecLine";
-            this.menuAddFloutecLine.Size = new System.Drawing.Size(202, 22);
-            this.menuAddFloutecLine.Text = "Добавить нитку";
+            this.menuAddMeasureLine.Name = "menuAddMeasureLine";
+            this.menuAddMeasureLine.Size = new System.Drawing.Size(202, 22);
+            this.menuAddMeasureLine.Text = "Добавить нитку";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(199, 6);
             // 
-            // menuEditFloutec
+            // menuEdit
             // 
-            this.menuEditFloutec.Name = "menuEditFloutec";
-            this.menuEditFloutec.Size = new System.Drawing.Size(202, 22);
-            this.menuEditFloutec.Text = "Изменить";
+            this.menuEdit.Name = "menuEdit";
+            this.menuEdit.Size = new System.Drawing.Size(202, 22);
+            this.menuEdit.Text = "Изменить";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(199, 6);
             // 
-            // menuDeleteFloutec
+            // menuDelete
             // 
-            this.menuDeleteFloutec.Name = "menuDeleteFloutec";
-            this.menuDeleteFloutec.Size = new System.Drawing.Size(202, 22);
-            this.menuDeleteFloutec.Text = "Удалить";
+            this.menuDelete.Name = "menuDelete";
+            this.menuDelete.Size = new System.Drawing.Size(202, 22);
+            this.menuDelete.Text = "Удалить";
             // 
             // status
             // 
-            this.status.Location = new System.Drawing.Point(0, 540);
+            this.status.Location = new System.Drawing.Point(0, 539);
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(884, 22);
             this.status.SizingGrip = false;
@@ -202,21 +202,21 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 562);
-            this.Controls.Add(this.groupFloutecsLog);
-            this.Controls.Add(this.groupFloutecsProperties);
+            this.ClientSize = new System.Drawing.Size(884, 561);
+            this.Controls.Add(this.groupEstimatorsLog);
+            this.Controls.Add(this.groupEstimatorsProperties);
             this.Controls.Add(this.status);
-            this.Controls.Add(this.groupFloutecs);
+            this.Controls.Add(this.groupEstimators);
             this.Controls.Add(this.menu);
             this.MainMenuStrip = this.menu;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(900, 600);
             this.MinimumSize = new System.Drawing.Size(900, 600);
             this.Name = "MainForm";
-            this.Text = "Программа опроса вычислителей ПрАТ \"Нефтегаздобыча\"";
+            this.Text = "Программа опроса вычислителей ЧАО \"Нефтегаздобыча\"";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.groupFloutecs.ResumeLayout(false);
-            this.contextMenuFloutecs.ResumeLayout(false);
+            this.groupEstimators.ResumeLayout(false);
+            this.contextMenuEstimators.ResumeLayout(false);
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
             this.ResumeLayout(false);
@@ -229,16 +229,16 @@
         private System.Windows.Forms.MenuStrip menu;
         private System.Windows.Forms.ToolStripMenuItem menuSettings;
         private System.Windows.Forms.ToolStripMenuItem menuAbout;
-        private System.Windows.Forms.GroupBox groupFloutecsProperties;
-        private System.Windows.Forms.GroupBox groupFloutecs;
-        private System.Windows.Forms.TreeView treeFloutecs;
-        private System.Windows.Forms.ContextMenuStrip contextMenuFloutecs;
-        private System.Windows.Forms.ToolStripMenuItem menuAddFloutec;
-        private System.Windows.Forms.ToolStripMenuItem menuAddFloutecLine;
-        private System.Windows.Forms.GroupBox groupFloutecsLog;
+        private System.Windows.Forms.GroupBox groupEstimatorsProperties;
+        private System.Windows.Forms.GroupBox groupEstimators;
+        private System.Windows.Forms.TreeView treeEstimators;
+        private System.Windows.Forms.ContextMenuStrip contextMenuEstimators;
+        private System.Windows.Forms.ToolStripMenuItem menuAddEstimator;
+        private System.Windows.Forms.ToolStripMenuItem menuAddMeasureLine;
+        private System.Windows.Forms.GroupBox groupEstimatorsLog;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem menuDeleteFloutec;
-        private System.Windows.Forms.ToolStripMenuItem menuEditFloutec;
+        private System.Windows.Forms.ToolStripMenuItem menuDelete;
+        private System.Windows.Forms.ToolStripMenuItem menuEdit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

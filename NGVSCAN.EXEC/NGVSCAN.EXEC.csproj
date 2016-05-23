@@ -53,11 +53,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\FieldDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FieldDetails.Designer.cs">
+      <DependentUpon>FieldDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\FloutecDetails.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\FloutecDetails.Designer.cs">
       <DependentUpon>FloutecDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FloutecLineDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FloutecLineDetails.Designer.cs">
+      <DependentUpon>FloutecLineDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FloutecsGroupDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FloutecsGroupDetails.Designer.cs">
+      <DependentUpon>FloutecsGroupDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ROC809Details.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ROC809Details.Designer.cs">
+      <DependentUpon>ROC809Details.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ROC809PointDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ROC809PointDetails.Designer.cs">
+      <DependentUpon>ROC809PointDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ROC809sGroupDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ROC809sGroupDetails.Designer.cs">
+      <DependentUpon>ROC809sGroupDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -77,6 +113,18 @@
     </Compile>
     <Compile Include="Popups\AddFloutecPopup.Designer.cs">
       <DependentUpon>AddFloutecPopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Popups\AddROC809PointPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popups\AddROC809PointPopup.Designer.cs">
+      <DependentUpon>AddROC809PointPopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Popups\AddROC809Popup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popups\AddROC809Popup.Designer.cs">
+      <DependentUpon>AddROC809Popup.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\FloutecDetails.resx">
