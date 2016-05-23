@@ -33,6 +33,10 @@ namespace NGVSCAN.EXEC
         // Коллекция линий измерений вычислителей ФЛОУТЭК данной установки
         private List<FloutecMeasureLine> floutecLines;
 
+        private List<ROC809> rocs;
+
+        private List<ROC809MeasurePoint> rocPoints;
+
         // Конструктор формы
         public MainForm()
         {
@@ -70,6 +74,8 @@ namespace NGVSCAN.EXEC
                 // Инициализация коллекции вычислителей ФЛОУТЭК данной установки
                 floutecs = field.Estimators.Where(e => e is Floutec).Select(e => e as Floutec).ToList();
 
+                rocs = field.Estimators.Where(e => e is ROC809).Select(e => e as ROC809).ToList();
+
                 // Если коллекция вычислителей была определена ...
                 if (floutecs != null)
                 {
@@ -78,6 +84,15 @@ namespace NGVSCAN.EXEC
                     floutecs.ForEach((f) =>
                     {
                         floutecLines.AddRange(f.MeasureLines.Select(l => l as FloutecMeasureLine).ToList());
+                    });
+                }
+
+                if (rocs != null)
+                {
+                    rocPoints = new List<ROC809MeasurePoint>();
+                    rocs.ForEach((r) =>
+                    {
+                        rocPoints.AddRange(r.MeasureLines.Select(p => p as ROC809MeasurePoint).ToList());
                     });
                 }
             }          
@@ -89,7 +104,7 @@ namespace NGVSCAN.EXEC
         /// <param name="field">Установка</param>
         /// <param name="floutecs">Коллекция вычислителей</param>
         /// <param name="lines">Коллекция линий измерения</param>
-        private void FillFloutecsTree(Field field, List<Floutec> floutecs, List<FloutecMeasureLine> lines)
+        private void FillFloutecsTree(Field field, List<Floutec> floutecs, List<FloutecMeasureLine> lines, List<ROC809> rocs, List<ROC809MeasurePoint> rocPoints)
         {
             // Очистка дерева
             treeFloutecs.Nodes.Clear();
@@ -124,6 +139,21 @@ namespace NGVSCAN.EXEC
                         });
                     }
                 });
+
+                rocs.ForEach((r) =>
+                {
+                    if (r != null)
+                    {
+                        TreeNode child = rocsGroup.Nodes.Add(r.Address + " " + r.Port + " " + r.Name);
+
+                        rocPoints.ForEach((p) =>
+                        {
+                            if (p != null && p.EstimatorId == r.Id)
+
+                                child.Nodes.Add(p.Number + " " + p.Name);
+                        });
+                    }
+                });
             }
         }
 
@@ -135,7 +165,7 @@ namespace NGVSCAN.EXEC
         private void MainForm_Load(object sender, EventArgs e)
         {
             // Заполнение дерева объектов на закладке вычислителей ФЛОУТЭК
-            FillFloutecsTree(field, floutecs, floutecLines);
+            FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
         }
 
         // Событие открытия контекстного меню дерева объектов на закладке вычислителей ФЛОУТЭК
@@ -153,6 +183,8 @@ namespace NGVSCAN.EXEC
                 if (nodeAtMousePosition != selectedNode)
                     treeFloutecs.SelectedNode = nodeAtMousePosition;
             }
+
+            e.Cancel = treeFloutecs.SelectedNode.Level == 0 ? true : false;
 
             // Пункт меню "Добавить вычислитель" доступен только для установки
             contextMenuFloutecs.Items[0].Enabled = treeFloutecs.SelectedNode.Level == 1 ? true : false;
@@ -242,7 +274,7 @@ namespace NGVSCAN.EXEC
 
                     UpdateData(unitOfWork);
 
-                    FillFloutecsTree(field, floutecs, floutecLines);
+                    FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                 }
             }
             else if (menuItem.Equals("menuEditFloutec"))
@@ -272,7 +304,7 @@ namespace NGVSCAN.EXEC
 
                         UpdateData(unitOfWork);
 
-                        FillFloutecsTree(field, floutecs, floutecLines);
+                        FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                     }
                 }
             }
@@ -302,7 +334,7 @@ namespace NGVSCAN.EXEC
 
                     UpdateData(unitOfWork);
 
-                    FillFloutecsTree(field, floutecs, floutecLines);
+                    FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                 }
             }
             else if (menuItem.Equals("menuDeleteFloutec"))
@@ -325,7 +357,7 @@ namespace NGVSCAN.EXEC
 
                         UpdateData(unitOfWork);
 
-                        FillFloutecsTree(field, floutecs, floutecLines);
+                        FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                     }
 
                     

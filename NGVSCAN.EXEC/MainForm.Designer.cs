@@ -168,7 +168,7 @@
             // 
             // status
             // 
-            this.status.Location = new System.Drawing.Point(0, 539);
+            this.status.Location = new System.Drawing.Point(0, 540);
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(884, 22);
             this.status.SizingGrip = false;
@@ -202,7 +202,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 561);
+            this.ClientSize = new System.Drawing.Size(884, 562);
             this.Controls.Add(this.groupFloutecsLog);
             this.Controls.Add(this.groupFloutecsProperties);
             this.Controls.Add(this.status);
