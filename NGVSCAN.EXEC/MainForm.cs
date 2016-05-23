@@ -64,15 +64,23 @@ namespace NGVSCAN.EXEC
 // FAKE        !!! Имя установки задано жёстко временно !!!
             field = unitOfWork.Repository<Field>().GetAll().Where(f => f.Name.Equals("SEM-SRV")).SingleOrDefault();
 
-            // Инициализация коллекции вычислителей ФЛОУТЭК данной установки
-            floutecs = field.Estimators.Where(e => e is Floutec).Select(e => e as Floutec).ToList();
-
-            // Инициализация коллекции линий измерения вычислителей ФЛОУТЭК данной установки
-            floutecLines = new List<FloutecMeasureLine>();
-            floutecs.ForEach((f) =>
+            // Если установка была определена ...
+            if (field != null)
             {
-                floutecLines.AddRange(f.MeasureLines.Select(l => l as FloutecMeasureLine).ToList());
-            });
+                // Инициализация коллекции вычислителей ФЛОУТЭК данной установки
+                floutecs = field.Estimators.Where(e => e is Floutec).Select(e => e as Floutec).ToList();
+
+                // Если коллекция вычислителей была определена ...
+                if (floutecs != null)
+                {
+                    // Инициализация коллекции линий измерения вычислителей ФЛОУТЭК данной установки
+                    floutecLines = new List<FloutecMeasureLine>();
+                    floutecs.ForEach((f) =>
+                    {
+                        floutecLines.AddRange(f.MeasureLines.Select(l => l as FloutecMeasureLine).ToList());
+                    });
+                }
+            }          
         }
 
         /// <summary>
@@ -92,14 +100,18 @@ namespace NGVSCAN.EXEC
                 // Добавление установки
                 TreeNode root = treeFloutecs.Nodes.Add(field.Name);
 
-                // Для каждого вычислителя
+                // Добавление двух групп для вычислителей
+                TreeNode floutecsGroup = root.Nodes.Add("Вычислители ФЛОУТЭК");
+                TreeNode rocsGroup = root.Nodes.Add("Вычислители ROC809");
+
+                // Для каждого вычислителя ФЛОУТЭК
                 floutecs.ForEach((f) =>
                 {
                     // Если вычислитель определён ...
                     if (f != null)
                     {
-                        // Добавление вычислителя в коллекцию вложенных элементов установки
-                        TreeNode child = root.Nodes.Add(f.Address + " " + f.Name);
+                        // Добавление вычислителя в коллекцию вложенных элементов группы вычислителей ФЛОУТЭК
+                        TreeNode child = floutecsGroup.Nodes.Add(f.Address + " " + f.Name);
 
                         // Для каждой линии измерения
                         lines.ForEach((l) =>
@@ -143,15 +155,16 @@ namespace NGVSCAN.EXEC
             }
 
             // Пункт меню "Добавить вычислитель" доступен только для установки
-            contextMenuFloutecs.Items[0].Enabled = treeFloutecs.SelectedNode.Level == 0 ? true : false;
+            contextMenuFloutecs.Items[0].Enabled = treeFloutecs.SelectedNode.Level == 1 ? true : false;
 
             // Пункт меню "Добавить нитку" доступен только для вычислителей
-            contextMenuFloutecs.Items[1].Enabled = treeFloutecs.SelectedNode.Level == 1 ? true : false;
+            contextMenuFloutecs.Items[1].Enabled = treeFloutecs.SelectedNode.Level == 2 ? true : false;
 
-            // Пункт меню "Изменить" доступен для всех объектов
+            // Пункт меню "Изменить" доступен для вычислителей и ниток вычислителей
+            contextMenuFloutecs.Items[3].Enabled = treeFloutecs.SelectedNode.Level > 1 ? true : false;
 
             // Пункт меню "Удалить" доступен для вычислителей и ниток вычислителей
-            contextMenuFloutecs.Items[5].Enabled = treeFloutecs.SelectedNode.Level > 0 ? true : false;
+            contextMenuFloutecs.Items[5].Enabled = treeFloutecs.SelectedNode.Level > 1 ? true : false;
         }
 
         // Событие выбора объекта в дереве объектов на закладке вычислителей ФЛОУТЭК
@@ -168,8 +181,8 @@ namespace NGVSCAN.EXEC
                     {
                         break;
                     }
-                // Для вычислителей (уровень вложенности = 1)
-                case 1:
+                // Для вычислителей (уровень вложенности = 2)
+                case 2:
                     {
                         // Инициализация экземпляра элемента управления FloutecDetails
                         FloutecDetails floutecDetails = new FloutecDetails();
@@ -192,8 +205,8 @@ namespace NGVSCAN.EXEC
 
                         break;
                     }
-                // Для ниток (уровень вложенности = 2)
-                case 2:
+                // Для ниток (уровень вложенности = 3)
+                case 3:
                     {
                         break;
                     }

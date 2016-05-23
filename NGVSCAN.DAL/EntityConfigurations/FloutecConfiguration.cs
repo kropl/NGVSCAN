@@ -16,11 +16,6 @@ namespace NGVSCAN.DAL.EntityConfigurations
             // Свойство Address выичслителя - обязательно (не допускает значений NULL)
             Property(f => f.Address).IsRequired();
 
-            // Комбинация свойств FieldId, Address и Name вычислителя должна быть уникальной
-            Property(f => f.FieldId).HasUniqueIndex("IX_Floutec", 0);
-            Property(f => f.Address).HasUniqueIndex("IX_Floutec", 1);
-            Property(f => f.Name).HasUniqueIndex("IX_Floutec", 2);
-
             /*
                 Кофигурация имени таблицы для вычислителей ФЛОУТЭК:
                 таким образом задаётся полиморфное отношение между абстрактной сущностью "Вычислитель" 

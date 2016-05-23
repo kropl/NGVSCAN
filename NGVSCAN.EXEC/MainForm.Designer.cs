@@ -42,8 +42,6 @@
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("SEM-SRV", new System.Windows.Forms.TreeNode[] {
             treeNode3,
             treeNode6});
-            this.tabs = new System.Windows.Forms.TabControl();
-            this.tabFloutecs = new System.Windows.Forms.TabPage();
             this.groupFloutecsLog = new System.Windows.Forms.GroupBox();
             this.groupFloutecsProperties = new System.Windows.Forms.GroupBox();
             this.groupFloutecs = new System.Windows.Forms.GroupBox();
@@ -52,58 +50,32 @@
             this.menuAddFloutec = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAddFloutecLine = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuEditFloutec = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuDeleteFloutec = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabROC809s = new System.Windows.Forms.TabPage();
             this.status = new System.Windows.Forms.StatusStrip();
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuEditFloutec = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabs.SuspendLayout();
-            this.tabFloutecs.SuspendLayout();
             this.groupFloutecs.SuspendLayout();
             this.contextMenuFloutecs.SuspendLayout();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabs
-            // 
-            this.tabs.Controls.Add(this.tabFloutecs);
-            this.tabs.Controls.Add(this.tabROC809s);
-            this.tabs.Location = new System.Drawing.Point(12, 27);
-            this.tabs.Name = "tabs";
-            this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(860, 509);
-            this.tabs.TabIndex = 0;
-            // 
-            // tabFloutecs
-            // 
-            this.tabFloutecs.Controls.Add(this.groupFloutecsLog);
-            this.tabFloutecs.Controls.Add(this.groupFloutecsProperties);
-            this.tabFloutecs.Controls.Add(this.groupFloutecs);
-            this.tabFloutecs.Location = new System.Drawing.Point(4, 22);
-            this.tabFloutecs.Name = "tabFloutecs";
-            this.tabFloutecs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFloutecs.Size = new System.Drawing.Size(852, 483);
-            this.tabFloutecs.TabIndex = 0;
-            this.tabFloutecs.Text = "Вычислители ФЛОУТЭК";
-            this.tabFloutecs.UseVisualStyleBackColor = true;
-            // 
             // groupFloutecsLog
             // 
-            this.groupFloutecsLog.Location = new System.Drawing.Point(7, 364);
+            this.groupFloutecsLog.Location = new System.Drawing.Point(12, 403);
             this.groupFloutecsLog.Name = "groupFloutecsLog";
-            this.groupFloutecsLog.Size = new System.Drawing.Size(839, 113);
+            this.groupFloutecsLog.Size = new System.Drawing.Size(860, 133);
             this.groupFloutecsLog.TabIndex = 2;
             this.groupFloutecsLog.TabStop = false;
             this.groupFloutecsLog.Text = "Сообщения";
             // 
             // groupFloutecsProperties
             // 
-            this.groupFloutecsProperties.Location = new System.Drawing.Point(313, 7);
+            this.groupFloutecsProperties.Location = new System.Drawing.Point(318, 27);
             this.groupFloutecsProperties.Name = "groupFloutecsProperties";
-            this.groupFloutecsProperties.Size = new System.Drawing.Size(534, 350);
+            this.groupFloutecsProperties.Size = new System.Drawing.Size(554, 370);
             this.groupFloutecsProperties.TabIndex = 1;
             this.groupFloutecsProperties.TabStop = false;
             this.groupFloutecsProperties.Text = "Свойства";
@@ -111,16 +83,16 @@
             // groupFloutecs
             // 
             this.groupFloutecs.Controls.Add(this.treeFloutecs);
-            this.groupFloutecs.Location = new System.Drawing.Point(7, 7);
+            this.groupFloutecs.Location = new System.Drawing.Point(12, 27);
             this.groupFloutecs.Name = "groupFloutecs";
-            this.groupFloutecs.Size = new System.Drawing.Size(300, 350);
+            this.groupFloutecs.Size = new System.Drawing.Size(300, 370);
             this.groupFloutecs.TabIndex = 0;
             this.groupFloutecs.TabStop = false;
             this.groupFloutecs.Text = "Вычислители";
             // 
             // treeFloutecs
             // 
-            this.treeFloutecs.BackColor = System.Drawing.SystemColors.Window;
+            this.treeFloutecs.BackColor = System.Drawing.SystemColors.Control;
             this.treeFloutecs.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeFloutecs.ContextMenuStrip = this.contextMenuFloutecs;
             this.treeFloutecs.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -142,7 +114,7 @@
             treeNode7.Text = "SEM-SRV";
             this.treeFloutecs.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode7});
-            this.treeFloutecs.Size = new System.Drawing.Size(294, 331);
+            this.treeFloutecs.Size = new System.Drawing.Size(294, 351);
             this.treeFloutecs.TabIndex = 0;
             this.treeFloutecs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeFloutecs_AfterSelect);
             // 
@@ -156,7 +128,7 @@
             this.toolStripSeparator2,
             this.menuDeleteFloutec});
             this.contextMenuFloutecs.Name = "contextMenuFloutecs";
-            this.contextMenuFloutecs.Size = new System.Drawing.Size(203, 126);
+            this.contextMenuFloutecs.Size = new System.Drawing.Size(203, 104);
             this.contextMenuFloutecs.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuFloutecs_Opening);
             this.contextMenuFloutecs.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuFloutecs_ItemClicked);
             // 
@@ -177,21 +149,22 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(199, 6);
             // 
+            // menuEditFloutec
+            // 
+            this.menuEditFloutec.Name = "menuEditFloutec";
+            this.menuEditFloutec.Size = new System.Drawing.Size(202, 22);
+            this.menuEditFloutec.Text = "Изменить";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(199, 6);
+            // 
             // menuDeleteFloutec
             // 
             this.menuDeleteFloutec.Name = "menuDeleteFloutec";
             this.menuDeleteFloutec.Size = new System.Drawing.Size(202, 22);
             this.menuDeleteFloutec.Text = "Удалить";
-            // 
-            // tabROC809s
-            // 
-            this.tabROC809s.Location = new System.Drawing.Point(4, 22);
-            this.tabROC809s.Name = "tabROC809s";
-            this.tabROC809s.Padding = new System.Windows.Forms.Padding(3);
-            this.tabROC809s.Size = new System.Drawing.Size(852, 483);
-            this.tabROC809s.TabIndex = 1;
-            this.tabROC809s.Text = "Вычислители ROC809";
-            this.tabROC809s.UseVisualStyleBackColor = true;
             // 
             // status
             // 
@@ -225,25 +198,16 @@
             this.menuAbout.Size = new System.Drawing.Size(94, 20);
             this.menuAbout.Text = "О программе";
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(199, 6);
-            // 
-            // menuEditFloutec
-            // 
-            this.menuEditFloutec.Name = "menuEditFloutec";
-            this.menuEditFloutec.Size = new System.Drawing.Size(202, 22);
-            this.menuEditFloutec.Text = "Изменить";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(884, 561);
+            this.Controls.Add(this.groupFloutecsLog);
+            this.Controls.Add(this.groupFloutecsProperties);
             this.Controls.Add(this.status);
+            this.Controls.Add(this.groupFloutecs);
             this.Controls.Add(this.menu);
-            this.Controls.Add(this.tabs);
             this.MainMenuStrip = this.menu;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(900, 600);
@@ -251,8 +215,6 @@
             this.Name = "MainForm";
             this.Text = "Программа опроса вычислителей ПрАТ \"Нефтегаздобыча\"";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.tabs.ResumeLayout(false);
-            this.tabFloutecs.ResumeLayout(false);
             this.groupFloutecs.ResumeLayout(false);
             this.contextMenuFloutecs.ResumeLayout(false);
             this.menu.ResumeLayout(false);
@@ -263,10 +225,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TabControl tabs;
-        private System.Windows.Forms.TabPage tabFloutecs;
-        private System.Windows.Forms.TabPage tabROC809s;
         private System.Windows.Forms.StatusStrip status;
         private System.Windows.Forms.MenuStrip menu;
         private System.Windows.Forms.ToolStripMenuItem menuSettings;
