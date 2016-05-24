@@ -61,6 +61,7 @@ namespace NGVSCAN.EXEC.Controls
                         line.Name,
                         line.Description
                     });
+                    item.Font = line.IsDeleted ? new Font(new FontFamily("Microsoft Sans Serif"), 8, FontStyle.Strikeout) : null;
 
                     listLines.Items.Add(item);
                 }

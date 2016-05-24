@@ -53,12 +53,12 @@
             this.menuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuRestore = new System.Windows.Forms.ToolStripMenuItem();
             this.status = new System.Windows.Forms.StatusStrip();
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuRestore = new System.Windows.Forms.ToolStripMenuItem();
             this.groupEstimators.SuspendLayout();
             this.contextMenuEstimators.SuspendLayout();
             this.menu.SuspendLayout();
@@ -132,7 +132,7 @@
             this.toolStripSeparator3,
             this.menuRestore});
             this.contextMenuEstimators.Name = "contextMenuFloutecs";
-            this.contextMenuEstimators.Size = new System.Drawing.Size(203, 154);
+            this.contextMenuEstimators.Size = new System.Drawing.Size(203, 132);
             this.contextMenuEstimators.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuFloutecs_Opening);
             this.contextMenuEstimators.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuFloutecs_ItemClicked);
             // 
@@ -170,6 +170,17 @@
             this.menuDelete.Size = new System.Drawing.Size(202, 22);
             this.menuDelete.Text = "Удалить";
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(199, 6);
+            // 
+            // menuRestore
+            // 
+            this.menuRestore.Name = "menuRestore";
+            this.menuRestore.Size = new System.Drawing.Size(202, 22);
+            this.menuRestore.Text = "Восстановить";
+            // 
             // status
             // 
             this.status.Location = new System.Drawing.Point(0, 539);
@@ -201,17 +212,6 @@
             this.menuAbout.Name = "menuAbout";
             this.menuAbout.Size = new System.Drawing.Size(94, 20);
             this.menuAbout.Text = "О программе";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(199, 6);
-            // 
-            // menuRestore
-            // 
-            this.menuRestore.Name = "menuRestore";
-            this.menuRestore.Size = new System.Drawing.Size(202, 22);
-            this.menuRestore.Text = "Восстановить";
             // 
             // MainForm
             // 

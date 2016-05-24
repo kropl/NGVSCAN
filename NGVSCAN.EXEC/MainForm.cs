@@ -122,6 +122,7 @@ namespace NGVSCAN.EXEC
 
                 // Добавление двух групп для вычислителей
                 TreeNode floutecsGroup = root.Nodes.Add("floutecsGroup", "Вычислители ФЛОУТЭК");
+
                 TreeNode rocsGroup = root.Nodes.Add("rocsGroup", "Вычислители ROC809");
 
                 // Для каждого вычислителя ФЛОУТЭК
@@ -553,7 +554,7 @@ namespace NGVSCAN.EXEC
                                 MessageBoxIcon.Warning, 
                                 MessageBoxDefaultButton.Button2);
 
-                            if (confirmResult == DialogResult.OK)
+                            if (confirmResult == DialogResult.Yes)
                             {
                                 unitOfWork.Repository<Floutec>().Delete(selectedFloutec.Id);
 
@@ -574,7 +575,7 @@ namespace NGVSCAN.EXEC
                                 MessageBoxIcon.Warning,
                                 MessageBoxDefaultButton.Button2);
 
-                            if (confirmResult == DialogResult.OK)
+                            if (confirmResult == DialogResult.Yes)
                             {
                                 selectedFloutec.IsDeleted = true;
                                 selectedFloutec.DateDeleted = DateTime.Now;
@@ -597,7 +598,95 @@ namespace NGVSCAN.EXEC
                 {
                     if (treeEstimators.SelectedNode.Parent.Parent.Name.Equals("floutecsGroup"))
                     {
+                        contextMenuEstimators.Close();
 
+                        if (selectedFloutecLine.IsDeleted)
+                        {
+                            var confirmResult = MessageBox.Show(
+                                "Вы действительно хотите удалить нитку измерения №" + selectedFloutecLine.Number + " вычислителя ФЛОУТЭК с адресом " +
+                                selectedFloutec.Address + "? Нитка будет удалена без возможности восстановления",
+                                "Удаление нитки вычислителя ФЛОУТЭК",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button2);
+
+                            if (confirmResult == DialogResult.Yes)
+                            {
+                                unitOfWork.Repository<FloutecMeasureLine>().Delete(selectedFloutecLine.Id);
+
+                                unitOfWork.Commit();
+
+                                UpdateData(unitOfWork);
+
+                                FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                            }
+                        }
+                        else
+                        {
+                            var confirmResult = MessageBox.Show(
+                                "Вы действительно хотите отметить нитку измерения №" + selectedFloutecLine.Number + " вычислителя ФЛОУТЭК с адресом " +
+                                selectedFloutec.Address + " как удалённую? Нитка будет изъята из очереди опроса с возможностью восстановления",
+                                "Удаление вычислителя ФЛОУТЭК",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button2);
+
+                            if (confirmResult == DialogResult.Yes)
+                            {
+                                selectedFloutecLine.IsDeleted = true;
+                                selectedFloutecLine.DateDeleted = DateTime.Now;
+                                unitOfWork.Repository<FloutecMeasureLine>().Update(selectedFloutecLine);
+
+                                unitOfWork.Commit();
+
+                                UpdateData(unitOfWork);
+
+                                FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                            }
+                        }
+                    }
+                    else if (treeEstimators.SelectedNode.Parent.Parent.Name.Equals("rocsGroup"))
+                    {
+
+                    }
+                }
+            }
+            else if (menuItem.Equals("menuRestore"))
+            {
+                if (treeEstimators.SelectedNode.Level == 2)
+                {
+                    if (treeEstimators.SelectedNode.Parent.Name.Equals("floutecsGroup"))
+                    {
+                        contextMenuEstimators.Close();
+
+                        selectedFloutec.IsDeleted = false;
+                        unitOfWork.Repository<Floutec>().Update(selectedFloutec);
+
+                        unitOfWork.Commit();
+
+                        UpdateData(unitOfWork);
+
+                        FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                    }
+                    else if (treeEstimators.SelectedNode.Parent.Name.Equals("rocsGroup"))
+                    {
+
+                    }
+                }
+                else if (treeEstimators.SelectedNode.Level == 3)
+                {
+                    if (treeEstimators.SelectedNode.Parent.Parent.Name.Equals("floutecsGroup"))
+                    {
+                        contextMenuEstimators.Close();
+
+                        selectedFloutecLine.IsDeleted = false;
+                        unitOfWork.Repository<FloutecMeasureLine>().Update(selectedFloutecLine);
+
+                        unitOfWork.Commit();
+
+                        UpdateData(unitOfWork);
+
+                        FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                     }
                     else if (treeEstimators.SelectedNode.Parent.Parent.Name.Equals("rocsGroup"))
                     {
