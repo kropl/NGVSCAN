@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.groupAddFloutec = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.labelSensorTypeError = new System.Windows.Forms.Label();
+            this.comboSensorTypes = new System.Windows.Forms.ComboBox();
             this.labelDescriptionError = new System.Windows.Forms.Label();
             this.labelNameError = new System.Windows.Forms.Label();
             this.textDescription = new System.Windows.Forms.TextBox();
@@ -39,15 +42,14 @@
             this.textName = new System.Windows.Forms.TextBox();
             this.buttonAddFloutec = new System.Windows.Forms.Button();
             this.buttonCancelAddFloutec = new System.Windows.Forms.Button();
-            this.comboSensorTypes = new System.Windows.Forms.ComboBox();
-            this.labelSensorTypeError = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.labelNumberError = new System.Windows.Forms.Label();
             this.groupAddFloutec.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericNumber)).BeginInit();
             this.SuspendLayout();
             // 
             // groupAddFloutec
             // 
+            this.groupAddFloutec.Controls.Add(this.labelNumberError);
             this.groupAddFloutec.Controls.Add(this.label5);
             this.groupAddFloutec.Controls.Add(this.labelSensorTypeError);
             this.groupAddFloutec.Controls.Add(this.comboSensorTypes);
@@ -65,6 +67,34 @@
             this.groupAddFloutec.TabIndex = 0;
             this.groupAddFloutec.TabStop = false;
             this.groupAddFloutec.Text = "Свойства";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 78);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(69, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Тип датчика";
+            // 
+            // labelSensorTypeError
+            // 
+            this.labelSensorTypeError.AutoSize = true;
+            this.labelSensorTypeError.ForeColor = System.Drawing.Color.Red;
+            this.labelSensorTypeError.Location = new System.Drawing.Point(77, 59);
+            this.labelSensorTypeError.Name = "labelSensorTypeError";
+            this.labelSensorTypeError.Size = new System.Drawing.Size(29, 13);
+            this.labelSensorTypeError.TabIndex = 10;
+            this.labelSensorTypeError.Text = "Error";
+            this.labelSensorTypeError.Visible = false;
+            // 
+            // comboSensorTypes
+            // 
+            this.comboSensorTypes.FormattingEnabled = true;
+            this.comboSensorTypes.Location = new System.Drawing.Point(77, 75);
+            this.comboSensorTypes.Name = "comboSensorTypes";
+            this.comboSensorTypes.Size = new System.Drawing.Size(176, 21);
+            this.comboSensorTypes.TabIndex = 9;
             // 
             // labelDescriptionError
             // 
@@ -174,33 +204,16 @@
             this.buttonCancelAddFloutec.UseVisualStyleBackColor = true;
             this.buttonCancelAddFloutec.Click += new System.EventHandler(this.buttonCancelAddFloutec_Click);
             // 
-            // comboSensorTypes
+            // labelNumberError
             // 
-            this.comboSensorTypes.FormattingEnabled = true;
-            this.comboSensorTypes.Location = new System.Drawing.Point(77, 75);
-            this.comboSensorTypes.Name = "comboSensorTypes";
-            this.comboSensorTypes.Size = new System.Drawing.Size(176, 21);
-            this.comboSensorTypes.TabIndex = 9;
-            // 
-            // labelSensorTypeError
-            // 
-            this.labelSensorTypeError.AutoSize = true;
-            this.labelSensorTypeError.ForeColor = System.Drawing.Color.Red;
-            this.labelSensorTypeError.Location = new System.Drawing.Point(77, 59);
-            this.labelSensorTypeError.Name = "labelSensorTypeError";
-            this.labelSensorTypeError.Size = new System.Drawing.Size(29, 13);
-            this.labelSensorTypeError.TabIndex = 10;
-            this.labelSensorTypeError.Text = "Error";
-            this.labelSensorTypeError.Visible = false;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 78);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(69, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Тип датчика";
+            this.labelNumberError.AutoSize = true;
+            this.labelNumberError.ForeColor = System.Drawing.Color.Red;
+            this.labelNumberError.Location = new System.Drawing.Point(77, 16);
+            this.labelNumberError.Name = "labelNumberError";
+            this.labelNumberError.Size = new System.Drawing.Size(29, 13);
+            this.labelNumberError.TabIndex = 12;
+            this.labelNumberError.Text = "Error";
+            this.labelNumberError.Visible = false;
             // 
             // AddFloutecLinePopup
             // 
@@ -215,7 +228,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(300, 330);
             this.Name = "AddFloutecLinePopup";
-            this.Text = "Добавить нитку измерения";
+            this.Text = "form";
             this.Load += new System.EventHandler(this.AddFloutecLinePopup_Load);
             this.groupAddFloutec.ResumeLayout(false);
             this.groupAddFloutec.PerformLayout();
@@ -240,5 +253,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label labelSensorTypeError;
         private System.Windows.Forms.ComboBox comboSensorTypes;
+        private System.Windows.Forms.Label labelNumberError;
     }
 }

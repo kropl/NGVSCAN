@@ -39,12 +39,14 @@
             this.textName = new System.Windows.Forms.TextBox();
             this.buttonAddFloutec = new System.Windows.Forms.Button();
             this.buttonCancelAddFloutec = new System.Windows.Forms.Button();
+            this.labelAddressError = new System.Windows.Forms.Label();
             this.groupAddFloutec.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericAddress)).BeginInit();
             this.SuspendLayout();
             // 
             // groupAddFloutec
             // 
+            this.groupAddFloutec.Controls.Add(this.labelAddressError);
             this.groupAddFloutec.Controls.Add(this.labelDescriptionError);
             this.groupAddFloutec.Controls.Add(this.labelNameError);
             this.groupAddFloutec.Controls.Add(this.textDescription);
@@ -168,6 +170,17 @@
             this.buttonCancelAddFloutec.UseVisualStyleBackColor = true;
             this.buttonCancelAddFloutec.Click += new System.EventHandler(this.buttonCancelAddFloutec_Click);
             // 
+            // labelAddressError
+            // 
+            this.labelAddressError.AutoSize = true;
+            this.labelAddressError.ForeColor = System.Drawing.Color.Red;
+            this.labelAddressError.Location = new System.Drawing.Point(77, 16);
+            this.labelAddressError.Name = "labelAddressError";
+            this.labelAddressError.Size = new System.Drawing.Size(29, 13);
+            this.labelAddressError.TabIndex = 9;
+            this.labelAddressError.Text = "Error";
+            this.labelAddressError.Visible = false;
+            // 
             // AddFloutecPopup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -181,7 +194,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(300, 280);
             this.Name = "AddFloutecPopup";
-            this.Text = "Добавить вычислитель ФЛОУТЭК";
+            this.Text = "form";
             this.Load += new System.EventHandler(this.AddFloutecPopup_Load);
             this.groupAddFloutec.ResumeLayout(false);
             this.groupAddFloutec.PerformLayout();
@@ -203,5 +216,6 @@
         private System.Windows.Forms.Label labelDescriptionError;
         private System.Windows.Forms.TextBox textDescription;
         private System.Windows.Forms.Label labelNameError;
+        private System.Windows.Forms.Label labelAddressError;
     }
 }

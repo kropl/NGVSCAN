@@ -28,9 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // AddROC809PointPopup
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "AddROC809PointPopup";
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Name = "AddROC809PointPopup";
+            this.Text = "form";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

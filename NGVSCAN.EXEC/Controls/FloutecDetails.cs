@@ -49,12 +49,37 @@ namespace NGVSCAN.EXEC.Controls
             // Инициализация поля отображения списка ниток вычислителя
             labelLines.Text = "";
 
-            // Отображение списка ниток вычислителя
-            Floutec.MeasureLines.ToList().ForEach((l) => 
+            if (Floutec.MeasureLines.Any())
             {
-                FloutecMeasureLine line = (FloutecMeasureLine)l;
-                labelLines.Text += line.Number + " " + line.Name + " ";
-            });
+                labelLines.Text = "Нитки:";
+
+                foreach (FloutecMeasureLine line in Floutec.MeasureLines.Select(l => l as FloutecMeasureLine).OrderBy(o => o.Number))
+                {
+                    ListViewItem item = new ListViewItem(new[]
+                    {
+                        line.Number.ToString(),
+                        line.Name,
+                        line.Description
+                    });
+
+                    listLines.Items.Add(item);
+                }
+
+                listLines.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.HeaderSize);
+                listLines.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
+                listLines.Columns[2].Width = listLines.Parent.Parent.Width - listLines.Columns[0].Width - listLines.Columns[1].Width;
+
+                listLines.Width = listLines.Parent.Parent.Width;
+                listLines.Height = listLines.Parent.Parent.Height - 116;
+                listLines.Location = new Point(0, 116);
+
+                listLines.Visible = true;
+            }
+            else
+            {
+                labelLines.Text = "Нитки отсутствуют";
+                listLines.Visible = false;
+            }
         }
     }
 }

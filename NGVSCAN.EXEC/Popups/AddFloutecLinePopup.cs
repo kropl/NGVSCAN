@@ -1,6 +1,8 @@
 ﻿using NGVSCAN.CORE.Entities;
 using NGVSCAN.CORE.Enums;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace NGVSCAN.EXEC.Popups
@@ -8,6 +10,8 @@ namespace NGVSCAN.EXEC.Popups
     public partial class AddFloutecLinePopup : Form
     {
         public FloutecMeasureLine FloutecLine { get; set; }
+
+        public List<FloutecMeasureLine> FloutecLines { get; set; }
 
         public bool IsEdit { get; set; }
 
@@ -20,26 +24,57 @@ namespace NGVSCAN.EXEC.Popups
 
         private void buttonAddFloutec_Click(object sender, EventArgs e)
         {
-            labelNameError.Text = "Укажите название вычислителя";
-            labelDescriptionError.Text = "Укажите описание вычислителя";
-            labelSensorTypeError.Text = "Укажите тип датчика";
-
             if (string.IsNullOrEmpty(textName.Text))
+            {
+                labelNameError.Text = "Укажите название вычислителя";
                 labelNameError.Visible = true;
+            }
             else
+            {
                 labelNameError.Visible = false;
+            }
 
             if (string.IsNullOrEmpty(textDescription.Text))
+            {
+                labelDescriptionError.Text = "Укажите описание вычислителя";
                 labelDescriptionError.Visible = true;
+            }
             else
+            {
                 labelDescriptionError.Visible = false;
+            }
 
             if (comboSensorTypes.SelectedIndex < 0)
+            {
+                labelSensorTypeError.Text = "Укажите тип датчика";
                 labelSensorTypeError.Visible = true;
+            }
             else
+            {
                 labelSensorTypeError.Visible = false;
+            }
 
-            if (!labelNameError.Visible && !labelDescriptionError.Visible && !labelSensorTypeError.Visible)
+            FloutecMeasureLine existingLine;
+            if (!IsEdit)
+            {
+                existingLine = FloutecLines.FirstOrDefault(l => l.Number == (int)numericNumber.Value);
+            }
+            else
+            {
+                existingLine = FloutecLines.FirstOrDefault(l => l.Number == (int)numericNumber.Value && l.Number != FloutecLine.Number);
+            }
+
+            if (existingLine != null)
+            {
+                labelNumberError.Text = "Нитка уже существует";
+                labelNumberError.Visible = true;
+            }
+            else
+            {
+                labelNumberError.Visible = false;
+            }
+
+            if (!labelNameError.Visible && !labelDescriptionError.Visible && !labelSensorTypeError.Visible && !labelNumberError.Visible)
             {
                 if (!IsEdit)
                 {

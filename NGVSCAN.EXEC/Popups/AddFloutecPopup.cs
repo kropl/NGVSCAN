@@ -1,5 +1,7 @@
 ﻿using NGVSCAN.CORE.Entities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace NGVSCAN.EXEC.Popups
@@ -7,6 +9,8 @@ namespace NGVSCAN.EXEC.Popups
     public partial class AddFloutecPopup : Form
     {
         public Floutec Floutec { get; set; }
+
+        public List<Floutec> Floutecs { get; set; }
 
         public bool IsEdit { get; set; }
 
@@ -17,20 +21,47 @@ namespace NGVSCAN.EXEC.Popups
 
         private void buttonAddFloutec_Click(object sender, EventArgs e)
         {
-            labelNameError.Text = "Укажите название вычислителя";
-            labelDescriptionError.Text = "Укажите описание вычислителя";
-
             if (string.IsNullOrEmpty(textName.Text))
+            {
+                labelNameError.Text = "Укажите название вычислителя";
                 labelNameError.Visible = true;
+            }
             else
+            {
                 labelNameError.Visible = false;
+            }
 
             if (string.IsNullOrEmpty(textDescription.Text))
+            {
+                labelDescriptionError.Text = "Укажите описание вычислителя";
                 labelDescriptionError.Visible = true;
+            }
             else
+            {
                 labelDescriptionError.Visible = false;
+            }
 
-            if (!labelNameError.Visible && !labelDescriptionError.Visible)
+            Floutec existingFloutec;
+            if (!IsEdit)
+            {
+                existingFloutec = Floutecs.FirstOrDefault(f => f.Address == (int)numericAddress.Value);
+            }
+            else
+            {
+                existingFloutec = Floutecs.FirstOrDefault(f => f.Address == (int)numericAddress.Value && f.Address != Floutec.Address);
+            }           
+
+            if (existingFloutec != null)
+            {
+                labelAddressError.Text = "Вычислитель уже существует";
+                labelAddressError.Visible = true;
+            }
+            else
+            {
+                labelAddressError.Visible = false;
+            }
+
+            if (!labelNameError.Visible && !labelDescriptionError.Visible && !labelAddressError.Visible)
             {
                 if (!IsEdit)
                 {

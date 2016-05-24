@@ -127,8 +127,17 @@
       <DependentUpon>AddROC809Popup.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\FieldDetails.resx">
+      <DependentUpon>FieldDetails.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\FloutecDetails.resx">
       <DependentUpon>FloutecDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FloutecLineDetails.resx">
+      <DependentUpon>FloutecLineDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FloutecsGroupDetails.resx">
+      <DependentUpon>FloutecsGroupDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -138,6 +147,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Popups\AddFloutecPopup.resx">
       <DependentUpon>AddFloutecPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popups\AddROC809PointPopup.resx">
+      <DependentUpon>AddROC809PointPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popups\AddROC809Popup.resx">
+      <DependentUpon>AddROC809Popup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -40,8 +40,11 @@
             this.label6 = new System.Windows.Forms.Label();
             this.labelCreated = new System.Windows.Forms.Label();
             this.labelModified = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.labelLines = new System.Windows.Forms.Label();
+            this.listLines = new System.Windows.Forms.ListView();
+            this.columnNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // labelAddress
@@ -152,31 +155,53 @@
             this.labelModified.TabIndex = 11;
             this.labelModified.Text = "label8";
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 100);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(41, 13);
-            this.label9.TabIndex = 12;
-            this.label9.Text = "Нитки:";
-            // 
             // labelLines
             // 
             this.labelLines.AutoSize = true;
-            this.labelLines.Location = new System.Drawing.Point(78, 100);
+            this.labelLines.Location = new System.Drawing.Point(6, 100);
             this.labelLines.Name = "labelLines";
-            this.labelLines.Size = new System.Drawing.Size(35, 13);
-            this.labelLines.TabIndex = 14;
-            this.labelLines.Text = "label7";
+            this.labelLines.Size = new System.Drawing.Size(41, 13);
+            this.labelLines.TabIndex = 12;
+            this.labelLines.Text = "Нитки:";
+            // 
+            // listLines
+            // 
+            this.listLines.BackColor = System.Drawing.SystemColors.Control;
+            this.listLines.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listLines.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnNumber,
+            this.columnName,
+            this.columnDescription});
+            this.listLines.Enabled = false;
+            this.listLines.Location = new System.Drawing.Point(9, 113);
+            this.listLines.Margin = new System.Windows.Forms.Padding(0);
+            this.listLines.MultiSelect = false;
+            this.listLines.Name = "listLines";
+            this.listLines.Scrollable = false;
+            this.listLines.Size = new System.Drawing.Size(324, 180);
+            this.listLines.TabIndex = 13;
+            this.listLines.UseCompatibleStateImageBehavior = false;
+            this.listLines.View = System.Windows.Forms.View.Details;
+            // 
+            // columnNumber
+            // 
+            this.columnNumber.Text = "Номер";
+            // 
+            // columnName
+            // 
+            this.columnName.Text = "Название";
+            // 
+            // columnDescription
+            // 
+            this.columnDescription.Text = "Описание";
             // 
             // FloutecDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.Controls.Add(this.listLines);
             this.Controls.Add(this.labelLines);
-            this.Controls.Add(this.label9);
             this.Controls.Add(this.labelModified);
             this.Controls.Add(this.labelCreated);
             this.Controls.Add(this.label6);
@@ -190,7 +215,7 @@
             this.Controls.Add(this.labelName);
             this.Controls.Add(this.labelAddress);
             this.Name = "FloutecDetails";
-            this.Size = new System.Drawing.Size(254, 207);
+            this.Size = new System.Drawing.Size(341, 298);
             this.Load += new System.EventHandler(this.FloutecDetails_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -211,7 +236,10 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label labelCreated;
         private System.Windows.Forms.Label labelModified;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label labelLines;
+        private System.Windows.Forms.ListView listLines;
+        private System.Windows.Forms.ColumnHeader columnNumber;
+        private System.Windows.Forms.ColumnHeader columnName;
+        private System.Windows.Forms.ColumnHeader columnDescription;
     }
 }

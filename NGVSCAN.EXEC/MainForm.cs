@@ -74,7 +74,7 @@ namespace NGVSCAN.EXEC
             if (field != null)
             {
                 // Инициализация коллекции вычислителей ФЛОУТЭК данной установки
-                floutecs = field.Estimators.Where(e => e is Floutec).Select(e => e as Floutec).ToList();
+                floutecs = field.Estimators.Where(e => e is Floutec).Select(e => e as Floutec).OrderBy(o => o.Address).ToList();
 
                 rocs = field.Estimators.Where(e => e is ROC809).Select(e => e as ROC809).ToList();
 
@@ -85,7 +85,7 @@ namespace NGVSCAN.EXEC
                     floutecLines = new List<FloutecMeasureLine>();
                     floutecs.ForEach((f) =>
                     {
-                        floutecLines.AddRange(f.MeasureLines.Select(l => l as FloutecMeasureLine).ToList());
+                        floutecLines.AddRange(f.MeasureLines.Select(l => l as FloutecMeasureLine).OrderBy(o => o.Number).ToList());
                     });
                 }
 
@@ -118,6 +118,7 @@ namespace NGVSCAN.EXEC
             {
                 // Добавление установки
                 TreeNode root = treeEstimators.Nodes.Add(field.Name);
+                root.Tag = field;
 
                 // Добавление двух групп для вычислителей
                 TreeNode floutecsGroup = root.Nodes.Add("floutecsGroup", "Вычислители ФЛОУТЭК");
@@ -131,15 +132,22 @@ namespace NGVSCAN.EXEC
                     {
                         // Добавление вычислителя в коллекцию вложенных элементов группы вычислителей ФЛОУТЭК
                         TreeNode child = floutecsGroup.Nodes.Add(f.Address + " " + f.Name);
+                        child.Tag = f;
+                        child.NodeFont = f.IsDeleted ? new Font(new FontFamily("Microsoft Sans Serif"), 8, FontStyle.Strikeout) : null;
 
                         // Для каждой линии измерения
                         lines.ForEach((l) =>
                         {
+                            TreeNode subchild;
+
                             // Если линия определена и принадлежит текущему вычислителю ...
                             if (l != null && l.EstimatorId == f.Id)
-
+                            {
                                 // Добавление линии в коллекцию дочерных элементов текущего вычислителя
-                                child.Nodes.Add(l.Number + " " + l.Name);
+                                subchild = child.Nodes.Add(l.Number + " " + l.Name);
+                                subchild.Tag = l;
+                                subchild.NodeFont = l.IsDeleted ? new Font(new FontFamily("Microsoft Sans Serif"), 8, FontStyle.Strikeout) : null;
+                            }
                         });
                     }
                 });
@@ -152,15 +160,20 @@ namespace NGVSCAN.EXEC
                     {
                         // Добавление вычислителя в коллекцию вложенных элементов группы вычислителей ROC809
                         TreeNode child = rocsGroup.Nodes.Add(r.Address + " " + r.Port + " " + r.Name);
+                        child.Tag = r;
 
                         // Для каждой точки измерения
                         rocPoints.ForEach((p) =>
                         {
+                            TreeNode subchild;
+
                             // Если точка определена и принадлежит текущему вычислителю ...
                             if (p != null && p.EstimatorId == r.Id)
-
+                            {
                                 // Добавление линии в коллекцию дочерных элементов текущего вычислителя
-                                child.Nodes.Add(p.Number + " " + p.Name);
+                                subchild = child.Nodes.Add(p.Number + " " + p.Name);
+                                subchild.Tag = p;
+                            }
                         });
                     }
                 });
@@ -194,6 +207,19 @@ namespace NGVSCAN.EXEC
                     treeEstimators.SelectedNode = nodeAtMousePosition;
             }
 
+            Floutec selectedFloutec = null;
+            FloutecMeasureLine selectedFloutecLine = null;
+
+            if (treeEstimators.SelectedNode.Tag is Floutec)
+            {
+                selectedFloutec = (Floutec)treeEstimators.SelectedNode.Tag;
+            }
+            else if (treeEstimators.SelectedNode.Tag is FloutecMeasureLine)
+            {
+                selectedFloutec = (Floutec)treeEstimators.SelectedNode.Parent.Tag;
+                selectedFloutecLine = (FloutecMeasureLine)treeEstimators.SelectedNode.Tag;
+            }
+
             // Контекстное меню отображается только для всех узлов кроме установки
             e.Cancel = treeEstimators.SelectedNode.Level == 0 ? true : false;
 
@@ -201,19 +227,24 @@ namespace NGVSCAN.EXEC
             contextMenuEstimators.Items[0].Enabled = treeEstimators.SelectedNode.Level == 1 ? true : false;
             contextMenuEstimators.Items[0].Visible = treeEstimators.SelectedNode.Level == 1 ? true : false;
 
-            // Пункт меню "Добавить нитку" доступен только для вычислителей
-            contextMenuEstimators.Items[1].Enabled = treeEstimators.SelectedNode.Level == 2 ? true : false;
-            contextMenuEstimators.Items[1].Visible = treeEstimators.SelectedNode.Level == 2 ? true : false;
-            contextMenuEstimators.Items[2].Visible = treeEstimators.SelectedNode.Level == 2 ? true : false;
+            // Пункт меню "Добавить нитку" доступен только для вычислителей, не отмеченных как удалённые
+            contextMenuEstimators.Items[1].Enabled = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted ? true : false;
+            contextMenuEstimators.Items[1].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted ? true : false;
+            contextMenuEstimators.Items[2].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted ? true : false;
 
-            // Пункт меню "Изменить" доступен для вычислителей и ниток вычислителей
-            contextMenuEstimators.Items[3].Enabled = treeEstimators.SelectedNode.Level > 1 ? true : false;
-            contextMenuEstimators.Items[3].Visible = treeEstimators.SelectedNode.Level > 1 ? true : false;
-            contextMenuEstimators.Items[4].Visible = treeEstimators.SelectedNode.Level > 1 ? true : false;
+            // Пункт меню "Изменить" доступен для вычислителей и ниток вычислителей, не отмеченных как удалённые
+            contextMenuEstimators.Items[3].Enabled = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedFloutecLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[3].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedFloutecLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[4].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedFloutecLine.IsDeleted ? true : false;
 
             // Пункт меню "Удалить" доступен для вычислителей и ниток вычислителей
             contextMenuEstimators.Items[5].Enabled = treeEstimators.SelectedNode.Level > 1 ? true : false;
             contextMenuEstimators.Items[5].Visible = treeEstimators.SelectedNode.Level > 1 ? true : false;
+
+            // Пункт меню "Восстановить" доступен для вычислителей и ниток вычислителей, отмеченных как удалённые
+            contextMenuEstimators.Items[6].Visible = treeEstimators.SelectedNode.Level == 2 && selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedFloutecLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[7].Enabled = treeEstimators.SelectedNode.Level == 2 && selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedFloutecLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[7].Visible = treeEstimators.SelectedNode.Level == 2 && selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedFloutecLine.IsDeleted ? true : false;
         }
 
         // Событие выбора объекта в дереве объектов на закладке вычислителей ФЛОУТЭК
@@ -232,7 +263,11 @@ namespace NGVSCAN.EXEC
 
                         fieldDetails.Dock = DockStyle.Fill;
 
+                        fieldDetails.Field = field;
+
                         groupEstimatorsProperties.Controls.Add(fieldDetails);
+
+                        groupEstimatorsProperties.Text = "Свойства установки";
 
                         break;
                     }
@@ -244,7 +279,11 @@ namespace NGVSCAN.EXEC
 
                             floutecsGroupDetails.Dock = DockStyle.Fill;
 
+                            floutecsGroupDetails.Floutecs = floutecs;
+
                             groupEstimatorsProperties.Controls.Add(floutecsGroupDetails);
+
+                            groupEstimatorsProperties.Text = "Свойства группы вычислителей ФЛОУТЭК";
                         }
                         else if (treeEstimators.SelectedNode.Name.Equals("rocsGroup"))
                         {
@@ -253,6 +292,8 @@ namespace NGVSCAN.EXEC
                             rocsGroupDetails.Dock = DockStyle.Fill;
 
                             groupEstimatorsProperties.Controls.Add(rocsGroupDetails);
+
+                            groupEstimatorsProperties.Text = "Свойства группы вычислителей ROC809";
                         }
 
                         break;
@@ -269,8 +310,7 @@ namespace NGVSCAN.EXEC
                             floutecDetails.Dock = DockStyle.Fill;
 
                             // Определение адреса выбранного вычислителя
-                            string[] props = treeEstimators.SelectedNode.Text.Split(' ');
-                            int address = int.Parse(props[0]);
+                            int address = ((Floutec)treeEstimators.SelectedNode.Tag).Address;
 
                             // Выбор вычислителя из коллекции по адресу
                             Floutec floutec = floutecs.Where(f => f.Address == address).SingleOrDefault();
@@ -280,6 +320,8 @@ namespace NGVSCAN.EXEC
 
                             // Добавление элемента управления на панель свойств
                             groupEstimatorsProperties.Controls.Add(floutecDetails);
+
+                            groupEstimatorsProperties.Text = "Свойства вычислителя ФЛОУТЭК";
                         }
                         else if (treeEstimators.SelectedNode.Parent.Name.Equals("rocsGroup"))
                         {
@@ -288,6 +330,8 @@ namespace NGVSCAN.EXEC
                             rocDetails.Dock = DockStyle.Fill;
 
                             groupEstimatorsProperties.Controls.Add(rocDetails);
+
+                            groupEstimatorsProperties.Text = "Свойства вычислителя ROC809";
                         }
 
                         break;
@@ -301,7 +345,16 @@ namespace NGVSCAN.EXEC
 
                             floutecLineDetails.Dock = DockStyle.Fill;
 
+                            int address = ((Floutec)treeEstimators.SelectedNode.Parent.Tag).Address;
+                            int number = ((FloutecMeasureLine)treeEstimators.SelectedNode.Tag).Number;
+
+                            FloutecMeasureLine line = floutecLines.Where(l => l.Number == number && ((Floutec)l.Estimator).Address == address).SingleOrDefault();
+
+                            floutecLineDetails.FloutecLine = line;
+
                             groupEstimatorsProperties.Controls.Add(floutecLineDetails);
+
+                            groupEstimatorsProperties.Text = "Свойства нитки измерения вычислителя ФЛОУТЭК";
                         }
                         else if (treeEstimators.SelectedNode.Parent.Parent.Name.Equals("rocsGroup"))
                         {
@@ -310,12 +363,15 @@ namespace NGVSCAN.EXEC
                             rocPointDetails.Dock = DockStyle.Fill;
 
                             groupEstimatorsProperties.Controls.Add(rocPointDetails);
+
+                            groupEstimatorsProperties.Text = "Свойства точки измерения вычислителя ROC809";
                         }
 
                         break;
                     }
                 // По умолчанию
                 default:
+                    groupEstimatorsProperties.Text = "Свойства";
                     break;
             }
         }
@@ -325,6 +381,19 @@ namespace NGVSCAN.EXEC
         {
             string menuItem = e.ClickedItem.Name;
 
+            Floutec selectedFloutec = null;
+            FloutecMeasureLine selectedFloutecLine = null;
+
+            if (treeEstimators.SelectedNode.Tag is Floutec)
+            {
+                selectedFloutec = (Floutec)treeEstimators.SelectedNode.Tag;
+            }
+            else if (treeEstimators.SelectedNode.Tag is FloutecMeasureLine)
+            {
+                selectedFloutec = (Floutec)treeEstimators.SelectedNode.Parent.Tag;
+                selectedFloutecLine = (FloutecMeasureLine)treeEstimators.SelectedNode.Tag;
+            }
+
             if (menuItem.Equals("menuAddEstimator"))
             {
                 if (treeEstimators.SelectedNode.Name.Equals("floutecsGroup"))
@@ -332,6 +401,8 @@ namespace NGVSCAN.EXEC
                     AddFloutecPopup popup = new AddFloutecPopup();
 
                     popup.IsEdit = false;
+
+                    popup.Floutecs = floutecs;
 
                     DialogResult dialogResult = popup.ShowDialog();
 
@@ -368,21 +439,18 @@ namespace NGVSCAN.EXEC
 
                         popup.IsEdit = true;
 
-                        string[] tokens = treeEstimators.SelectedNode.Text.Split(' ');
-                        int address = int.Parse(tokens[0]);
+                        popup.Floutecs = floutecs;
 
-                        var floutec = floutecs.Where(f => f.Address.Equals(address)).SingleOrDefault();
-
-                        popup.Floutec = floutec;
+                        popup.Floutec = selectedFloutec;
 
                         DialogResult dialogResult = popup.ShowDialog();
 
                         if (dialogResult == DialogResult.OK)
                         {
-                            floutec = popup.Floutec;
-                            floutec.DateModified = DateTime.Now;
+                            selectedFloutec = popup.Floutec;
+                            selectedFloutec.DateModified = DateTime.Now;
 
-                            unitOfWork.Repository<Floutec>().Update(floutec);
+                            unitOfWork.Repository<Floutec>().Update(selectedFloutec);
                             unitOfWork.Commit();
 
                             UpdateData(unitOfWork);
@@ -403,7 +471,26 @@ namespace NGVSCAN.EXEC
                     {
                         AddFloutecLinePopup popup = new AddFloutecLinePopup();
 
+                        popup.IsEdit = true;
+
+                        popup.FloutecLine = selectedFloutecLine;
+
+                        popup.FloutecLines = floutecLines.Where(l => l.EstimatorId == selectedFloutec.Id).ToList();
+
                         DialogResult dialogResult = popup.ShowDialog();
+
+                        if (dialogResult == DialogResult.OK)
+                        {
+                            selectedFloutecLine = popup.FloutecLine;
+                            selectedFloutecLine.DateModified = DateTime.Now;                            
+
+                            unitOfWork.Repository<FloutecMeasureLine>().Update(selectedFloutecLine);
+                            unitOfWork.Commit();
+
+                            UpdateData(unitOfWork);
+
+                            FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                        }
                     }
                     else if (treeEstimators.SelectedNode.Parent.Parent.Name.Equals("rocsGroup"))
                     {
@@ -417,14 +504,11 @@ namespace NGVSCAN.EXEC
             {
                 if (treeEstimators.SelectedNode.Parent.Name.Equals("floutecsGroup"))
                 {
-                    string[] tokens = treeEstimators.SelectedNode.Text.Split(' ');
-                    int address = int.Parse(tokens[0]);
-
-                    var floutec = floutecs.Where(f => f.Address.Equals(address)).SingleOrDefault();
-
                     AddFloutecLinePopup popup = new AddFloutecLinePopup();
 
                     popup.IsEdit = false;
+
+                    popup.FloutecLines = floutecLines.Where(l => l.EstimatorId == selectedFloutec.Id).ToList();
 
                     DialogResult dialogResult = popup.ShowDialog();
 
@@ -434,9 +518,9 @@ namespace NGVSCAN.EXEC
                         line.DateCreated = DateTime.Now;
                         line.DateModified = DateTime.Now;
 
-                        floutec.MeasureLines.Add(line);
+                        selectedFloutec.MeasureLines.Add(line);
 
-                        unitOfWork.Repository<Floutec>().Update(floutec);
+                        unitOfWork.Repository<Floutec>().Update(selectedFloutec);
                         unitOfWork.Commit();
 
                         UpdateData(unitOfWork);
@@ -457,23 +541,51 @@ namespace NGVSCAN.EXEC
                 {
                     if (treeEstimators.SelectedNode.Parent.Name.Equals("floutecsGroup"))
                     {
-                        string[] tokens = treeEstimators.SelectedNode.Text.Split(' ');
-                        int address = int.Parse(tokens[0]);
-
-                        var floutec = floutecs.Where(f => f.Address.Equals(address)).SingleOrDefault();
-
                         contextMenuEstimators.Close();
 
-                        var confirmResult = MessageBox.Show("Вы действительно хотите удалить вычислитель ФЛОУТЭК с адресом " + floutec.Address, "Удаление вычислителя ФЛОУТЭК", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-
-                        if (confirmResult == DialogResult.Yes)
+                        if (selectedFloutec.IsDeleted)
                         {
-                            unitOfWork.Repository<Floutec>().Delete(floutec.Id);
-                            unitOfWork.Commit();
+                            var confirmResult = MessageBox.Show(
+                                "Вы действительно хотите удалить вычислитель ФЛОУТЭК с адресом " + 
+                                selectedFloutec.Address + "? Вычислитель и его нитки будут удалены без возможности восстановления", 
+                                "Удаление вычислителя ФЛОУТЭК", 
+                                MessageBoxButtons.YesNo, 
+                                MessageBoxIcon.Warning, 
+                                MessageBoxDefaultButton.Button2);
 
-                            UpdateData(unitOfWork);
+                            if (confirmResult == DialogResult.OK)
+                            {
+                                unitOfWork.Repository<Floutec>().Delete(selectedFloutec.Id);
 
-                            FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                                unitOfWork.Commit();
+
+                                UpdateData(unitOfWork);
+
+                                FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                            }
+                        }
+                        else
+                        {
+                            var confirmResult = MessageBox.Show(
+                                "Вы действительно хотите отметить вычислитель ФЛОУТЭК с адресом " +
+                                selectedFloutec.Address + " как удалённый? Вычислитель и его нитки будут изъяты из очереди опроса с возможностью восстановления",
+                                "Удаление вычислителя ФЛОУТЭК",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button2);
+
+                            if (confirmResult == DialogResult.OK)
+                            {
+                                selectedFloutec.IsDeleted = true;
+                                selectedFloutec.DateDeleted = DateTime.Now;
+                                unitOfWork.Repository<Floutec>().Update(selectedFloutec);
+
+                                unitOfWork.Commit();
+
+                                UpdateData(unitOfWork);
+
+                                FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                            }
                         }
                     }
                     else if (treeEstimators.SelectedNode.Parent.Name.Equals("rocsGroup"))
