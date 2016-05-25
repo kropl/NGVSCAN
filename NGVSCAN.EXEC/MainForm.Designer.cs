@@ -29,19 +29,20 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("1 Газ на собственные нужды");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("2 Газ на сепаратор С-1");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("185 Расход газа", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("1 Конденсат. Налив в авто");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("2 Пластовая вода. Нали в авто");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("186 Расход жидкостей", new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5});
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("SEM-SRV", new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode6});
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("1 Газ на собственные нужды");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("2 Газ на сепаратор С-1");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("185 Расход газа", new System.Windows.Forms.TreeNode[] {
+            treeNode8,
+            treeNode9});
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("1 Конденсат. Налив в авто");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("2 Пластовая вода. Нали в авто");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("186 Расход жидкостей", new System.Windows.Forms.TreeNode[] {
+            treeNode11,
+            treeNode12});
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("SEM-SRV", new System.Windows.Forms.TreeNode[] {
+            treeNode10,
+            treeNode13});
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupEstimatorsLog = new System.Windows.Forms.GroupBox();
             this.groupEstimatorsProperties = new System.Windows.Forms.GroupBox();
             this.groupEstimators = new System.Windows.Forms.GroupBox();
@@ -59,6 +60,7 @@
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.groupEstimators.SuspendLayout();
             this.contextMenuEstimators.SuspendLayout();
             this.menu.SuspendLayout();
@@ -98,24 +100,27 @@
             this.treeEstimators.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeEstimators.ContextMenuStrip = this.contextMenuEstimators;
             this.treeEstimators.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeEstimators.ImageIndex = 0;
+            this.treeEstimators.ImageList = this.imageList;
             this.treeEstimators.Location = new System.Drawing.Point(3, 16);
             this.treeEstimators.Name = "treeEstimators";
-            treeNode1.Name = "Node3";
-            treeNode1.Text = "1 Газ на собственные нужды";
-            treeNode2.Name = "Node4";
-            treeNode2.Text = "2 Газ на сепаратор С-1";
-            treeNode3.Name = "Node1";
-            treeNode3.Text = "185 Расход газа";
-            treeNode4.Name = "Node5";
-            treeNode4.Text = "1 Конденсат. Налив в авто";
-            treeNode5.Name = "Node6";
-            treeNode5.Text = "2 Пластовая вода. Нали в авто";
-            treeNode6.Name = "Node2";
-            treeNode6.Text = "186 Расход жидкостей";
-            treeNode7.Name = "Node0";
-            treeNode7.Text = "SEM-SRV";
+            treeNode8.Name = "Node3";
+            treeNode8.Text = "1 Газ на собственные нужды";
+            treeNode9.Name = "Node4";
+            treeNode9.Text = "2 Газ на сепаратор С-1";
+            treeNode10.Name = "Node1";
+            treeNode10.Text = "185 Расход газа";
+            treeNode11.Name = "Node5";
+            treeNode11.Text = "1 Конденсат. Налив в авто";
+            treeNode12.Name = "Node6";
+            treeNode12.Text = "2 Пластовая вода. Нали в авто";
+            treeNode13.Name = "Node2";
+            treeNode13.Text = "186 Расход жидкостей";
+            treeNode14.Name = "Node0";
+            treeNode14.Text = "SEM-SRV";
             this.treeEstimators.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7});
+            treeNode14});
+            this.treeEstimators.SelectedImageIndex = 0;
             this.treeEstimators.Size = new System.Drawing.Size(294, 351);
             this.treeEstimators.TabIndex = 0;
             this.treeEstimators.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeFloutecs_AfterSelect);
@@ -138,12 +143,14 @@
             // 
             // menuAddEstimator
             // 
+            this.menuAddEstimator.Image = ((System.Drawing.Image)(resources.GetObject("menuAddEstimator.Image")));
             this.menuAddEstimator.Name = "menuAddEstimator";
             this.menuAddEstimator.Size = new System.Drawing.Size(202, 22);
             this.menuAddEstimator.Text = "Добавить вычислитель";
             // 
             // menuAddMeasureLine
             // 
+            this.menuAddMeasureLine.Image = ((System.Drawing.Image)(resources.GetObject("menuAddMeasureLine.Image")));
             this.menuAddMeasureLine.Name = "menuAddMeasureLine";
             this.menuAddMeasureLine.Size = new System.Drawing.Size(202, 22);
             this.menuAddMeasureLine.Text = "Добавить нитку";
@@ -155,6 +162,7 @@
             // 
             // menuEdit
             // 
+            this.menuEdit.Image = ((System.Drawing.Image)(resources.GetObject("menuEdit.Image")));
             this.menuEdit.Name = "menuEdit";
             this.menuEdit.Size = new System.Drawing.Size(202, 22);
             this.menuEdit.Text = "Изменить";
@@ -166,6 +174,7 @@
             // 
             // menuDelete
             // 
+            this.menuDelete.Image = ((System.Drawing.Image)(resources.GetObject("menuDelete.Image")));
             this.menuDelete.Name = "menuDelete";
             this.menuDelete.Size = new System.Drawing.Size(202, 22);
             this.menuDelete.Text = "Удалить";
@@ -177,13 +186,14 @@
             // 
             // menuRestore
             // 
+            this.menuRestore.Image = ((System.Drawing.Image)(resources.GetObject("menuRestore.Image")));
             this.menuRestore.Name = "menuRestore";
             this.menuRestore.Size = new System.Drawing.Size(202, 22);
             this.menuRestore.Text = "Восстановить";
             // 
             // status
             // 
-            this.status.Location = new System.Drawing.Point(0, 539);
+            this.status.Location = new System.Drawing.Point(0, 540);
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(884, 22);
             this.status.SizingGrip = false;
@@ -203,26 +213,39 @@
             // 
             // menuSettings
             // 
+            this.menuSettings.Image = ((System.Drawing.Image)(resources.GetObject("menuSettings.Image")));
             this.menuSettings.Name = "menuSettings";
-            this.menuSettings.Size = new System.Drawing.Size(79, 20);
+            this.menuSettings.Size = new System.Drawing.Size(95, 20);
             this.menuSettings.Text = "Настройки";
             // 
             // menuAbout
             // 
+            this.menuAbout.Image = ((System.Drawing.Image)(resources.GetObject("menuAbout.Image")));
             this.menuAbout.Name = "menuAbout";
-            this.menuAbout.Size = new System.Drawing.Size(94, 20);
+            this.menuAbout.Size = new System.Drawing.Size(110, 20);
             this.menuAbout.Text = "О программе";
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "Factory-48.png");
+            this.imageList.Images.SetKeyName(1, "Module-48.png");
+            this.imageList.Images.SetKeyName(2, "DB 2-48.png");
+            this.imageList.Images.SetKeyName(3, "Ethernet Off-48.png");
+            this.imageList.Images.SetKeyName(4, "Electrical Threshold-48.png");
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 561);
+            this.ClientSize = new System.Drawing.Size(884, 562);
             this.Controls.Add(this.groupEstimatorsLog);
             this.Controls.Add(this.groupEstimatorsProperties);
             this.Controls.Add(this.status);
             this.Controls.Add(this.groupEstimators);
             this.Controls.Add(this.menu);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(900, 600);
@@ -257,6 +280,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem menuRestore;
+        private System.Windows.Forms.ImageList imageList;
     }
 }
 

@@ -119,11 +119,17 @@ namespace NGVSCAN.EXEC
                 // Добавление установки
                 TreeNode root = treeEstimators.Nodes.Add(field.Name);
                 root.Tag = field;
+                root.ImageIndex = 0;
+                root.SelectedImageIndex = 0;
 
                 // Добавление двух групп для вычислителей
                 TreeNode floutecsGroup = root.Nodes.Add("floutecsGroup", "Вычислители ФЛОУТЭК");
+                floutecsGroup.ImageIndex = 1;
+                floutecsGroup.SelectedImageIndex = 1;
 
                 TreeNode rocsGroup = root.Nodes.Add("rocsGroup", "Вычислители ROC809");
+                rocsGroup.ImageIndex = 1;
+                rocsGroup.SelectedImageIndex = 1;
 
                 // Для каждого вычислителя ФЛОУТЭК
                 floutecs.ForEach((f) =>
@@ -135,6 +141,8 @@ namespace NGVSCAN.EXEC
                         TreeNode child = floutecsGroup.Nodes.Add(f.Address + " " + f.Name);
                         child.Tag = f;
                         child.NodeFont = f.IsDeleted ? new Font(new FontFamily("Microsoft Sans Serif"), 8, FontStyle.Strikeout) : null;
+                        child.ImageIndex = 2;
+                        child.SelectedImageIndex = 2;
 
                         // Для каждой линии измерения
                         lines.ForEach((l) =>
@@ -148,6 +156,8 @@ namespace NGVSCAN.EXEC
                                 subchild = child.Nodes.Add(l.Number + " " + l.Name);
                                 subchild.Tag = l;
                                 subchild.NodeFont = l.IsDeleted ? new Font(new FontFamily("Microsoft Sans Serif"), 8, FontStyle.Strikeout) : null;
+                                subchild.ImageIndex = 4;
+                                subchild.SelectedImageIndex = 4;
                             }
                         });
                     }
@@ -162,6 +172,8 @@ namespace NGVSCAN.EXEC
                         // Добавление вычислителя в коллекцию вложенных элементов группы вычислителей ROC809
                         TreeNode child = rocsGroup.Nodes.Add(r.Address + " " + r.Port + " " + r.Name);
                         child.Tag = r;
+                        child.ImageIndex = 3;
+                        child.SelectedImageIndex = 3;
 
                         // Для каждой точки измерения
                         rocPoints.ForEach((p) =>
@@ -174,6 +186,8 @@ namespace NGVSCAN.EXEC
                                 // Добавление линии в коллекцию дочерных элементов текущего вычислителя
                                 subchild = child.Nodes.Add(p.Number + " " + p.Name);
                                 subchild.Tag = p;
+                                subchild.ImageIndex = 4;
+                                subchild.SelectedImageIndex = 4;
                             }
                         });
                     }
