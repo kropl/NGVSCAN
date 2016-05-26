@@ -1,4 +1,5 @@
 ﻿using NGVSCAN.CORE.Entities;
+using NGVSCAN.DAL.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
@@ -12,37 +13,45 @@ namespace NGVSCAN.DAL.Repositories
     {
         #region Конструктор и поля
 
-        private readonly OleDbConnection _connection;
+        private readonly string _connectionString;
 
-        public FloutecIdentDataRepository(OleDbConnection connection)
+        public FloutecIdentDataRepository(string connectionString)
         {
-            _connection = connection;
+            _connectionString = connectionString;
         }
 
         #endregion
 
-        #region Вспомогательные методы
-
-        private static T GetReaderValue<T>(OleDbDataReader reader, string ordinal, T defaultValue = default(T))
+        public FloutecIdentData Get(int address, int line)
         {
-            try
-            {
-                return (T)Convert.ChangeType(reader[ordinal], typeof(T));
-            }
-            catch (Exception)
-            {
-                return defaultValue;
-            }
-        }
+            FloutecIdentData identData = new FloutecIdentData();
+            int n_flonit = address * 10 + line;
+            identData.N_FLONIT = n_flonit;
 
-        private static FloutecIdentData GetReaderValues(OleDbDataReader reader)
-        {
-            return new FloutecIdentData
+            using (OleDbConnection connection = new OleDbConnection(_connectionString))
+            using (OleDbCommand command = connection.CreateCommand())
             {
-                
-            };
-        }
+                connection.Open();
+                command.CommandText = "SELECT * FROM ident.DBF WHERE N_FLONIT=" + n_flonit;
 
-        #endregion
+                using (OleDbDataReader reader = command.ExecuteReader())
+                {
+                    reader.Read();
+
+                    identData.FromIdentTable(reader);
+                }
+
+                command.CommandText = "SELECT * FROM stat.DBF WHERE N_FLONIT=" + n_flonit;
+
+                using (OleDbDataReader reader = command.ExecuteReader())
+                {
+                    reader.Read();
+
+                    identData.FromStatTable(reader);
+                }
+            }
+
+            return identData;
+        }
     }
 }

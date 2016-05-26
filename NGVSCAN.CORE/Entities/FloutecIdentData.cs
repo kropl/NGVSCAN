@@ -12,8 +12,6 @@ namespace NGVSCAN.CORE.Entities
 
         public FloutecIdentData()
         {
-            // Инициализация свойства N_FLONIT
-            N_FLONIT = MeasureLine.Number + ((Floutec)MeasureLine.Estimator).Address * 10;
         }
 
         #endregion
@@ -48,7 +46,7 @@ namespace NGVSCAN.CORE.Entities
         /// <summary>
         /// Адрес вычислителя * 10 + номер нитки измерения
         /// </summary>
-        public int N_FLONIT { get; private set; }
+        public int N_FLONIT { get; set; }
 
         #endregion
 

@@ -22,6 +22,10 @@ namespace NGVSCAN.DAL.UnitOfWork
         // Признак освобождения ресурсов
         private bool _disposed;
 
+        private readonly string _dbfConnectionString = @"Data Source=C:\Dispatch\tabDbf;Provider=VFPOLEDB.1;Collating Sequence=MACHINE;";
+
+        public FloutecIdentDataRepository FloutecIdentDataRepository { get; private set; }
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -29,6 +33,8 @@ namespace NGVSCAN.DAL.UnitOfWork
         {
             // Инициализация контекста доступа к данным СУБД MS SQL
             _context = new NGVSCANContext();
+
+            FloutecIdentDataRepository = new FloutecIdentDataRepository(_dbfConnectionString);
         }
 
         #endregion

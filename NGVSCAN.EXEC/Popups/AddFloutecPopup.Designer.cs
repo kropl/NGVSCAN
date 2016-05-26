@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupAddFloutec = new System.Windows.Forms.GroupBox();
+            this.labelAddressError = new System.Windows.Forms.Label();
             this.labelDescriptionError = new System.Windows.Forms.Label();
             this.labelNameError = new System.Windows.Forms.Label();
             this.textDescription = new System.Windows.Forms.TextBox();
@@ -39,7 +40,6 @@
             this.textName = new System.Windows.Forms.TextBox();
             this.buttonAddFloutec = new System.Windows.Forms.Button();
             this.buttonCancelAddFloutec = new System.Windows.Forms.Button();
-            this.labelAddressError = new System.Windows.Forms.Label();
             this.groupAddFloutec.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericAddress)).BeginInit();
             this.SuspendLayout();
@@ -61,6 +61,17 @@
             this.groupAddFloutec.TabIndex = 0;
             this.groupAddFloutec.TabStop = false;
             this.groupAddFloutec.Text = "Свойства";
+            // 
+            // labelAddressError
+            // 
+            this.labelAddressError.AutoSize = true;
+            this.labelAddressError.ForeColor = System.Drawing.Color.Red;
+            this.labelAddressError.Location = new System.Drawing.Point(77, 16);
+            this.labelAddressError.Name = "labelAddressError";
+            this.labelAddressError.Size = new System.Drawing.Size(29, 13);
+            this.labelAddressError.TabIndex = 9;
+            this.labelAddressError.Text = "Error";
+            this.labelAddressError.Visible = false;
             // 
             // labelDescriptionError
             // 
@@ -170,17 +181,6 @@
             this.buttonCancelAddFloutec.UseVisualStyleBackColor = true;
             this.buttonCancelAddFloutec.Click += new System.EventHandler(this.buttonCancelAddFloutec_Click);
             // 
-            // labelAddressError
-            // 
-            this.labelAddressError.AutoSize = true;
-            this.labelAddressError.ForeColor = System.Drawing.Color.Red;
-            this.labelAddressError.Location = new System.Drawing.Point(77, 16);
-            this.labelAddressError.Name = "labelAddressError";
-            this.labelAddressError.Size = new System.Drawing.Size(29, 13);
-            this.labelAddressError.TabIndex = 9;
-            this.labelAddressError.Text = "Error";
-            this.labelAddressError.Visible = false;
-            // 
             // AddFloutecPopup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -189,6 +189,7 @@
             this.Controls.Add(this.buttonCancelAddFloutec);
             this.Controls.Add(this.buttonAddFloutec);
             this.Controls.Add(this.groupAddFloutec);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(300, 280);
             this.MinimizeBox = false;

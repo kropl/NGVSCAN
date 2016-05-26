@@ -6,9 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -42,6 +44,10 @@ namespace NGVSCAN.EXEC
         // Конструктор формы
         public MainForm()
         {
+            Settings.ServerName = "SEM-SRV";
+            Settings.Save();
+            Settings.Get();
+
             // Инициализация содержимого формы
             InitializeComponent();
 
@@ -204,6 +210,14 @@ namespace NGVSCAN.EXEC
         {
             // Заполнение дерева объектов на закладке вычислителей ФЛОУТЭК
             FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+
+            backgroundWorker.RunWorkerAsync();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            backgroundWorker.CancelAsync();
+            backgroundWorker.Dispose();
         }
 
         // Событие открытия контекстного меню дерева объектов на закладке вычислителей ФЛОУТЭК
@@ -707,6 +721,31 @@ namespace NGVSCAN.EXEC
 
                     }
                 }
+            }
+        }
+
+        private void menuSettings_Click(object sender, EventArgs e)
+        {
+            SettingsPopup popup = new SettingsPopup();
+
+            DialogResult dialogResult = popup.ShowDialog();
+
+            if (dialogResult == DialogResult.OK)
+            {
+            }
+        }
+
+        #endregion
+
+        #region Выполнение бизнес-логики
+
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            FloutecIdentData identData = unitOfWork.FloutecIdentDataRepository.Get(127, 1);
+
+            while (true)
+            {
+                Debug.WriteLine(DateTime.Now.TimeOfDay);
             }
         }
 
