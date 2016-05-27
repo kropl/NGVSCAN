@@ -1,5 +1,6 @@
 ﻿using NGVSCAN.CORE.Entities;
 using NGVSCAN.DAL.UnitOfWork;
+using NGVSCAN.EXEC.Common;
 using NGVSCAN.EXEC.Controls;
 using NGVSCAN.EXEC.Popups;
 using System;
@@ -9,9 +10,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NGVSCAN.EXEC
@@ -44,12 +42,12 @@ namespace NGVSCAN.EXEC
         // Конструктор формы
         public MainForm()
         {
-            Settings.ServerName = "SEM-SRV";
-            Settings.Save();
             Settings.Get();
 
             // Инициализация содержимого формы
             InitializeComponent();
+
+            Logger.Log(listLogMessages, "Программа запущена", LogType.Info);
 
             // Инициализация unit of work
             unitOfWork = new UnitOfWork();
@@ -729,10 +727,13 @@ namespace NGVSCAN.EXEC
             SettingsPopup popup = new SettingsPopup();
 
             DialogResult dialogResult = popup.ShowDialog();
+        }
 
-            if (dialogResult == DialogResult.OK)
-            {
-            }
+        private void menuAbout_Click(object sender, EventArgs e)
+        {
+            AboutPopup popup = new AboutPopup();
+
+            DialogResult dialogResult = popup.ShowDialog();
         }
 
         #endregion

@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("1 Газ на собственные нужды");
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("2 Газ на сепаратор С-1");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("185 Расход газа", new System.Windows.Forms.TreeNode[] {
-            treeNode8,
-            treeNode9});
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("1 Конденсат. Налив в авто");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("2 Пластовая вода. Нали в авто");
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("186 Расход жидкостей", new System.Windows.Forms.TreeNode[] {
-            treeNode11,
-            treeNode12});
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("SEM-SRV", new System.Windows.Forms.TreeNode[] {
-            treeNode10,
-            treeNode13});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("1 Газ на собственные нужды");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("2 Газ на сепаратор С-1");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("185 Расход газа", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("1 Конденсат. Налив в авто");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("2 Пластовая вода. Нали в авто");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("186 Расход жидкостей", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5});
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("SEM-SRV", new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode6});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupEstimatorsLog = new System.Windows.Forms.GroupBox();
             this.groupEstimatorsProperties = new System.Windows.Forms.GroupBox();
@@ -62,6 +62,12 @@
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.listLogMessages = new System.Windows.Forms.ListView();
+            this.columnDateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageListLog = new System.Windows.Forms.ImageList(this.components);
+            this.columnStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.groupEstimatorsLog.SuspendLayout();
             this.groupEstimators.SuspendLayout();
             this.contextMenuEstimators.SuspendLayout();
             this.menu.SuspendLayout();
@@ -69,6 +75,7 @@
             // 
             // groupEstimatorsLog
             // 
+            this.groupEstimatorsLog.Controls.Add(this.listLogMessages);
             this.groupEstimatorsLog.Location = new System.Drawing.Point(12, 403);
             this.groupEstimatorsLog.Name = "groupEstimatorsLog";
             this.groupEstimatorsLog.Size = new System.Drawing.Size(860, 133);
@@ -105,22 +112,22 @@
             this.treeEstimators.ImageList = this.imageList;
             this.treeEstimators.Location = new System.Drawing.Point(3, 16);
             this.treeEstimators.Name = "treeEstimators";
-            treeNode8.Name = "Node3";
-            treeNode8.Text = "1 Газ на собственные нужды";
-            treeNode9.Name = "Node4";
-            treeNode9.Text = "2 Газ на сепаратор С-1";
-            treeNode10.Name = "Node1";
-            treeNode10.Text = "185 Расход газа";
-            treeNode11.Name = "Node5";
-            treeNode11.Text = "1 Конденсат. Налив в авто";
-            treeNode12.Name = "Node6";
-            treeNode12.Text = "2 Пластовая вода. Нали в авто";
-            treeNode13.Name = "Node2";
-            treeNode13.Text = "186 Расход жидкостей";
-            treeNode14.Name = "Node0";
-            treeNode14.Text = "SEM-SRV";
+            treeNode1.Name = "Node3";
+            treeNode1.Text = "1 Газ на собственные нужды";
+            treeNode2.Name = "Node4";
+            treeNode2.Text = "2 Газ на сепаратор С-1";
+            treeNode3.Name = "Node1";
+            treeNode3.Text = "185 Расход газа";
+            treeNode4.Name = "Node5";
+            treeNode4.Text = "1 Конденсат. Налив в авто";
+            treeNode5.Name = "Node6";
+            treeNode5.Text = "2 Пластовая вода. Нали в авто";
+            treeNode6.Name = "Node2";
+            treeNode6.Text = "186 Расход жидкостей";
+            treeNode7.Name = "Node0";
+            treeNode7.Text = "SEM-SRV";
             this.treeEstimators.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode14});
+            treeNode7});
             this.treeEstimators.SelectedImageIndex = 0;
             this.treeEstimators.Size = new System.Drawing.Size(294, 351);
             this.treeEstimators.TabIndex = 0;
@@ -236,11 +243,51 @@
             this.menuAbout.Name = "menuAbout";
             this.menuAbout.Size = new System.Drawing.Size(110, 20);
             this.menuAbout.Text = "О программе";
+            this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
             // backgroundWorker
             // 
             this.backgroundWorker.WorkerSupportsCancellation = true;
             this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
+            // 
+            // listLogMessages
+            // 
+            this.listLogMessages.BackColor = System.Drawing.SystemColors.Control;
+            this.listLogMessages.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listLogMessages.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnStatus,
+            this.columnDateTime,
+            this.columnMessage});
+            this.listLogMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listLogMessages.FullRowSelect = true;
+            this.listLogMessages.Location = new System.Drawing.Point(3, 16);
+            this.listLogMessages.Name = "listLogMessages";
+            this.listLogMessages.Size = new System.Drawing.Size(854, 114);
+            this.listLogMessages.SmallImageList = this.imageListLog;
+            this.listLogMessages.TabIndex = 0;
+            this.listLogMessages.UseCompatibleStateImageBehavior = false;
+            this.listLogMessages.View = System.Windows.Forms.View.Details;
+            // 
+            // columnDateTime
+            // 
+            this.columnDateTime.Text = "Дата и время";
+            // 
+            // columnMessage
+            // 
+            this.columnMessage.Text = "Сообщение";
+            // 
+            // imageListLog
+            // 
+            this.imageListLog.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListLog.ImageStream")));
+            this.imageListLog.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListLog.Images.SetKeyName(0, "Info-48.png");
+            this.imageListLog.Images.SetKeyName(1, "Ok-48.png");
+            this.imageListLog.Images.SetKeyName(2, "Attention-48.png");
+            this.imageListLog.Images.SetKeyName(3, "High Priority-48.png");
+            // 
+            // columnStatus
+            // 
+            this.columnStatus.Text = "";
             // 
             // MainForm
             // 
@@ -262,6 +309,7 @@
             this.Text = "mainform";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.groupEstimatorsLog.ResumeLayout(false);
             this.groupEstimators.ResumeLayout(false);
             this.contextMenuEstimators.ResumeLayout(false);
             this.menu.ResumeLayout(false);
@@ -291,6 +339,11 @@
         private System.Windows.Forms.ToolStripMenuItem menuRestore;
         private System.Windows.Forms.ImageList imageList;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private System.Windows.Forms.ListView listLogMessages;
+        private System.Windows.Forms.ColumnHeader columnDateTime;
+        private System.Windows.Forms.ColumnHeader columnMessage;
+        private System.Windows.Forms.ImageList imageListLog;
+        private System.Windows.Forms.ColumnHeader columnStatus;
     }
 }
 

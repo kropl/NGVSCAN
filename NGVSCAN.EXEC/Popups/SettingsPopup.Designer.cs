@@ -30,20 +30,20 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsPopup));
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
+            this.textServerName = new System.Windows.Forms.TextBox();
+            this.textSqlServerPath = new System.Windows.Forms.TextBox();
+            this.textSqlUserName = new System.Windows.Forms.TextBox();
+            this.textSqlUserPassword = new System.Windows.Forms.TextBox();
+            this.textSqlDatabaseName = new System.Windows.Forms.TextBox();
+            this.labelDbfTablesPath = new System.Windows.Forms.Label();
+            this.buttonOpenDirDialogue = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonCancel
@@ -56,14 +56,15 @@
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // button2
+            // buttonSave
             // 
-            this.button2.Location = new System.Drawing.Point(216, 225);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Сохранить";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonSave.Location = new System.Drawing.Point(216, 225);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.TabIndex = 1;
+            this.buttonSave.Text = "Сохранить";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // label1
             // 
@@ -119,78 +120,80 @@
             this.label6.TabIndex = 7;
             this.label6.Text = "Путь к таюлицам DBF:";
             // 
-            // textBox1
+            // textServerName
             // 
-            this.textBox1.Location = new System.Drawing.Point(187, 10);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(185, 20);
-            this.textBox1.TabIndex = 8;
+            this.textServerName.Location = new System.Drawing.Point(187, 10);
+            this.textServerName.Name = "textServerName";
+            this.textServerName.Size = new System.Drawing.Size(185, 20);
+            this.textServerName.TabIndex = 8;
             // 
-            // textBox2
+            // textSqlServerPath
             // 
-            this.textBox2.Location = new System.Drawing.Point(187, 37);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(185, 20);
-            this.textBox2.TabIndex = 9;
+            this.textSqlServerPath.Location = new System.Drawing.Point(187, 37);
+            this.textSqlServerPath.Name = "textSqlServerPath";
+            this.textSqlServerPath.Size = new System.Drawing.Size(185, 20);
+            this.textSqlServerPath.TabIndex = 9;
             // 
-            // textBox3
+            // textSqlUserName
             // 
-            this.textBox3.Location = new System.Drawing.Point(187, 64);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(185, 20);
-            this.textBox3.TabIndex = 10;
+            this.textSqlUserName.Location = new System.Drawing.Point(187, 64);
+            this.textSqlUserName.Name = "textSqlUserName";
+            this.textSqlUserName.Size = new System.Drawing.Size(185, 20);
+            this.textSqlUserName.TabIndex = 10;
             // 
-            // textBox4
+            // textSqlUserPassword
             // 
-            this.textBox4.Location = new System.Drawing.Point(187, 91);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(185, 20);
-            this.textBox4.TabIndex = 11;
+            this.textSqlUserPassword.Location = new System.Drawing.Point(187, 91);
+            this.textSqlUserPassword.Name = "textSqlUserPassword";
+            this.textSqlUserPassword.PasswordChar = '*';
+            this.textSqlUserPassword.Size = new System.Drawing.Size(185, 20);
+            this.textSqlUserPassword.TabIndex = 11;
             // 
-            // textBox5
+            // textSqlDatabaseName
             // 
-            this.textBox5.Location = new System.Drawing.Point(187, 118);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(185, 20);
-            this.textBox5.TabIndex = 12;
+            this.textSqlDatabaseName.Location = new System.Drawing.Point(187, 118);
+            this.textSqlDatabaseName.Name = "textSqlDatabaseName";
+            this.textSqlDatabaseName.Size = new System.Drawing.Size(185, 20);
+            this.textSqlDatabaseName.TabIndex = 12;
             // 
-            // label7
+            // labelDbfTablesPath
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(184, 150);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(35, 13);
-            this.label7.TabIndex = 13;
-            this.label7.Text = "label7";
+            this.labelDbfTablesPath.AutoSize = true;
+            this.labelDbfTablesPath.Location = new System.Drawing.Point(184, 150);
+            this.labelDbfTablesPath.Name = "labelDbfTablesPath";
+            this.labelDbfTablesPath.Size = new System.Drawing.Size(35, 13);
+            this.labelDbfTablesPath.TabIndex = 13;
+            this.labelDbfTablesPath.Text = "label7";
             // 
-            // button3
+            // buttonOpenDirDialogue
             // 
-            this.button3.Location = new System.Drawing.Point(347, 145);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(25, 23);
-            this.button3.TabIndex = 14;
-            this.button3.Text = "...";
-            this.button3.UseVisualStyleBackColor = true;
+            this.buttonOpenDirDialogue.Location = new System.Drawing.Point(347, 145);
+            this.buttonOpenDirDialogue.Name = "buttonOpenDirDialogue";
+            this.buttonOpenDirDialogue.Size = new System.Drawing.Size(25, 23);
+            this.buttonOpenDirDialogue.TabIndex = 14;
+            this.buttonOpenDirDialogue.Text = "...";
+            this.buttonOpenDirDialogue.UseVisualStyleBackColor = true;
+            this.buttonOpenDirDialogue.Click += new System.EventHandler(this.buttonOpenDirDialogue_Click);
             // 
             // SettingsPopup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 261);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.buttonOpenDirDialogue);
+            this.Controls.Add(this.labelDbfTablesPath);
+            this.Controls.Add(this.textSqlDatabaseName);
+            this.Controls.Add(this.textSqlUserPassword);
+            this.Controls.Add(this.textSqlUserName);
+            this.Controls.Add(this.textSqlServerPath);
+            this.Controls.Add(this.textServerName);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonCancel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -209,19 +212,19 @@
         #endregion
 
         private System.Windows.Forms.Button buttonCancel;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox textServerName;
+        private System.Windows.Forms.TextBox textSqlServerPath;
+        private System.Windows.Forms.TextBox textSqlUserName;
+        private System.Windows.Forms.TextBox textSqlUserPassword;
+        private System.Windows.Forms.TextBox textSqlDatabaseName;
+        private System.Windows.Forms.Label labelDbfTablesPath;
+        private System.Windows.Forms.Button buttonOpenDirDialogue;
     }
 }
