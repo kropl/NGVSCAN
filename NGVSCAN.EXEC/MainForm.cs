@@ -48,6 +48,17 @@ namespace NGVSCAN.EXEC
             InitializeComponent();
 
             Logger.Log(listLogMessages, "Программа запущена", LogType.Info);
+            Logger.Log(listLogMessages, "Проверка логирования сообщения об успешном выполнении", LogType.Success);
+            Logger.Log(listLogMessages, "Программа запущена", LogType.Warning);
+            Logger.Log(listLogMessages, "Программа запущена", LogType.Error);
+            Logger.Log(listLogMessages, "Программа запущена", LogType.Info);
+            Logger.Log(listLogMessages, "Проверка логирования сообщения об успешном выполнении", LogType.Success);
+            Logger.Log(listLogMessages, "Программа запущена", LogType.Warning);
+            Logger.Log(listLogMessages, "Программа запущена", LogType.Error);
+            Logger.Log(listLogMessages, "Программа запущена", LogType.Info);
+            Logger.Log(listLogMessages, "Проверка логирования сообщения об успешном выполнении", LogType.Success);
+            Logger.Log(listLogMessages, "Программа запущена", LogType.Warning);
+            Logger.Log(listLogMessages, "Программа запущена", LogType.Error);
 
             // Инициализация unit of work
             unitOfWork = new UnitOfWork();
@@ -727,6 +738,11 @@ namespace NGVSCAN.EXEC
             SettingsPopup popup = new SettingsPopup();
 
             DialogResult dialogResult = popup.ShowDialog();
+
+            if (dialogResult == DialogResult.OK)
+            {
+                Logger.Log(listLogMessages, "Были изменены настройки", LogType.Info);
+            }
         }
 
         private void menuAbout_Click(object sender, EventArgs e)
