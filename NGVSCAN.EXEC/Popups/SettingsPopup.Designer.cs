@@ -116,9 +116,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(13, 150);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(121, 13);
+            this.label6.Size = new System.Drawing.Size(119, 13);
             this.label6.TabIndex = 7;
-            this.label6.Text = "Путь к таюлицам DBF:";
+            this.label6.Text = "Путь к таблицам DBF:";
             // 
             // textServerName
             // 
