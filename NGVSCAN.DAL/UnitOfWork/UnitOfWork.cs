@@ -26,6 +26,8 @@ namespace NGVSCAN.DAL.UnitOfWork
 
         public FloutecIdentDataRepository FloutecIdentDataRepository { get; private set; }
 
+        public FloutecHourlyDataRepository FloutecHourlyDataRepository { get; private set; }
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -35,6 +37,8 @@ namespace NGVSCAN.DAL.UnitOfWork
             _context = new NGVSCANContext();
 
             FloutecIdentDataRepository = new FloutecIdentDataRepository(_dbfConnectionString);
+
+            FloutecHourlyDataRepository = new FloutecHourlyDataRepository(_dbfConnectionString);
         }
 
         #endregion
