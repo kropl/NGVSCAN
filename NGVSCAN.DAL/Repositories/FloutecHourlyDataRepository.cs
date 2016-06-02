@@ -36,8 +36,6 @@ namespace NGVSCAN.DAL.Repositories
                     days.Add(date);
                 }
 
-                Debug.WriteLine("Days list initialized");
-
                 using (OleDbConnection connection = new OleDbConnection(_connectionString))
                 using (OleDbCommand command = connection.CreateCommand())
                 {
@@ -54,8 +52,6 @@ namespace NGVSCAN.DAL.Repositories
                                 hourlyData.FromHourTable(reader);
                             }
                         }
-
-                        Debug.WriteLine("Data for day " + date.ToString("dd.MM.yyyy") + " readed");
                     }
                 }
 
@@ -63,6 +59,47 @@ namespace NGVSCAN.DAL.Repositories
             }
 
             return hourlyData.Where(h => h.DAT >= from && h.DAT <= to).ToList();
+        }
+
+        public List<FloutecHourlyData> GetAll(int address, int line)
+        {
+            List<FloutecHourlyData> hourlyData = new List<FloutecHourlyData>();
+
+            int n_flonit = address * 10 + line;
+
+            try
+            {
+                using (OleDbConnection connection = new OleDbConnection(_connectionString))
+                using (OleDbCommand command = connection.CreateCommand())
+                {
+                    connection.Open();
+
+                    command.CommandText = "SELECT DISTINCT * FROM rour.DBF WHERE N_FLONIT=" + n_flonit;
+
+                    using (OleDbDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            try
+                            {
+                                hourlyData.FromHourTable(reader);
+                            }
+                            catch(Exception)
+                            {
+                                throw;
+                            }
+                        }
+                    }
+                }
+
+                hourlyData.ForEach(h => h.N_FLONIT = n_flonit);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+
+            return hourlyData;
         }
     }
 }

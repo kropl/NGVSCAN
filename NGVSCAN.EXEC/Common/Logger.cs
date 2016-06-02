@@ -40,6 +40,21 @@ namespace NGVSCAN.EXEC.Common
                     break;
             }
 
+            if (console.InvokeRequired)
+            {
+                console.Invoke(new MethodInvoker(delegate
+                {
+                    AddLogItem(console, item);
+                }));
+            } 
+            else
+            {
+                AddLogItem(console, item);
+            }    
+        }
+
+        private static void AddLogItem(ListView console, ListViewItem item)
+        {
             console.Items.Add(item);
 
             console.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);

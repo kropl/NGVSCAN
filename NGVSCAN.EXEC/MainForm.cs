@@ -3,6 +3,7 @@ using NGVSCAN.DAL.UnitOfWork;
 using NGVSCAN.EXEC.Common;
 using NGVSCAN.EXEC.Controls;
 using NGVSCAN.EXEC.Popups;
+using NGVSCAN.EXEC.Scanner;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -46,19 +47,6 @@ namespace NGVSCAN.EXEC
 
             // Инициализация содержимого формы
             InitializeComponent();
-
-            Logger.Log(listLogMessages, "Программа запущена", LogType.Info);
-            Logger.Log(listLogMessages, "Проверка логирования сообщения об успешном выполнении", LogType.Success);
-            Logger.Log(listLogMessages, "Программа запущена", LogType.Warning);
-            Logger.Log(listLogMessages, "Программа запущена", LogType.Error);
-            Logger.Log(listLogMessages, "Программа запущена", LogType.Info);
-            Logger.Log(listLogMessages, "Проверка логирования сообщения об успешном выполнении", LogType.Success);
-            Logger.Log(listLogMessages, "Программа запущена", LogType.Warning);
-            Logger.Log(listLogMessages, "Программа запущена", LogType.Error);
-            Logger.Log(listLogMessages, "Программа запущена", LogType.Info);
-            Logger.Log(listLogMessages, "Проверка логирования сообщения об успешном выполнении", LogType.Success);
-            Logger.Log(listLogMessages, "Программа запущена", LogType.Warning);
-            Logger.Log(listLogMessages, "Программа запущена", LogType.Error);
 
             // Инициализация unit of work
             unitOfWork = new UnitOfWork();
@@ -217,6 +205,8 @@ namespace NGVSCAN.EXEC
         // Событие загрузки главной формы
         private void MainForm_Load(object sender, EventArgs e)
         {
+            Logger.Log(listLogMessages, "Программа запущена", LogType.Info);
+
             // Заполнение дерева объектов на закладке вычислителей ФЛОУТЭК
             FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
 
@@ -758,22 +748,29 @@ namespace NGVSCAN.EXEC
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            FloutecIdentData identData = unitOfWork.FloutecIdentDataRepository.Get(127, 1);
+            Dictionary<int, int> pars = new Dictionary<int, int>();
+            pars.Add(127, 1);
+            pars.Add(188, 1);
+            pars.Add(110, 1);
 
-            var start = DateTime.Now;
+            foreach (var item in pars)
+            {
+                FloutecHourlyDataScanner scanner = new FloutecHourlyDataScanner(listLogMessages, unitOfWork, item.Key, item.Value, DateTime.Now, DateTime.Now);
+                scanner.ProcessForAll();
 
-            List<FloutecHourlyData> hourlyData = unitOfWork.FloutecHourlyDataRepository.Get(127, 1, new DateTime(2013, 4, 14, 12, 0, 0), new DateTime(2014, 4, 15, 12, 0, 0));
+                Logger.Log(listLogMessages, "Запуск опроса нитки №" + item.Value + " вычислителя ФЛОУТЭК с адресом " + item.Key, LogType.Info);
+            }
 
-            var end = DateTime.Now;
-
-            Debug.WriteLine("Execution time: " + (end - start).Seconds + " seconds");
-            Debug.WriteLine("Execution time: " + (end - start).Milliseconds + " milliseconds");
+            
 
             while (true)
             {
                 //Debug.WriteLine(DateTime.Now.TimeOfDay);
             }
         }
+
+
+
 
         #endregion
     }

@@ -38,9 +38,9 @@ namespace NGVSCAN.DAL.UnitOfWork
             // Инициализация контекста доступа к данным СУБД MS SQL
             _context = new NGVSCANContext();
 
-            FloutecIdentDataRepository = new FloutecIdentDataRepository(_dbConnectionString);
+            FloutecIdentDataRepository = new FloutecIdentDataRepository(_dbfConnectionString);
 
-            FloutecHourlyDataRepository = new FloutecHourlyDataRepository(_dbConnectionString);
+            FloutecHourlyDataRepository = new FloutecHourlyDataRepository(_dbfConnectionString);
         }
 
         #endregion

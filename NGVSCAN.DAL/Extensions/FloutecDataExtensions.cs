@@ -50,20 +50,27 @@ namespace NGVSCAN.DAL.Extensions
 
         public static void FromHourTable(this List<FloutecHourlyData> hourlyData, OleDbDataReader reader)
         {
-            hourlyData.Add(new FloutecHourlyData
+            try
             {
-                DAT = DateTime.ParseExact(GetReaderValue(reader, "DAT", "").Trim(), datetimeFormats, new CultureInfo("en-US"), DateTimeStyles.None),
-                DAT_END = DateTime.ParseExact(GetReaderValue(reader, "DAT_END", "").Trim(), datetimeFormats, new CultureInfo("en-US"), DateTimeStyles.None),
-                RASX = GetReaderValue(reader, "RASX", 0.0),
-                DAVL = GetReaderValue(reader, "DAVL", 0.0),
-                PD = GetReaderValue(reader, "PD", ""),
-                TEMP = GetReaderValue(reader, "TEMP", 0.0),
-                PT = GetReaderValue(reader, "PT", ""),
-                PEREP = GetReaderValue(reader, "PEREP", 0.0),
-                PP = GetReaderValue(reader, "PP", ""),
-                PLOTN = GetReaderValue(reader, "PLOTN", 0.0),
-                PL = GetReaderValue(reader, "PL", "")
-            });
+                hourlyData.Add(new FloutecHourlyData
+                {
+                    DAT = DateTime.ParseExact(GetReaderValue(reader, "DAT", "").Trim(), datetimeFormats, new CultureInfo("en-US"), DateTimeStyles.None),
+                    DAT_END = DateTime.ParseExact(GetReaderValue(reader, "DAT_END", "").Trim(), datetimeFormats, new CultureInfo("en-US"), DateTimeStyles.None),
+                    RASX = GetReaderValue(reader, "RASX", 0.0),
+                    DAVL = GetReaderValue(reader, "DAVL", 0.0),
+                    PD = GetReaderValue(reader, "PD", ""),
+                    TEMP = GetReaderValue(reader, "TEMP", 0.0),
+                    PT = GetReaderValue(reader, "PT", ""),
+                    PEREP = GetReaderValue(reader, "PEREP", 0.0),
+                    PP = GetReaderValue(reader, "PP", ""),
+                    PLOTN = GetReaderValue(reader, "PLOTN", 0.0),
+                    PL = GetReaderValue(reader, "PL", "")
+                });
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
 
         #endregion
