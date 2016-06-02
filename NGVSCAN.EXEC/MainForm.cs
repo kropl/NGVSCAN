@@ -760,11 +760,14 @@ namespace NGVSCAN.EXEC
         {
             FloutecIdentData identData = unitOfWork.FloutecIdentDataRepository.Get(127, 1);
 
-            Debug.WriteLine(DateTime.Now);
+            var start = DateTime.Now;
 
-            List<FloutecHourlyData> hourlyData = unitOfWork.FloutecHourlyDataRepository.Get(127, 1, new DateTime(2014, 4, 14, 12, 0, 0), new DateTime(2014, 4, 15, 12, 0, 0));
+            List<FloutecHourlyData> hourlyData = unitOfWork.FloutecHourlyDataRepository.Get(127, 1, new DateTime(2013, 4, 14, 12, 0, 0), new DateTime(2014, 4, 15, 12, 0, 0));
 
-            Debug.WriteLine(DateTime.Now);
+            var end = DateTime.Now;
+
+            Debug.WriteLine("Execution time: " + (end - start).Seconds + " seconds");
+            Debug.WriteLine("Execution time: " + (end - start).Milliseconds + " milliseconds");
 
             while (true)
             {
