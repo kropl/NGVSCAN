@@ -1,6 +1,7 @@
 ﻿using NGVSCAN.CORE.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Odbc;
 using System.Data.OleDb;
 using System.Globalization;
 
@@ -12,7 +13,7 @@ namespace NGVSCAN.DAL.Extensions
 
         #region Методы расширения для FloutecIdentData
 
-        public static void FromIdentTable(this FloutecIdentData identData, OleDbDataReader reader)
+        public static void FromIdentTable(this FloutecIdentData identData, OdbcDataReader reader)
         {
             identData.KONTRH = DateTime.Parse(GetReaderValue(reader, "KONTRH", "").Trim()).TimeOfDay;
             identData.KALIBSCH = GetReaderValue(reader, "KALIBSCH", 0.0);
@@ -26,7 +27,7 @@ namespace NGVSCAN.DAL.Extensions
             identData.NIZT = GetReaderValue(reader, "NIZT", 0.0);
         }
 
-        public static void FromStatTable(this FloutecIdentData identData, OleDbDataReader reader)
+        public static void FromStatTable(this FloutecIdentData identData, OdbcDataReader reader)
         {
             identData.PLOTN = GetReaderValue(reader, "PLOTN", 0.0);
             identData.CO2 = GetReaderValue(reader, "CO2", 0.0);
@@ -47,7 +48,7 @@ namespace NGVSCAN.DAL.Extensions
 
         #region Методы расширения для FloutecHourlyData
 
-        public static void FromHourTable(this List<FloutecHourlyData> hourlyData, OleDbDataReader reader)
+        public static void FromHourTable(this List<FloutecHourlyData> hourlyData, OdbcDataReader reader)
         {
             hourlyData.Add(new FloutecHourlyData
             {
@@ -69,7 +70,7 @@ namespace NGVSCAN.DAL.Extensions
 
         #region Вспомогательные методы
 
-        private static T GetReaderValue<T>(OleDbDataReader reader, string ordinal, T defaultValue = default(T))
+        private static T GetReaderValue<T>(OdbcDataReader reader, string ordinal, T defaultValue = default(T))
         {
             try
             {
@@ -81,7 +82,7 @@ namespace NGVSCAN.DAL.Extensions
             }
         }
 
-        private static FloutecIdentData GetReaderValues(OleDbDataReader reader)
+        private static FloutecIdentData GetReaderValues(OdbcDataReader reader)
         {
             return new FloutecIdentData
             {

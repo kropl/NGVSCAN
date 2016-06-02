@@ -2,6 +2,7 @@
 using NGVSCAN.DAL.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Data.Odbc;
 using System.Data.OleDb;
 
 namespace NGVSCAN.DAL.Repositories
@@ -24,15 +25,13 @@ namespace NGVSCAN.DAL.Repositories
             List<FloutecHourlyData> hourlyData = new List<FloutecHourlyData>();
             int n_flonit = address * 10 + line;
 
-            using (OleDbConnection connection = new OleDbConnection(_connectionString))
-            using (OleDbCommand command = connection.CreateCommand())
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
+            using (OdbcCommand command = connection.CreateCommand())
             {
                 connection.Open();
-                command.CommandText = "SELECT DISTINCT * FROM rour.DBF WHERE N_FLONIT=" + n_flonit + " AND CONVERT(DATETIME, DAT, 110) > ?";
-                command.Parameters.Add(new OleDbParameter("from", OleDbType.DBTimeStamp)).Value = from;
-                command.Parameters.Add(new OleDbParameter("to", OleDbType.DBTimeStamp)).Value = to;
+                command.CommandText = "SELECT DISTINCT * FROM rour.DB WHERE N_FLONIT=" + n_flonit;
 
-                using (OleDbDataReader reader = command.ExecuteReader())
+                using (OdbcDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {

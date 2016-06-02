@@ -24,6 +24,8 @@ namespace NGVSCAN.DAL.UnitOfWork
 
         private readonly string _dbfConnectionString = @"Data Source=C:\Dispatch\tabDbf;Provider=VFPOLEDB.1;Collating Sequence=MACHINE;";
 
+        private readonly string _dbConnectionString = @"Driver={Microsoft Paradox Driver (*.db )};DriverID=538;Fil=Paradox 5.X;DefaultDir=c:\Dispatch\Tables\;Dbq=c:\Dispatch\Tables\ident.db;CollatingSequence=ASCII;PWD=cupcdvum";
+
         public FloutecIdentDataRepository FloutecIdentDataRepository { get; private set; }
 
         public FloutecHourlyDataRepository FloutecHourlyDataRepository { get; private set; }
@@ -36,9 +38,9 @@ namespace NGVSCAN.DAL.UnitOfWork
             // Инициализация контекста доступа к данным СУБД MS SQL
             _context = new NGVSCANContext();
 
-            FloutecIdentDataRepository = new FloutecIdentDataRepository(_dbfConnectionString);
+            FloutecIdentDataRepository = new FloutecIdentDataRepository(_dbConnectionString);
 
-            FloutecHourlyDataRepository = new FloutecHourlyDataRepository(_dbfConnectionString);
+            FloutecHourlyDataRepository = new FloutecHourlyDataRepository(_dbConnectionString);
         }
 
         #endregion

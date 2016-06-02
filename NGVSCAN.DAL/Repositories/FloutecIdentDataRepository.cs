@@ -1,5 +1,6 @@
 ﻿using NGVSCAN.CORE.Entities;
 using NGVSCAN.DAL.Extensions;
+using System.Data.Odbc;
 using System.Data.OleDb;
 
 namespace NGVSCAN.DAL.Repositories
@@ -23,22 +24,22 @@ namespace NGVSCAN.DAL.Repositories
             int n_flonit = address * 10 + line;
             identData.N_FLONIT = n_flonit;
 
-            using (OleDbConnection connection = new OleDbConnection(_connectionString))
-            using (OleDbCommand command = connection.CreateCommand())
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
+            using (OdbcCommand command = connection.CreateCommand())
             {
                 connection.Open();
-                command.CommandText = "SELECT * FROM ident.DBF WHERE N_FLONIT=" + n_flonit;
+                command.CommandText = "SELECT * FROM ident.DB WHERE N_FLONIT=" + n_flonit;
 
-                using (OleDbDataReader reader = command.ExecuteReader())
+                using (OdbcDataReader reader = command.ExecuteReader())
                 {
                     reader.Read();
 
                     identData.FromIdentTable(reader);
                 }
 
-                command.CommandText = "SELECT * FROM stat.DBF WHERE N_FLONIT=" + n_flonit;
+                command.CommandText = "SELECT * FROM stat.DB WHERE N_FLONIT=" + n_flonit;
 
-                using (OleDbDataReader reader = command.ExecuteReader())
+                using (OdbcDataReader reader = command.ExecuteReader())
                 {
                     reader.Read();
 
