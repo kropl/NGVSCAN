@@ -1,5 +1,13 @@
 ﻿namespace NGVSCAN.EXEC
 {
+    public class LogListView : System.Windows.Forms.ListView
+    {
+        public LogListView() : base()
+        {
+            DoubleBuffered = true;
+        }
+    }
+
     partial class MainForm
     {
         /// <summary>
@@ -29,6 +37,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("1 Газ на собственные нужды");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("2 Газ на сепаратор С-1");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("185 Расход газа", new System.Windows.Forms.TreeNode[] {
@@ -42,8 +51,12 @@
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("SEM-SRV", new System.Windows.Forms.TreeNode[] {
             treeNode3,
             treeNode6});
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupEstimatorsLog = new System.Windows.Forms.GroupBox();
+            this.listLogMessages = new LogListView();
+            this.columnStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnDateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageListLog = new System.Windows.Forms.ImageList(this.components);
             this.groupEstimatorsProperties = new System.Windows.Forms.GroupBox();
             this.groupEstimators = new System.Windows.Forms.GroupBox();
             this.treeEstimators = new System.Windows.Forms.TreeView();
@@ -62,11 +75,8 @@
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
-            this.listLogMessages = new System.Windows.Forms.ListView();
-            this.columnDateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.imageListLog = new System.Windows.Forms.ImageList(this.components);
-            this.columnStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.menuRun = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStop = new System.Windows.Forms.ToolStripMenuItem();
             this.groupEstimatorsLog.SuspendLayout();
             this.groupEstimators.SuspendLayout();
             this.contextMenuEstimators.SuspendLayout();
@@ -82,6 +92,45 @@
             this.groupEstimatorsLog.TabIndex = 2;
             this.groupEstimatorsLog.TabStop = false;
             this.groupEstimatorsLog.Text = "Сообщения";
+            // 
+            // listLogMessages
+            // 
+            this.listLogMessages.BackColor = System.Drawing.SystemColors.Control;
+            this.listLogMessages.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listLogMessages.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnStatus,
+            this.columnDateTime,
+            this.columnMessage});
+            this.listLogMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listLogMessages.FullRowSelect = true;
+            this.listLogMessages.Location = new System.Drawing.Point(3, 16);
+            this.listLogMessages.Name = "listLogMessages";
+            this.listLogMessages.Size = new System.Drawing.Size(854, 114);
+            this.listLogMessages.SmallImageList = this.imageListLog;
+            this.listLogMessages.TabIndex = 0;
+            this.listLogMessages.UseCompatibleStateImageBehavior = false;
+            this.listLogMessages.View = System.Windows.Forms.View.Details;
+            // 
+            // columnStatus
+            // 
+            this.columnStatus.Text = "";
+            // 
+            // columnDateTime
+            // 
+            this.columnDateTime.Text = "Дата и время";
+            // 
+            // columnMessage
+            // 
+            this.columnMessage.Text = "Сообщение";
+            // 
+            // imageListLog
+            // 
+            this.imageListLog.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListLog.ImageStream")));
+            this.imageListLog.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListLog.Images.SetKeyName(0, "Info-48.png");
+            this.imageListLog.Images.SetKeyName(1, "Ok-48.png");
+            this.imageListLog.Images.SetKeyName(2, "Attention-48.png");
+            this.imageListLog.Images.SetKeyName(3, "High Priority-48.png");
             // 
             // groupEstimatorsProperties
             // 
@@ -221,6 +270,8 @@
             // menu
             // 
             this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuRun,
+            this.menuStop,
             this.menuSettings,
             this.menuAbout});
             this.menu.Location = new System.Drawing.Point(0, 0);
@@ -248,46 +299,23 @@
             // backgroundWorker
             // 
             this.backgroundWorker.WorkerSupportsCancellation = true;
-            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
             // 
-            // listLogMessages
+            // menuRun
             // 
-            this.listLogMessages.BackColor = System.Drawing.SystemColors.Control;
-            this.listLogMessages.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listLogMessages.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnStatus,
-            this.columnDateTime,
-            this.columnMessage});
-            this.listLogMessages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listLogMessages.FullRowSelect = true;
-            this.listLogMessages.Location = new System.Drawing.Point(3, 16);
-            this.listLogMessages.Name = "listLogMessages";
-            this.listLogMessages.Size = new System.Drawing.Size(854, 114);
-            this.listLogMessages.SmallImageList = this.imageListLog;
-            this.listLogMessages.TabIndex = 0;
-            this.listLogMessages.UseCompatibleStateImageBehavior = false;
-            this.listLogMessages.View = System.Windows.Forms.View.Details;
+            this.menuRun.Image = ((System.Drawing.Image)(resources.GetObject("menuRun.Image")));
+            this.menuRun.Name = "menuRun";
+            this.menuRun.Size = new System.Drawing.Size(73, 20);
+            this.menuRun.Text = "Запуск";
+            this.menuRun.Click += new System.EventHandler(this.menuRun_Click);
             // 
-            // columnDateTime
+            // menuStop
             // 
-            this.columnDateTime.Text = "Дата и время";
-            // 
-            // columnMessage
-            // 
-            this.columnMessage.Text = "Сообщение";
-            // 
-            // imageListLog
-            // 
-            this.imageListLog.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListLog.ImageStream")));
-            this.imageListLog.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListLog.Images.SetKeyName(0, "Info-48.png");
-            this.imageListLog.Images.SetKeyName(1, "Ok-48.png");
-            this.imageListLog.Images.SetKeyName(2, "Attention-48.png");
-            this.imageListLog.Images.SetKeyName(3, "High Priority-48.png");
-            // 
-            // columnStatus
-            // 
-            this.columnStatus.Text = "";
+            this.menuStop.Image = ((System.Drawing.Image)(resources.GetObject("menuStop.Image")));
+            this.menuStop.Name = "menuStop";
+            this.menuStop.Size = new System.Drawing.Size(81, 20);
+            this.menuStop.Text = "Останов";
+            this.menuStop.Visible = false;
+            this.menuStop.Click += new System.EventHandler(this.menuStop_Click);
             // 
             // MainForm
             // 
@@ -339,11 +367,13 @@
         private System.Windows.Forms.ToolStripMenuItem menuRestore;
         private System.Windows.Forms.ImageList imageList;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
-        private System.Windows.Forms.ListView listLogMessages;
         private System.Windows.Forms.ColumnHeader columnDateTime;
         private System.Windows.Forms.ColumnHeader columnMessage;
         private System.Windows.Forms.ImageList imageListLog;
         private System.Windows.Forms.ColumnHeader columnStatus;
+        private System.Windows.Forms.ToolStripMenuItem menuRun;
+        private System.Windows.Forms.ToolStripMenuItem menuStop;
+        private LogListView listLogMessages;
     }
 }
 

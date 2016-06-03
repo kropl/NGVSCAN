@@ -16,6 +16,13 @@ namespace NGVSCAN.DAL.EntityConfigurations
             // Свойство Number линии измерения - обязательно (не допускает значений NULL)
             Property(m => m.Number).IsRequired();
 
+            // Свойство HourlyDataScanPeriod линии измерения - обязательно (не допускает значений NULL)
+            Property(m => m.HourlyDataScanPeriod).IsRequired();
+
+            // Свойство DateHourlyDataLastScanned сущности - не обязательно (допускает значения NULL), 
+            // в базе данных имеет тип данных datetime2
+            Property(m => m.DateHourlyDataLastScanned).IsOptional().HasColumnType("datetime2");
+
             // Свойство SensorType линии измерения - обязательно (не допускает значений NULL)
             Property(m => m.SensorType).IsRequired();
 

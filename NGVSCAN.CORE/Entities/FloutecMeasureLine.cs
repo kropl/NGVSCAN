@@ -1,4 +1,5 @@
 ﻿using NGVSCAN.CORE.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace NGVSCAN.CORE.Entities
@@ -32,6 +33,16 @@ namespace NGVSCAN.CORE.Entities
         /// Тип датчика: <see cref="SensorTypeEnum"/>
         /// </summary>
         public SensorTypeEnum SensorType { get; set; }
+
+        /// <summary>
+        /// Период опроса часовых данных, часов
+        /// </summary>
+        public int HourlyDataScanPeriod { get; set; }
+
+        /// <summary>
+        /// Дата и время последнего опроса часовых данных
+        /// </summary>
+        public DateTime? DateHourlyDataLastScanned { get; set; }
 
         #endregion
 

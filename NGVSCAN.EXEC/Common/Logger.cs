@@ -55,13 +55,13 @@ namespace NGVSCAN.EXEC.Common
 
         private static void AddLogItem(ListView console, ListViewItem item)
         {
-            console.Items.Add(item);
+                console.Items.Add(item);
 
-            console.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
-            console.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
-            console.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
+                console.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
+                console.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
+                console.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
 
-            console.Items[console.Items.Count - 1].EnsureVisible();
+                console.Items[console.Items.Count - 1].EnsureVisible();
         }
     }
 }

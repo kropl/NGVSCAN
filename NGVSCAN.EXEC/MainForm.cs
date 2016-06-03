@@ -11,6 +11,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NGVSCAN.EXEC
@@ -40,6 +41,12 @@ namespace NGVSCAN.EXEC
         // Коллекция точек измерения вычислителей ROC809 данной установки
         private List<ROC809MeasurePoint> rocPoints;
 
+        private List<int> scanActive;
+
+        private bool isRunning = false;
+
+        Timer scanner;
+
         // Конструктор формы
         public MainForm()
         {
@@ -57,6 +64,10 @@ namespace NGVSCAN.EXEC
                 осуществляет доступ к данным не в базе данных, а в памяти
             */
             UpdateData(unitOfWork);
+
+            scanActive = new List<int>();
+
+            scanner = new Timer();
         }
 
         #endregion
@@ -205,12 +216,14 @@ namespace NGVSCAN.EXEC
         // Событие загрузки главной формы
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Logger.Log(listLogMessages, "Программа запущена", LogType.Info);
-
             // Заполнение дерева объектов на закладке вычислителей ФЛОУТЭК
             FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
 
-            backgroundWorker.RunWorkerAsync();
+            //backgroundWorker.RunWorkerAsync();
+
+            
+            scanner.Interval = 10000;
+            scanner.Tick += scanner_Tick;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -746,32 +759,124 @@ namespace NGVSCAN.EXEC
 
         #region Выполнение бизнес-логики
 
-        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void scanner_Tick(object sender, EventArgs e)
         {
-            Dictionary<int, int> pars = new Dictionary<int, int>();
-            pars.Add(127, 1);
-            pars.Add(188, 1);
-            pars.Add(110, 1);
+            List<FloutecMeasureLine> scanQuery = unitOfWork.Repository<FloutecMeasureLine>().GetAll()
+                .Where(l => !l.IsDeleted && !l.Estimator.IsDeleted)
+                .ToList();
 
-            foreach (var item in pars)
+            foreach (FloutecMeasureLine line in scanQuery)
             {
-                FloutecHourlyDataScanner scanner = new FloutecHourlyDataScanner(listLogMessages, unitOfWork, item.Key, item.Value, DateTime.Now, DateTime.Now);
-                scanner.ProcessForAll();
+                int address = ((Floutec)line.Estimator).Address;
+                int number = line.Number;
+                int n_flonit = address * 10 + number;
 
-                Logger.Log(listLogMessages, "Запуск опроса нитки №" + item.Value + " вычислителя ФЛОУТЭК с адресом " + item.Key, LogType.Info);
-            }
+                if (line.DateHourlyDataLastScanned == null || line.HourlyData.Count == 0)
+                {
+                    if (!scanActive.Contains(n_flonit))
+                    {
+                        scanActive.Add(n_flonit);
 
-            
+                        Logger.Log(listLogMessages, "Запуск опроса нитки №" + number + " вычислителя с адресом " + address, LogType.Info);
 
-            while (true)
-            {
-                //Debug.WriteLine(DateTime.Now.TimeOfDay);
+                        line.DateHourlyDataLastScanned = DateTime.Now;
+                        unitOfWork.Repository<FloutecMeasureLine>().Update(line);
+                        unitOfWork.Commit();
+
+                        Task.Factory.StartNew(() => FloutecHourlyDataScanner.ProcessForAll(unitOfWork, address, number), TaskCreationOptions.LongRunning)
+                        .ContinueWith((result) =>
+                        {
+                            if (result.Exception == null)
+                            {
+                                Logger.Log(listLogMessages, "Опрос нитки №" + number + " вычислителя с адресом " + address + " выполнен успешно", LogType.Success);
+                                List<FloutecHourlyData> data = result.Result;
+                                data.ForEach((d) =>
+                                {
+                                    d.DateCreated = DateTime.Now;
+                                    d.DateModified = DateTime.Now;
+                                    d.FloutecMeasureLineId = line.Id;
+                                });
+
+                                unitOfWork.Repository<FloutecHourlyData>().Insert(data);
+                                unitOfWork.Commit();
+                            }
+                            else
+                            {
+
+                            }
+
+                            scanActive.Remove(n_flonit);
+
+                        }, TaskScheduler.FromCurrentSynchronizationContext());
+                    }
+                }
+                else
+                {
+                    if (line.DateHourlyDataLastScanned.Value.AddMinutes(line.HourlyDataScanPeriod) <= DateTime.Now)
+                    {
+                        if (!scanActive.Contains(n_flonit))
+                        {
+                            scanActive.Add(n_flonit);
+
+                            line.DateHourlyDataLastScanned = DateTime.Now;
+                            unitOfWork.Repository<FloutecMeasureLine>().Update(line);
+                            unitOfWork.Commit();
+
+                            Logger.Log(listLogMessages, "Запуск опроса нитки №" + number + " вычислителя с адресом " + address, LogType.Info);
+
+                            Task.Factory.StartNew(() => FloutecHourlyDataScanner.Process(unitOfWork, address, number, line.HourlyData.Last().DateCreated, DateTime.Now), TaskCreationOptions.LongRunning)
+                            .ContinueWith((result) =>
+                            {
+                                if (result.Exception == null)
+                                {
+                                    Logger.Log(listLogMessages, "Опрос нитки №" + number + " вычислителя с адресом " + address + " выполнен успешно", LogType.Success);
+                                    List<FloutecHourlyData> data = result.Result;
+                                    data.ForEach((d) =>
+                                {
+                                    d.DateCreated = DateTime.Now;
+                                    d.DateModified = DateTime.Now;
+                                    d.FloutecMeasureLineId = line.Id;
+                                });
+
+                                    unitOfWork.Repository<FloutecHourlyData>().Insert(data);
+                                    unitOfWork.Commit();
+                                }
+                                else
+                                {
+
+                                }
+
+                                scanActive.Remove(n_flonit);
+
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
+                        }
+                    }
+                }
             }
         }
 
-
-
-
         #endregion
+
+        private void menuRun_Click(object sender, EventArgs e)
+        {
+            isRunning = true;
+            menuRun.Visible = false;
+            menuStop.Visible = true;
+
+            scanner.Start();
+
+            Logger.Log(listLogMessages, "Опрос запущен", LogType.Info);
+        }
+
+        private void menuStop_Click(object sender, EventArgs e)
+        {
+            isRunning = false;
+            menuStop.Visible = false;
+            menuRun.Visible = true;
+
+            scanner.Stop();
+
+            Logger.Log(listLogMessages, "Опрос остановлен", LogType.Info);
+        }
     }
 }

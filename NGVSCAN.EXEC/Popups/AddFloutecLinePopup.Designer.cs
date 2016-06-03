@@ -43,12 +43,19 @@
             this.textName = new System.Windows.Forms.TextBox();
             this.buttonAddFloutec = new System.Windows.Forms.Button();
             this.buttonCancelAddFloutec = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericHourlyPeriod = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupAddFloutec.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericNumber)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericHourlyPeriod)).BeginInit();
             this.SuspendLayout();
             // 
             // groupAddFloutec
             // 
+            this.groupAddFloutec.Controls.Add(this.label7);
+            this.groupAddFloutec.Controls.Add(this.numericHourlyPeriod);
+            this.groupAddFloutec.Controls.Add(this.label4);
             this.groupAddFloutec.Controls.Add(this.labelNumberError);
             this.groupAddFloutec.Controls.Add(this.label5);
             this.groupAddFloutec.Controls.Add(this.labelSensorTypeError);
@@ -63,7 +70,7 @@
             this.groupAddFloutec.Controls.Add(this.textName);
             this.groupAddFloutec.Location = new System.Drawing.Point(12, 12);
             this.groupAddFloutec.Name = "groupAddFloutec";
-            this.groupAddFloutec.Size = new System.Drawing.Size(260, 226);
+            this.groupAddFloutec.Size = new System.Drawing.Size(280, 279);
             this.groupAddFloutec.TabIndex = 0;
             this.groupAddFloutec.TabStop = false;
             this.groupAddFloutec.Text = "Свойства";
@@ -72,7 +79,7 @@
             // 
             this.labelNumberError.AutoSize = true;
             this.labelNumberError.ForeColor = System.Drawing.Color.Red;
-            this.labelNumberError.Location = new System.Drawing.Point(77, 16);
+            this.labelNumberError.Location = new System.Drawing.Point(128, 16);
             this.labelNumberError.Name = "labelNumberError";
             this.labelNumberError.Size = new System.Drawing.Size(29, 13);
             this.labelNumberError.TabIndex = 12;
@@ -92,7 +99,7 @@
             // 
             this.labelSensorTypeError.AutoSize = true;
             this.labelSensorTypeError.ForeColor = System.Drawing.Color.Red;
-            this.labelSensorTypeError.Location = new System.Drawing.Point(77, 59);
+            this.labelSensorTypeError.Location = new System.Drawing.Point(128, 59);
             this.labelSensorTypeError.Name = "labelSensorTypeError";
             this.labelSensorTypeError.Size = new System.Drawing.Size(29, 13);
             this.labelSensorTypeError.TabIndex = 10;
@@ -102,16 +109,16 @@
             // comboSensorTypes
             // 
             this.comboSensorTypes.FormattingEnabled = true;
-            this.comboSensorTypes.Location = new System.Drawing.Point(77, 75);
+            this.comboSensorTypes.Location = new System.Drawing.Point(131, 75);
             this.comboSensorTypes.Name = "comboSensorTypes";
-            this.comboSensorTypes.Size = new System.Drawing.Size(176, 21);
+            this.comboSensorTypes.Size = new System.Drawing.Size(143, 21);
             this.comboSensorTypes.TabIndex = 9;
             // 
             // labelDescriptionError
             // 
             this.labelDescriptionError.AutoSize = true;
             this.labelDescriptionError.ForeColor = System.Drawing.Color.Red;
-            this.labelDescriptionError.Location = new System.Drawing.Point(77, 147);
+            this.labelDescriptionError.Location = new System.Drawing.Point(128, 193);
             this.labelDescriptionError.Name = "labelDescriptionError";
             this.labelDescriptionError.Size = new System.Drawing.Size(29, 13);
             this.labelDescriptionError.TabIndex = 8;
@@ -122,7 +129,7 @@
             // 
             this.labelNameError.AutoSize = true;
             this.labelNameError.ForeColor = System.Drawing.Color.Red;
-            this.labelNameError.Location = new System.Drawing.Point(77, 104);
+            this.labelNameError.Location = new System.Drawing.Point(128, 104);
             this.labelNameError.Name = "labelNameError";
             this.labelNameError.Size = new System.Drawing.Size(29, 13);
             this.labelNameError.TabIndex = 7;
@@ -131,16 +138,16 @@
             // 
             // textDescription
             // 
-            this.textDescription.Location = new System.Drawing.Point(77, 163);
+            this.textDescription.Location = new System.Drawing.Point(131, 209);
             this.textDescription.MaxLength = 200;
             this.textDescription.Multiline = true;
             this.textDescription.Name = "textDescription";
-            this.textDescription.Size = new System.Drawing.Size(176, 54);
+            this.textDescription.Size = new System.Drawing.Size(143, 54);
             this.textDescription.TabIndex = 5;
             // 
             // numericNumber
             // 
-            this.numericNumber.Location = new System.Drawing.Point(77, 32);
+            this.numericNumber.Location = new System.Drawing.Point(131, 32);
             this.numericNumber.Maximum = new decimal(new int[] {
             3,
             0,
@@ -152,7 +159,7 @@
             0,
             0});
             this.numericNumber.Name = "numericNumber";
-            this.numericNumber.Size = new System.Drawing.Size(113, 20);
+            this.numericNumber.Size = new System.Drawing.Size(143, 20);
             this.numericNumber.TabIndex = 4;
             this.numericNumber.Value = new decimal(new int[] {
             1,
@@ -163,7 +170,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 166);
+            this.label3.Location = new System.Drawing.Point(7, 212);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 13);
             this.label3.TabIndex = 3;
@@ -189,15 +196,15 @@
             // 
             // textName
             // 
-            this.textName.Location = new System.Drawing.Point(77, 120);
+            this.textName.Location = new System.Drawing.Point(131, 120);
             this.textName.MaxLength = 25;
             this.textName.Name = "textName";
-            this.textName.Size = new System.Drawing.Size(176, 20);
+            this.textName.Size = new System.Drawing.Size(143, 20);
             this.textName.TabIndex = 0;
             // 
             // buttonAddFloutec
             // 
-            this.buttonAddFloutec.Location = new System.Drawing.Point(116, 256);
+            this.buttonAddFloutec.Location = new System.Drawing.Point(136, 297);
             this.buttonAddFloutec.Name = "buttonAddFloutec";
             this.buttonAddFloutec.Size = new System.Drawing.Size(75, 23);
             this.buttonAddFloutec.TabIndex = 1;
@@ -207,7 +214,7 @@
             // 
             // buttonCancelAddFloutec
             // 
-            this.buttonCancelAddFloutec.Location = new System.Drawing.Point(197, 256);
+            this.buttonCancelAddFloutec.Location = new System.Drawing.Point(217, 297);
             this.buttonCancelAddFloutec.Name = "buttonCancelAddFloutec";
             this.buttonCancelAddFloutec.Size = new System.Drawing.Size(75, 23);
             this.buttonCancelAddFloutec.TabIndex = 2;
@@ -215,25 +222,66 @@
             this.buttonCancelAddFloutec.UseVisualStyleBackColor = true;
             this.buttonCancelAddFloutec.Click += new System.EventHandler(this.buttonCancelAddFloutec_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(7, 160);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(84, 13);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "Период опроса";
+            // 
+            // numericHourlyPeriod
+            // 
+            this.numericHourlyPeriod.Location = new System.Drawing.Point(131, 164);
+            this.numericHourlyPeriod.Maximum = new decimal(new int[] {
+            24,
+            0,
+            0,
+            0});
+            this.numericHourlyPeriod.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericHourlyPeriod.Name = "numericHourlyPeriod";
+            this.numericHourlyPeriod.Size = new System.Drawing.Size(143, 20);
+            this.numericHourlyPeriod.TabIndex = 14;
+            this.numericHourlyPeriod.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(7, 174);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(118, 13);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "часовых данных, час.:";
+            // 
             // AddFloutecLinePopup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 291);
+            this.ClientSize = new System.Drawing.Size(304, 331);
             this.Controls.Add(this.buttonCancelAddFloutec);
             this.Controls.Add(this.buttonAddFloutec);
             this.Controls.Add(this.groupAddFloutec);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(300, 330);
+            this.MaximumSize = new System.Drawing.Size(320, 370);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(300, 330);
+            this.MinimumSize = new System.Drawing.Size(320, 370);
             this.Name = "AddFloutecLinePopup";
             this.Text = "form";
             this.Load += new System.EventHandler(this.AddFloutecLinePopup_Load);
             this.groupAddFloutec.ResumeLayout(false);
             this.groupAddFloutec.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericNumber)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericHourlyPeriod)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -255,5 +303,8 @@
         private System.Windows.Forms.Label labelSensorTypeError;
         private System.Windows.Forms.ComboBox comboSensorTypes;
         private System.Windows.Forms.Label labelNumberError;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown numericHourlyPeriod;
+        private System.Windows.Forms.Label label4;
     }
 }

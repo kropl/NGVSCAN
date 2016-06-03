@@ -89,6 +89,14 @@
     <Compile Include="Migrations\201605211001461_RemoviedUniqueKeys.Designer.cs">
       <DependentUpon>201605211001461_RemoviedUniqueKeys.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606030936325_AddedScanPeriodForHourlyData.cs" />
+    <Compile Include="Migrations\201606030936325_AddedScanPeriodForHourlyData.Designer.cs">
+      <DependentUpon>201606030936325_AddedScanPeriodForHourlyData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606031010302_SettedDateHourlyDataLastScannedNullable.cs" />
+    <Compile Include="Migrations\201606031010302_SettedDateHourlyDataLastScannedNullable.Designer.cs">
+      <DependentUpon>201606031010302_SettedDateHourlyDataLastScannedNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\FloutecHourlyDataRepository.cs" />
@@ -127,6 +135,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605211001461_RemoviedUniqueKeys.resx">
       <DependentUpon>201605211001461_RemoviedUniqueKeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606030936325_AddedScanPeriodForHourlyData.resx">
+      <DependentUpon>201606030936325_AddedScanPeriodForHourlyData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606031010302_SettedDateHourlyDataLastScannedNullable.resx">
+      <DependentUpon>201606031010302_SettedDateHourlyDataLastScannedNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
