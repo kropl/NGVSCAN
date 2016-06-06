@@ -24,17 +24,10 @@ namespace NGVSCAN.DAL.Repositories
         /// <summary>
         /// Конструктор репозитория доступа к данным СУБД MS SQL
         /// </summary>
-        /// <param name="context"><see cref="DbContext"/>Контекст доступа к данным</param>
         public SqlRepository()
         {
             // Инициализация контекста доступа к данным
             _context = new NGVSCANContext();
-        }
-
-        public SqlRepository(NGVSCANContext context)
-        {
-            // Инициализация контекста доступа к данным
-            _context = context;
         }
 
         #endregion
@@ -51,9 +44,9 @@ namespace NGVSCAN.DAL.Repositories
             {
                 return _context.Set<Entity>();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -68,9 +61,9 @@ namespace NGVSCAN.DAL.Repositories
             {
                 return _context.Set<Entity>().Where(e => e.Id == id).SingleOrDefault();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -87,10 +80,11 @@ namespace NGVSCAN.DAL.Repositories
             try
             {
                 _context.Set<Entity>().AddRange(entities);
+                _context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -103,10 +97,11 @@ namespace NGVSCAN.DAL.Repositories
             try
             {
                 _context.Set<Entity>().Add(entity);
+                _context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -125,11 +120,12 @@ namespace NGVSCAN.DAL.Repositories
                 foreach (Entity entity in entities)
                 {
                     _context.Entry(entity).State = EntityState.Modified;
+                    _context.SaveChanges();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -142,10 +138,11 @@ namespace NGVSCAN.DAL.Repositories
             try
             {
                 _context.Entry(entity).State = EntityState.Modified;
+                _context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -161,10 +158,11 @@ namespace NGVSCAN.DAL.Repositories
             try
             {
                 _context.Set<Entity>().RemoveRange(GetAll());
+                _context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -177,10 +175,11 @@ namespace NGVSCAN.DAL.Repositories
             try
             {
                 _context.Set<Entity>().RemoveRange(entities);
+                _context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -193,22 +192,15 @@ namespace NGVSCAN.DAL.Repositories
             try
             {
                 _context.Set<Entity>().Remove(Get(id));
+                _context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
         #endregion
-
-        /// <summary>
-        /// Сохранение изменений в контексте доступа к данным
-        /// </summary>
-        public void Commit()
-        {
-            _context.SaveChanges();
-        }
 
         #region Освобождение ресурсов
 

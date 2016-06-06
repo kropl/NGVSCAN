@@ -40,17 +40,7 @@ namespace NGVSCAN.EXEC.Common
                     break;
             }
 
-            //if (console.InvokeRequired)
-            //{
-            //    console.Invoke(new MethodInvoker(delegate
-            //    {
-            //        AddLogItem(console, item);
-            //    }));
-            //} 
-            //else
-            //{
-                AddLogItem(console, item);
-            //}    
+            AddLogItem(console, item);   
         }
 
         private static void AddLogItem(ListView console, ListViewItem item)

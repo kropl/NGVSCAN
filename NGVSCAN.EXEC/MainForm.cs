@@ -1,6 +1,5 @@
 ﻿using NGVSCAN.CORE.Entities;
 using NGVSCAN.DAL.Repositories;
-using NGVSCAN.DAL.UnitOfWork;
 using NGVSCAN.EXEC.Common;
 using NGVSCAN.EXEC.Controls;
 using NGVSCAN.EXEC.Popups;
@@ -23,9 +22,6 @@ namespace NGVSCAN.EXEC
     public partial class MainForm : Form
     {
         #region Конструктор и поля
-
-        // Unit of work
-        private UnitOfWork unitOfWork;
 
         // Установка
         private Field field;
@@ -56,15 +52,8 @@ namespace NGVSCAN.EXEC
             // Инициализация содержимого формы
             InitializeComponent();
 
-            // Инициализация unit of work
-            unitOfWork = new UnitOfWork();
-
-            /*
-                Обновление данных:
-                необходимые данные загружаются в память, и в дальнейшем приложение
-                осуществляет доступ к данным не в базе данных, а в памяти
-            */
-            UpdateData(unitOfWork);
+            // Обновление данных
+            UpdateData();
 
             scanActive = new List<int>();
 
@@ -78,43 +67,52 @@ namespace NGVSCAN.EXEC
         /// <summary>
         /// Обновление данных
         /// </summary>
-        /// <param name="unitOfWork">Unit of work</param>
-        private void UpdateData(UnitOfWork unitOfWork)
+        private void UpdateData()
         {
-            // Инициализация установки
-// FAKE        !!! Имя установки задано жёстко временно !!!
-            field = unitOfWork.Repository<Field>().GetAll().Where(f => f.Name.Equals("SEM-SRV")).SingleOrDefault();
-
-            // Если установка была определена ...
-            if (field != null)
+            try
             {
-                // Инициализация коллекции вычислителей ФЛОУТЭК данной установки
-                floutecs = field.Estimators.Where(e => e is Floutec).Select(e => e as Floutec).OrderBy(o => o.Address).ToList();
-
-                rocs = field.Estimators.Where(e => e is ROC809).Select(e => e as ROC809).ToList();
-
-                // Если коллекция вычислителей ФЛОУТЭК была определена ...
-                if (floutecs != null)
+                using (SqlRepository<Field> repo = new SqlRepository<Field>())
                 {
-                    // Инициализация коллекции линий измерения вычислителей ФЛОУТЭК данной установки
-                    floutecLines = new List<FloutecMeasureLine>();
-                    floutecs.ForEach((f) =>
-                    {
-                        floutecLines.AddRange(f.MeasureLines.Select(l => l as FloutecMeasureLine).OrderBy(o => o.Number).ToList());
-                    });
-                }
+                    // Инициализация установки
+                    // FAKE        !!! Имя установки задано жёстко временно !!!
+                    field = repo.GetAll().Where(f => f.Name.Equals(Settings.ServerName)).SingleOrDefault();
 
-                // Если коллеция вычислителей ROC809 была определена ...
-                if (rocs != null)
-                {
-                    // Инициализация коллекции точек измерения вычислителей ROC809 данной установки
-                    rocPoints = new List<ROC809MeasurePoint>();
-                    rocs.ForEach((r) =>
+                    // Если установка была определена ...
+                    if (field != null)
                     {
-                        rocPoints.AddRange(r.MeasureLines.Select(p => p as ROC809MeasurePoint).ToList());
-                    });
+                        // Инициализация коллекции вычислителей ФЛОУТЭК данной установки
+                        floutecs = field.Estimators.Where(e => e is Floutec).Select(e => e as Floutec).OrderBy(o => o.Address).ToList();
+
+                        rocs = field.Estimators.Where(e => e is ROC809).Select(e => e as ROC809).ToList();
+
+                        // Если коллекция вычислителей ФЛОУТЭК была определена ...
+                        if (floutecs != null)
+                        {
+                            // Инициализация коллекции линий измерения вычислителей ФЛОУТЭК данной установки
+                            floutecLines = new List<FloutecMeasureLine>();
+                            floutecs.ForEach((f) =>
+                            {
+                                floutecLines.AddRange(f.MeasureLines.Select(l => l as FloutecMeasureLine).OrderBy(o => o.Number).ToList());
+                            });
+                        }
+
+                        // Если коллеция вычислителей ROC809 была определена ...
+                        if (rocs != null)
+                        {
+                            // Инициализация коллекции точек измерения вычислителей ROC809 данной установки
+                            rocPoints = new List<ROC809MeasurePoint>();
+                            rocs.ForEach((r) =>
+                            {
+                                rocPoints.AddRange(r.MeasureLines.Select(p => p as ROC809MeasurePoint).ToList());
+                            });
+                        }
+                    }
                 }
-            }          
+            }
+            catch(Exception ex)
+            {
+                Logger.Log(listLogMessages, ex.Message, LogType.Error);
+            }        
         }
 
         /// <summary>
@@ -207,6 +205,10 @@ namespace NGVSCAN.EXEC
                         });
                     }
                 });
+            }
+            else
+            {
+                
             }
         }
 
@@ -456,10 +458,19 @@ namespace NGVSCAN.EXEC
 
                         field.Estimators.Add(floutec);
 
-                        unitOfWork.Repository<Field>().Update(field);
-                        unitOfWork.Commit();
+                        try
+                        {
+                            using (SqlRepository<Field> repo = new SqlRepository<Field>())
+                            {
+                                repo.Update(field);
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                        }
 
-                        UpdateData(unitOfWork);
+                        UpdateData();
 
                         FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                     }
@@ -492,10 +503,19 @@ namespace NGVSCAN.EXEC
                             selectedFloutec = popup.Floutec;
                             selectedFloutec.DateModified = DateTime.Now;
 
-                            unitOfWork.Repository<Floutec>().Update(selectedFloutec);
-                            unitOfWork.Commit();
+                            try
+                            {
+                                using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
+                                {
+                                    repo.Update(selectedFloutec);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            }
 
-                            UpdateData(unitOfWork);
+                            UpdateData();
 
                             FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                         }
@@ -526,10 +546,19 @@ namespace NGVSCAN.EXEC
                             selectedFloutecLine = popup.FloutecLine;
                             selectedFloutecLine.DateModified = DateTime.Now;                            
 
-                            unitOfWork.Repository<FloutecMeasureLine>().Update(selectedFloutecLine);
-                            unitOfWork.Commit();
+                            try
+                            {
+                                using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
+                                {
+                                    repo.Update(selectedFloutecLine);
+                                }
+                            }
+                            catch(Exception ex)
+                            {
+                                Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            }
 
-                            UpdateData(unitOfWork);
+                            UpdateData();
 
                             FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                         }
@@ -562,10 +591,19 @@ namespace NGVSCAN.EXEC
 
                         selectedFloutec.MeasureLines.Add(line);
 
-                        unitOfWork.Repository<Floutec>().Update(selectedFloutec);
-                        unitOfWork.Commit();
+                        try
+                        {
+                            using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
+                            {
+                                repo.Update(selectedFloutec);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                        }
 
-                        UpdateData(unitOfWork);
+                        UpdateData();
 
                         FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                     }
@@ -597,11 +635,19 @@ namespace NGVSCAN.EXEC
 
                             if (confirmResult == DialogResult.Yes)
                             {
-                                unitOfWork.Repository<Floutec>().Delete(selectedFloutec.Id);
+                                try
+                                {
+                                    using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
+                                    {
+                                        repo.Delete(selectedFloutec.Id);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                }
 
-                                unitOfWork.Commit();
-
-                                UpdateData(unitOfWork);
+                                UpdateData();
 
                                 FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                             }
@@ -620,11 +666,20 @@ namespace NGVSCAN.EXEC
                             {
                                 selectedFloutec.IsDeleted = true;
                                 selectedFloutec.DateDeleted = DateTime.Now;
-                                unitOfWork.Repository<Floutec>().Update(selectedFloutec);
 
-                                unitOfWork.Commit();
+                                try
+                                {
+                                    using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
+                                    {
+                                        repo.Update(selectedFloutec);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                }
 
-                                UpdateData(unitOfWork);
+                                UpdateData();
 
                                 FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                             }
@@ -653,11 +708,19 @@ namespace NGVSCAN.EXEC
 
                             if (confirmResult == DialogResult.Yes)
                             {
-                                unitOfWork.Repository<FloutecMeasureLine>().Delete(selectedFloutecLine.Id);
+                                try
+                                {
+                                    using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
+                                    {
+                                        repo.Delete(selectedFloutecLine.Id);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                }
 
-                                unitOfWork.Commit();
-
-                                UpdateData(unitOfWork);
+                                UpdateData();
 
                                 FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                             }
@@ -676,11 +739,20 @@ namespace NGVSCAN.EXEC
                             {
                                 selectedFloutecLine.IsDeleted = true;
                                 selectedFloutecLine.DateDeleted = DateTime.Now;
-                                unitOfWork.Repository<FloutecMeasureLine>().Update(selectedFloutecLine);
 
-                                unitOfWork.Commit();
+                                try
+                                {
+                                    using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
+                                    {
+                                        repo.Update(selectedFloutecLine);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                }
 
-                                UpdateData(unitOfWork);
+                                UpdateData();
 
                                 FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                             }
@@ -701,11 +773,20 @@ namespace NGVSCAN.EXEC
                         contextMenuEstimators.Close();
 
                         selectedFloutec.IsDeleted = false;
-                        unitOfWork.Repository<Floutec>().Update(selectedFloutec);
 
-                        unitOfWork.Commit();
+                        try
+                        {
+                            using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
+                            {
+                                repo.Update(selectedFloutec);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                        }
 
-                        UpdateData(unitOfWork);
+                        UpdateData();
 
                         FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                     }
@@ -721,11 +802,20 @@ namespace NGVSCAN.EXEC
                         contextMenuEstimators.Close();
 
                         selectedFloutecLine.IsDeleted = false;
-                        unitOfWork.Repository<FloutecMeasureLine>().Update(selectedFloutecLine);
 
-                        unitOfWork.Commit();
+                        try
+                        {
+                            using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
+                            {
+                                repo.Update(selectedFloutecLine);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                        }
 
-                        UpdateData(unitOfWork);
+                        UpdateData();
 
                         FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                     }
@@ -756,174 +846,6 @@ namespace NGVSCAN.EXEC
             DialogResult dialogResult = popup.ShowDialog();
         }
 
-        #endregion
-
-        #region Выполнение бизнес-логики
-
-        private void scanner_Tick(object sender, EventArgs e)
-        {
-            TaskScheduler uiSyncContext = TaskScheduler.FromCurrentSynchronizationContext();
-
-            Task.Factory.StartNew(() => 
-            {
-                using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
-                {
-                    return repo.GetAll()
-                    .Include(l => l.HourlyData)
-                    .Include(l => l.Estimator)
-                    .Where(l => !l.IsDeleted && !l.Estimator.IsDeleted)
-                    .ToList();
-                }
-
-            }, TaskCreationOptions.LongRunning)
-                .ContinueWith((mainTaskResult) => 
-                {
-                    foreach (FloutecMeasureLine line in mainTaskResult.Result)
-                    {
-                        int address = ((Floutec)line.Estimator).Address;
-                        int number = line.Number;
-                        int n_flonit = address * 10 + number;
-
-                        if (!scanActive.Contains(n_flonit))
-                        {
-                            scanActive.Add(n_flonit);
-
-                            if (line.DateHourlyDataLastScanned == null)
-                            {
-                                Task.Factory.StartNew(() =>
-                                {
-                                    return unitOfWork.FloutecHourlyDataRepository.GetAll(address, number);
-                                },
-                                TaskCreationOptions.LongRunning)
-                                    .ContinueWith((readHourResult) =>
-                                    {
-                                        if (readHourResult.Exception == null)
-                                        {
-                                            Logger.Log(listLogMessages, "Опрос часовых данных нитки №" + number + " вычислителя с адресом " + address + " выполнен успешно", LogType.Success);
-                                        }
-                                        else
-                                        {
-                                            Logger.Log(listLogMessages, "Опрос часовых данных нитки №" + number + " вычислителя с адресом " + address + " выполнен с ошибками", LogType.Error);
-                                        }
-
-                                        return readHourResult.Result;
-                                    },
-                                    uiSyncContext)
-                                    .ContinueWith((readHourResult) =>
-                                    {
-                                        List<FloutecHourlyData> data = readHourResult.Result;
-                                        data.ForEach((d) =>
-                                        {
-                                            d.DateCreated = DateTime.Now;
-                                            d.DateModified = DateTime.Now;
-                                            d.FloutecMeasureLineId = line.Id;
-                                        });
-
-                                        SqlRepository<FloutecHourlyData> repo = new SqlRepository<FloutecHourlyData>();
-                                        SqlRepository<FloutecMeasureLine> repo2 = new SqlRepository<FloutecMeasureLine>();
-
-                                        repo.Insert(data);
-                                        repo.Commit();
-                                        repo.Dispose();
-
-                                        line.DateHourlyDataLastScanned = DateTime.Now;
-                                        repo2.Update(line);
-                                        repo2.Commit();
-                                        repo2.Dispose();
-
-                                    })
-                                    .ContinueWith((insertHourResult) =>
-                                    {
-                                        if (insertHourResult.Exception == null)
-                                        {
-                                            Logger.Log(listLogMessages, "Сохранение часовых данных нитки №" + number + " вычислителя с адресом " + address + " выполнен успешно", LogType.Success);
-                                        }
-                                        else
-                                        {
-                                            Logger.Log(listLogMessages, "Сохранение часовых данных нитки №" + number + " вычислителя с адресом " + address + " выполнен с ошибками", LogType.Error);
-                                        }
-
-                                        scanActive.Remove(n_flonit);
-                                    },
-                                    uiSyncContext);
-                            }
-                            else if (line.DateHourlyDataLastScanned.Value.AddMinutes(line.HourlyDataScanPeriod) <= DateTime.Now)
-                            {
-                                Task.Factory.StartNew(() =>
-                                {
-                                    if (line.HourlyData.Count == 0)
-                                    {
-                                        return unitOfWork.FloutecHourlyDataRepository.GetAll(address, number);
-                                    }
-                                    else
-                                        return unitOfWork.FloutecHourlyDataRepository.Get(address, number, line.HourlyData.Last().DateCreated, DateTime.Now);
-                                },
-                                TaskCreationOptions.LongRunning)
-                                    .ContinueWith((readHourResult) =>
-                                    {
-                                        if (readHourResult.Exception == null)
-                                        {
-                                            Logger.Log(listLogMessages, "Опрос часовых данных нитки №" + number + " вычислителя с адресом " + address + " выполнен успешно", LogType.Success);
-                                        }
-                                        else
-                                        {
-                                            Logger.Log(listLogMessages, "Опрос часовых данных нитки №" + number + " вычислителя с адресом " + address + " выполнен с ошибками", LogType.Error);
-                                        }
-
-                                        return readHourResult.Result;
-                                    },
-                                    uiSyncContext)
-                                    .ContinueWith((readHourResult) =>
-                                    {
-                                        List<FloutecHourlyData> data = readHourResult.Result;
-                                        data.ForEach((d) =>
-                                        {
-                                            d.DateCreated = DateTime.Now;
-                                            d.DateModified = DateTime.Now;
-                                            d.FloutecMeasureLineId = line.Id;
-                                        });
-
-                                        SqlRepository<FloutecHourlyData> repo = new SqlRepository<FloutecHourlyData>();
-                                        
-
-                                        repo.Insert(data);
-                                        repo.Commit();
-                                        repo.Dispose();
-
-                                        SqlRepository<FloutecMeasureLine> repo2 = new SqlRepository<FloutecMeasureLine>();
-
-                                        var line2 = repo2.Get(line.Id);
-
-                                        line2.DateHourlyDataLastScanned = DateTime.Now;
-                                        repo2.Update(line2);
-                                        repo2.Commit();
-                                        repo2.Dispose();
-                                    })
-                                    .ContinueWith((insertHourResult) =>
-                                    {
-                                        if (insertHourResult.Exception == null)
-                                        {
-                                            Logger.Log(listLogMessages, "Сохранение часовых данных нитки №" + number + " вычислителя с адресом " + address + " выполнен успешно", LogType.Success);
-                                        }
-                                        else
-                                        {
-                                            Logger.Log(listLogMessages, "Сохранение часовых данных нитки №" + number + " вычислителя с адресом " + address + " выполнен с ошибками", LogType.Error);
-                                        }
-
-
-
-                                        scanActive.Remove(n_flonit);
-
-                                    },
-                                    uiSyncContext);
-                                }   
-                            }
-                        }
-                });        
-        }
-
-        #endregion
-
         private void menuRun_Click(object sender, EventArgs e)
         {
             isRunning = true;
@@ -951,5 +873,16 @@ namespace NGVSCAN.EXEC
 
             Logger.Log(listLogMessages, "Опрос остановлен", LogType.Info);
         }
+
+        #endregion
+
+        #region Выполнение бизнес-логики
+
+        private void scanner_Tick(object sender, EventArgs e)
+        {
+            Scanner.Process(listLogMessages, scanActive);       
+        }
+
+        #endregion
     }
 }
