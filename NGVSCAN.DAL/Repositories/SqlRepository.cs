@@ -1,4 +1,5 @@
 ﻿using NGVSCAN.CORE.Entities.Common;
+using NGVSCAN.DAL.Context;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,18 +11,27 @@ namespace NGVSCAN.DAL.Repositories
     /// Обобщённый репозиторий для доступа к данным СУБД MS SQL
     /// </summary>
     /// <typeparam name="Entity">Тип сущности</typeparam>
-    public class SqlRepository<Entity> where Entity : class, IEntity
+    public class SqlRepository<Entity> : IDisposable where Entity : class, IEntity
     {
         #region Конструктор и поля
 
         // Контекст доступа к данным
-        private readonly DbContext _context;
+        private readonly NGVSCANContext _context;
+
+        // Признак освобождения ресурсов
+        private bool _disposed;
 
         /// <summary>
         /// Конструктор репозитория доступа к данным СУБД MS SQL
         /// </summary>
         /// <param name="context"><see cref="DbContext"/>Контекст доступа к данным</param>
-        public SqlRepository(DbContext context)
+        public SqlRepository()
+        {
+            // Инициализация контекста доступа к данным
+            _context = new NGVSCANContext();
+        }
+
+        public SqlRepository(NGVSCANContext context)
         {
             // Инициализация контекста доступа к данным
             _context = context;
@@ -35,11 +45,11 @@ namespace NGVSCAN.DAL.Repositories
         /// Получение всех сущностей типа <see cref="Entity"/>
         /// </summary>
         /// <returns>Коллеция сущностей типа <see cref="Entity"/></returns>
-        public IEnumerable<Entity> GetAll()
+        public IQueryable<Entity> GetAll()
         {
             try
             {
-                return _context.Set<Entity>().ToList();
+                return _context.Set<Entity>();
             }
             catch (Exception)
             {
@@ -188,6 +198,43 @@ namespace NGVSCAN.DAL.Repositories
             {
                 throw;
             }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Сохранение изменений в контексте доступа к данным
+        /// </summary>
+        public void Commit()
+        {
+            _context.SaveChanges();
+        }
+
+        #region Освобождение ресурсов
+
+        /*
+            Реализация интерфейса IDisposable для автоматического освобождения ресурсов
+            контекста доступа к данным при использовании конструкции using
+        */
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+
+            _disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
         }
 
         #endregion

@@ -143,7 +143,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Settings.cs" />
-    <Compile Include="Scanner\FloutecHourlyDataScanner.cs" />
     <EmbeddedResource Include="Controls\FieldDetails.resx">
       <DependentUpon>FieldDetails.cs</DependentUpon>
     </EmbeddedResource>

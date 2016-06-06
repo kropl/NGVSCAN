@@ -28,7 +28,7 @@ namespace NGVSCAN.DAL.Repositories
             using (OleDbCommand command = connection.CreateCommand())
             {
                 connection.Open();
-                command.CommandText = "SELECT * FROM ident.DBF WHERE N_FLONIT=" + n_flonit;
+                command.CommandText = "SELECT DISTINCT * FROM ident.DBF WHERE N_FLONIT=" + n_flonit;
 
                 using (OleDbDataReader reader = command.ExecuteReader())
                 {
@@ -37,7 +37,7 @@ namespace NGVSCAN.DAL.Repositories
                     identData.FromIdentTable(reader);
                 }
 
-                command.CommandText = "SELECT * FROM stat.DBF WHERE N_FLONIT=" + n_flonit;
+                command.CommandText = "SELECT DISTINCT * FROM stat.DBF WHERE N_FLONIT=" + n_flonit;
 
                 using (OleDbDataReader reader = command.ExecuteReader())
                 {
