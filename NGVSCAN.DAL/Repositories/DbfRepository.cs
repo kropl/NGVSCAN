@@ -76,9 +76,10 @@ namespace NGVSCAN.DAL.Repositories
                 // Чтение данных идентификации
                 using (OleDbDataReader reader = _command.ExecuteReader())
                 {
-                    reader.Read();
-
-                    identData.FromIdentTable(reader);
+                    while (reader.Read())
+                    {
+                        identData.FromIdentTable(reader);
+                    }
                 }
             }
             catch(Exception ex)
@@ -94,9 +95,10 @@ namespace NGVSCAN.DAL.Repositories
                 // Чтение статических данных
                 using (OleDbDataReader reader = _command.ExecuteReader())
                 {
-                    reader.Read();
-
-                    identData.FromStatTable(reader);
+                    while (reader.Read())
+                    {
+                        identData.FromStatTable(reader);
+                    }
                 }
             }
             catch(Exception ex)
@@ -163,7 +165,7 @@ namespace NGVSCAN.DAL.Repositories
                 hourlyData.ForEach(h => h.N_FLONIT = n_flonit);
             }
 
-            return hourlyData.Where(h => h.DAT >= from && h.DAT <= to).ToList();
+            return hourlyData.Where(h => h.DAT > from && h.DAT <= to).ToList();
         }
 
         /// <summary>
