@@ -68,6 +68,8 @@ namespace NGVSCAN.DAL.Repositories
             int n_flonit = address * 10 + line;
             identData.N_FLONIT = n_flonit;
 
+            bool hasData = false;
+
             // Формирование строки соединения с таблицей данных идентификации
             _command.CommandText = "SELECT DISTINCT * FROM ident.DBF WHERE N_FLONIT=" + n_flonit;
 
@@ -80,6 +82,8 @@ namespace NGVSCAN.DAL.Repositories
                     {
                         identData.FromIdentTable(reader);
                     }
+
+                    hasData = reader.HasRows;
                 }
             }
             catch(Exception ex)
@@ -99,6 +103,8 @@ namespace NGVSCAN.DAL.Repositories
                     {
                         identData.FromStatTable(reader);
                     }
+
+                    hasData = hasData || reader.HasRows;
                 }
             }
             catch(Exception ex)
@@ -106,7 +112,10 @@ namespace NGVSCAN.DAL.Repositories
                 throw ex;
             }
 
-            return identData;
+            if (hasData)
+                return identData;
+            else
+                return null;
         }
 
         #endregion
