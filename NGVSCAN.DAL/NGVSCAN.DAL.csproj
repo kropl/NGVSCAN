@@ -53,6 +53,7 @@
     <Compile Include="EntityConfigurations\Common\EntityConfiguration.cs" />
     <Compile Include="EntityConfigurations\FloutecHourlyDataConfiguration.cs" />
     <Compile Include="EntityConfigurations\FloutecIdentDataConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecInstantDataConfiguration.cs" />
     <Compile Include="EntityConfigurations\ROC809MeasurePointConfiguration.cs" />
     <Compile Include="EntityConfigurations\FloutecMeasureLineConfiguration.cs" />
     <Compile Include="EntityConfigurations\MeasureLineConfiguration.cs" />
@@ -97,6 +98,10 @@
     <Compile Include="Migrations\201606031010302_SettedDateHourlyDataLastScannedNullable.Designer.cs">
       <DependentUpon>201606031010302_SettedDateHourlyDataLastScannedNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606081136136_AddedFloutecInstantDataEntity.cs" />
+    <Compile Include="Migrations\201606081136136_AddedFloutecInstantDataEntity.Designer.cs">
+      <DependentUpon>201606081136136_AddedFloutecInstantDataEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbfRepository.cs" />
@@ -139,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606031010302_SettedDateHourlyDataLastScannedNullable.resx">
       <DependentUpon>201606031010302_SettedDateHourlyDataLastScannedNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606081136136_AddedFloutecInstantDataEntity.resx">
+      <DependentUpon>201606081136136_AddedFloutecInstantDataEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

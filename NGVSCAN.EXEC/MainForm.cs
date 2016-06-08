@@ -38,11 +38,9 @@ namespace NGVSCAN.EXEC
         // Коллекция точек измерения вычислителей ROC809 данной установки
         private List<ROC809MeasurePoint> rocPoints;
 
-        private List<int> scanActive;
+        Timer scanTimer;
 
-        private bool isRunning = false;
-
-        Timer scanner;
+        Scanner scanner;
 
         // Конструктор формы
         public MainForm()
@@ -55,9 +53,9 @@ namespace NGVSCAN.EXEC
             // Обновление данных
             UpdateData();
 
-            scanActive = new List<int>();
+            scanTimer = new Timer();
 
-            scanner = new Timer();
+            scanner = new Scanner();
         }
 
         #endregion
@@ -225,8 +223,8 @@ namespace NGVSCAN.EXEC
             //backgroundWorker.RunWorkerAsync();
 
             
-            scanner.Interval = 30000;
-            scanner.Tick += scanner_Tick;
+            scanTimer.Interval = 30000;
+            scanTimer.Tick += scanner_Tick;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -848,25 +846,23 @@ namespace NGVSCAN.EXEC
 
         private void menuRun_Click(object sender, EventArgs e)
         {
-            isRunning = true;
             menuRun.Visible = false;
             menuStop.Visible = true;
 
             contextMenuEstimators.Enabled = false;
             menuSettings.Enabled = false;
 
-            scanner.Start();
+            scanTimer.Start();
 
             Logger.Log(listLogMessages, "Опрос запущен", LogType.Info);
         }
 
         private void menuStop_Click(object sender, EventArgs e)
         {
-            isRunning = false;
             menuStop.Visible = false;
             menuRun.Visible = true;
 
-            scanner.Stop();
+            scanTimer.Stop();
 
             contextMenuEstimators.Enabled = true;
             menuSettings.Enabled = true;
@@ -880,7 +876,7 @@ namespace NGVSCAN.EXEC
 
         private void scanner_Tick(object sender, EventArgs e)
         {
-            Scanner.Process(listLogMessages, scanActive);       
+            scanner.Process(listLogMessages);       
         }
 
         #endregion

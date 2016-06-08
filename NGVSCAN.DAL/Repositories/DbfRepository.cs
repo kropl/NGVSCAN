@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NGVSCAN.DAL.Repositories
 {
@@ -212,6 +210,45 @@ namespace NGVSCAN.DAL.Repositories
             hourlyData.ForEach(h => h.N_FLONIT = n_flonit);
 
             return hourlyData;
+        }
+
+        #endregion
+
+        #region Операции доступа к мгновенным данным
+
+        /// <summary>
+        /// Получение данных идентификации
+        /// </summary>
+        /// <param name="address">Адрес вычислителя</param>
+        /// <param name="line">Номер нитки</param>
+        /// <returns>Мгновенные данные</returns>
+        public FloutecInstantData GetInstantData(int address, int line)
+        {
+            // Создание объекта мгновенных данных
+            FloutecInstantData instantData = new FloutecInstantData();
+            int n_flonit = address * 10 + line;
+            instantData.N_FLONIT = n_flonit;
+
+            // Формирование строки соединения с таблицей мгновенных
+            _command.CommandText = "SELECT DISTINCT * FROM mgnov.DBF WHERE N_FLONIT=" + n_flonit;
+
+            try
+            {
+                // Чтение мгновенных
+                using (OleDbDataReader reader = _command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        instantData.FromInstTable(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return instantData;
         }
 
         #endregion

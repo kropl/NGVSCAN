@@ -73,7 +73,7 @@ namespace NGVSCAN.CORE.Entities
         public double DAVL { get; set; }
 
         /// <summary>
-        /// Признак константы среднего давления (* - константа, ' - ЗПЗ)
+        /// Признак константы среднего давления (* - константа)
         /// </summary>
         public string PD { get; set; }
 
@@ -83,7 +83,7 @@ namespace NGVSCAN.CORE.Entities
         public double TEMP { get; set; }
 
         /// <summary>
-        /// Признак константы средней температуры (* - константа, ' - ЗПЗ)
+        /// Признак константы средней температуры (* - константа)
         /// </summary>
         public string PT { get; set; }
 
@@ -93,7 +93,7 @@ namespace NGVSCAN.CORE.Entities
         public double PEREP { get; set; }
 
         /// <summary>
-        /// Признак константы среднего перепада давления (* - константа, ' - ЗПЗ)
+        /// Признак константы среднего перепада давления (* - константа)
         /// </summary>
         public string PP { get; set; }
 
@@ -103,7 +103,7 @@ namespace NGVSCAN.CORE.Entities
         public double PLOTN { get; set; }
 
         /// <summary>
-        /// Признак константы средней плотности (* - константа, ' - ЗПЗ)
+        /// Признак константы средней плотности (* - константа)
         /// </summary>
         public string PL { get; set; }
 

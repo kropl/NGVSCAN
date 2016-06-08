@@ -62,6 +62,11 @@ namespace NGVSCAN.DAL.Context
         /// </summary>
         public IDbSet<FloutecIdentData> FloutecIdentData { get; set; }
 
+        /// <summary>
+        /// Мгновенные данные вычислителей ФЛОУТЭК
+        /// </summary>
+        public IDbSet<FloutecInstantData> FloutecInstantData { get; set; }
+
         #endregion
 
         /// <summary>
@@ -90,6 +95,9 @@ namespace NGVSCAN.DAL.Context
 
             // Добавление конфигурации данных идентификации вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecIdentDataConfiguration());
+
+            // Добавление конфигурации мгновенных данных вычислителей ФЛОУТЭК
+            modelBuilder.Configurations.Add(new FloutecInstantDataConfiguration());
 
             // Добавление конфигурации вычислителей ROC809
             modelBuilder.Configurations.Add(new ROC809Configuration());

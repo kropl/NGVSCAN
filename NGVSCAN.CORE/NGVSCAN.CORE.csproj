@@ -47,6 +47,7 @@
     <Compile Include="Entities\Floutec.cs" />
     <Compile Include="Entities\FloutecHourlyData.cs" />
     <Compile Include="Entities\FloutecIdentData.cs" />
+    <Compile Include="Entities\FloutecInstantData.cs" />
     <Compile Include="Entities\FloutecMeasureLine.cs" />
     <Compile Include="Entities\MeasureLine.cs" />
     <Compile Include="Entities\ROC809.cs" />

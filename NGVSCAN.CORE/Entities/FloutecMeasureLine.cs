@@ -35,7 +35,7 @@ namespace NGVSCAN.CORE.Entities
         public SensorTypeEnum SensorType { get; set; }
 
         /// <summary>
-        /// Период опроса часовых данных, часов
+        /// Период опроса часовых данных, минут
         /// </summary>
         public int HourlyDataScanPeriod { get; set; }
 
@@ -43,6 +43,16 @@ namespace NGVSCAN.CORE.Entities
         /// Дата и время последнего опроса часовых данных
         /// </summary>
         public DateTime? DateHourlyDataLastScanned { get; set; }
+
+        /// <summary>
+        /// Период опроса мгновенных данных, минут
+        /// </summary>
+        public int InstantDataScanPeriod { get; set; }
+
+        /// <summary>
+        /// Дата и время последнего опроса мгновенных данных
+        /// </summary>
+        public DateTime? DateInstantDataLastScanned { get; set; }
 
         #endregion
 
@@ -57,6 +67,11 @@ namespace NGVSCAN.CORE.Entities
         /// Коллекция данных идентификации 
         /// </summary>
         public virtual ICollection<FloutecIdentData> IdentData { get; set; }
+
+        /// <summary>
+        /// Коллекция мгновенных данных 
+        /// </summary>
+        public virtual ICollection<FloutecInstantData> InstantData { get; set; }
 
         #endregion
     }

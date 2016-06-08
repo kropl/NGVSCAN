@@ -86,6 +86,7 @@ namespace NGVSCAN.EXEC.Popups
                 FloutecLine.Description = textDescription.Text;
                 FloutecLine.SensorType = (SensorTypeEnum)Enum.Parse(typeof(SensorTypeEnum), comboSensorTypes.SelectedItem.ToString());
                 FloutecLine.HourlyDataScanPeriod = (int)numericHourlyPeriod.Value;
+                FloutecLine.InstantDataScanPeriod = (int)numericInstantPeriod.Value;
 
                 DialogResult = DialogResult.OK;
 
@@ -111,6 +112,7 @@ namespace NGVSCAN.EXEC.Popups
                 textDescription.Text = FloutecLine.Description;
                 comboSensorTypes.SelectedItem = Enum.GetName(typeof(SensorTypeEnum), FloutecLine.SensorType);
                 numericHourlyPeriod.Value = FloutecLine.HourlyDataScanPeriod;
+                numericInstantPeriod.Value = FloutecLine.InstantDataScanPeriod;
             }
         }
     }
