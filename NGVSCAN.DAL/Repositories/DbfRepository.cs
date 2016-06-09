@@ -241,6 +241,9 @@ namespace NGVSCAN.DAL.Repositories
                     {
                         instantData.FromInstTable(reader);
                     }
+
+                    if (!reader.HasRows)
+                        return null;
                 }
             }
             catch (Exception ex)

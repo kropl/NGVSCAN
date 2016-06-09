@@ -17,9 +17,11 @@ namespace NGVSCAN.EXEC.Common
     {
         private Dictionary<string, bool> scanning;
 
+        private DateTime dateStartHourlyDataScan;
+        private DateTime dateStartInstantDataScan;
+
         public Scanner()
         {
-            scanning = new Dictionary<string, bool>();
         }
 
         /// <summary>
@@ -59,10 +61,6 @@ namespace NGVSCAN.EXEC.Common
                             // Для каждой нитки из списка ниток для опроса
                             foreach (FloutecMeasureLine line in mainTaskResult.Result)
                             {
-                                // Определение параметров нитки (адрес вычислителя, уникальный идентификатор)
-                                int address = ((Floutec)line.Estimator).Address;
-                                int n_flonit = address * 10 + line.Number;
-
                                 // Опрос нитки
                                 ProcessLine(line, uiSyncContext, log);
                             }
@@ -76,124 +74,28 @@ namespace NGVSCAN.EXEC.Common
             int address = ((Floutec)line.Estimator).Address;
             int n_flonit = address * 10 + line.Number;
 
-            if (!scanning[n_flonit.ToString() + "_hour"] &&
-                (!line.DateHourlyDataLastScanned.HasValue ||
-                    line.DateHourlyDataLastScanned.Value.AddMinutes(line.HourlyDataScanPeriod) <= DateTime.Now))
-            {
-                scanning[n_flonit.ToString() + "_hour"] = true;
+            bool timeToHourlyData = !line.DateHourlyDataLastScanned.HasValue || line.DateHourlyDataLastScanned.Value.AddMinutes(line.HourlyDataScanPeriod) <= DateTime.Now;
+            bool timeToInstantData = !line.DateInstantDataLastScanned.HasValue || line.DateInstantDataLastScanned.Value.AddMinutes(line.InstantDataScanPeriod) <= DateTime.Now;
 
+            if ((timeToHourlyData && !scanning[n_flonit.ToString() + "_hour"]) || (timeToInstantData && !scanning[n_flonit.ToString() + "_inst"]))
+            {
                 Task.Factory.StartNew(() => GetIdentData(line), TaskCreationOptions.LongRunning)
                     .ContinueWith((getIdentDataResult) =>
                     {
                         if (getIdentDataResult.Exception != null)
                         {
                             LogException(log, "Ошибка опроса данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, getIdentDataResult.Exception);
-                            scanning[n_flonit.ToString() + "_ident"] = false;
                             throw getIdentDataResult.Exception;
                         }
                         else
                             return getIdentDataResult.Result;
                     },
                     uiSyncContext)
-                        .ContinueWith((getIdentDataResult) => 
+                        .ContinueWith((getIdentDataLogResult) =>
                         {
-                            if (getIdentDataResult.Exception == null)
+                            if (getIdentDataLogResult.Exception == null)
                             {
-                                SaveIdentData(line, getIdentDataResult.Result);
-                                return true;
-                            }
-                            else
-                                return false;
-                        }, 
-                        TaskContinuationOptions.LongRunning)
-                            .ContinueWith((saveIdentDataResult) => 
-                            {
-                                if (saveIdentDataResult.Exception != null)
-                                {
-                                    LogException(log, "Ошибка сохранения данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveIdentDataResult.Exception);
-                                    scanning[n_flonit.ToString() + "_ident"] = false;
-                                }
-                                else
-                                {
-                                    if (saveIdentDataResult.Result)
-                                    {
-                                        Logger.Log(log, "Опрос данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", LogType.Success);
-                                        scanning[n_flonit.ToString() + "_ident"] = false;
-                                    }
-                                }
-                            }, 
-                            uiSyncContext)
-                                .ContinueWith((saveIdentDataResult) =>
-                                {
-                                    return GetHourlyData(line);
-                                }, 
-                                TaskContinuationOptions.LongRunning)
-                                    .ContinueWith((getHourlyDataResult) =>
-                                    {
-                                        if (getHourlyDataResult.Exception != null)
-                                        {
-                                            LogException(log, "Ошибка опроса часовых данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, getHourlyDataResult.Exception);
-                                            scanning[n_flonit.ToString() + "_hour"] = false;
-                                            throw getHourlyDataResult.Exception;
-                                        }
-                                        else
-                                            return getHourlyDataResult.Result;
-                                    },
-                                    uiSyncContext)
-                                        .ContinueWith((getHourlyDataResult) =>
-                                        {
-                                            if (getHourlyDataResult.Exception == null)
-                                            {
-                                                SaveHourlyData(line, getHourlyDataResult.Result);
-                                                return true;
-                                            }
-                                            else
-                                                return false;
-                                        }, 
-                                        TaskContinuationOptions.LongRunning)
-                                            .ContinueWith((saveHourlyDataResult) =>
-                                            {
-                                                if (saveHourlyDataResult.Exception != null)
-                                                {
-                                                    LogException(log, "Ошибка сохранения часовых данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveHourlyDataResult.Exception);
-                                                    scanning[n_flonit.ToString() + "_hour"] = false;
-                                                }
-                                                else
-                                                {
-                                                    if (saveHourlyDataResult.Result)
-                                                    {
-                                                        Logger.Log(log, "Опрос часовых данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", LogType.Success);
-                                                        scanning[n_flonit.ToString() + "_hour"] = false;
-                                                    }
-                                                }
-                                            },
-                                            uiSyncContext);
-            }
-
-            if (!scanning[n_flonit.ToString() + "_inst"] &&
-                (!line.DateInstantDataLastScanned.HasValue ||
-                    line.DateInstantDataLastScanned.Value.AddMinutes(line.InstantDataScanPeriod) <= DateTime.Now))
-            {
-                scanning[n_flonit.ToString() + "_inst"] = true;
-
-                Task.Factory.StartNew(() => GetIdentData(line), TaskCreationOptions.LongRunning)
-                    .ContinueWith((getIdentDataResult) =>
-                    {
-                        if (getIdentDataResult.Exception != null)
-                        {
-                            LogException(log, "Ошибка опроса данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, getIdentDataResult.Exception);
-                            scanning[n_flonit.ToString() + "_ident"] = false;
-                            throw getIdentDataResult.Exception;
-                        }
-                        else
-                            return getIdentDataResult.Result;
-                    },
-                    uiSyncContext)
-                        .ContinueWith((getIdentDataResult) =>
-                        {
-                            if (getIdentDataResult.Exception == null)
-                            {
-                                SaveIdentData(line, getIdentDataResult.Result);
+                                SaveIdentData(line, getIdentDataLogResult.Result);
                                 return true;
                             }
                             else
@@ -203,66 +105,91 @@ namespace NGVSCAN.EXEC.Common
                             .ContinueWith((saveIdentDataResult) =>
                             {
                                 if (saveIdentDataResult.Exception != null)
-                                {
                                     LogException(log, "Ошибка сохранения данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveIdentDataResult.Exception);
-                                    scanning[n_flonit.ToString() + "_ident"] = false;
-                                }
-                                else
-                                {
-                                    if (saveIdentDataResult.Result)
-                                    {
-                                        Logger.Log(log, "Опрос данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", LogType.Success);
-                                        scanning[n_flonit.ToString() + "_ident"] = false;
-                                    }
-                                }
+                                else if (saveIdentDataResult.Result)
+                                    Logger.Log(log, "Опрос данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", LogType.Success);
+
+                                scanning[n_flonit.ToString() + "_ident"] = false;
                             },
                             uiSyncContext)
-                                .ContinueWith((saveIdentDataResult) =>
+                                .ContinueWith((saveIdentDataLogResult) =>
                                 {
-                                    return GetInstantData(line);
-                                },
-                                TaskContinuationOptions.LongRunning)
-                                    .ContinueWith((getInstantDataResult) =>
+                                    if (timeToHourlyData && !scanning[n_flonit.ToString() + "_hour"])
                                     {
-                                        if (getInstantDataResult.Exception != null)
-                                        {
-                                            LogException(log, "Ошибка опроса мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, getInstantDataResult.Exception);
-                                            scanning[n_flonit.ToString() + "_inst"] = false;
-                                            throw getInstantDataResult.Exception;
-                                        }
-                                        else
-                                            return getInstantDataResult.Result;
-                                    },
-                                    uiSyncContext)
-                                        .ContinueWith((getInstantDataResult) =>
-                                        {
-                                            if (getInstantDataResult.Exception == null)
+                                        Task.Factory.StartNew(() => GetHourlyData(line), TaskCreationOptions.LongRunning)
+                                            .ContinueWith((getHourlyDataResult) =>
                                             {
-                                                SaveInstantData(line, getInstantDataResult.Result);
-                                                return true;
-                                            }
-                                            else
-                                                return false;
-                                        },
-                                        TaskContinuationOptions.LongRunning)
-                                            .ContinueWith((saveInstantDataResult) =>
-                                            {
-                                                if (saveInstantDataResult.Exception != null)
+                                                if (getHourlyDataResult.Exception != null)
                                                 {
-                                                    LogException(log, "Ошибка сохранения мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveInstantDataResult.Exception);
-                                                    scanning[n_flonit.ToString() + "_inst"] = false;
+                                                    LogException(log, "Ошибка опроса часовых данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, getHourlyDataResult.Exception);
+                                                    throw getHourlyDataResult.Exception;
                                                 }
                                                 else
-                                                {
-                                                    if (saveInstantDataResult.Result)
-                                                    {
-                                                        Logger.Log(log, "Опрос мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", LogType.Success);
-                                                        scanning[n_flonit.ToString() + "_inst"] = false;
-                                                    }
-                                                }
+                                                    return getHourlyDataResult.Result;
                                             },
-                                            uiSyncContext);
-            }
+                                            uiSyncContext)
+                                                .ContinueWith((getHourlyDataLogResult) => 
+                                                {
+                                                    if (getHourlyDataLogResult.Exception == null)
+                                                    {
+                                                        SaveHourlyData(line, getHourlyDataLogResult.Result);
+                                                        return true;
+                                                    }
+                                                    else
+                                                        return false;
+                                                },
+                                                TaskContinuationOptions.LongRunning)
+                                                    .ContinueWith((saveHourlyDataResult) => 
+                                                    {
+                                                        if (saveHourlyDataResult.Exception != null)
+                                                            LogException(log, "Ошибка сохранения часовых данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveHourlyDataResult.Exception);
+                                                        else if (saveHourlyDataResult.Result)
+                                                            Logger.Log(log, "Опрос часовых данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", LogType.Success);
+
+                                                        scanning[n_flonit.ToString() + "_hour"] = false;
+                                                    },
+                                                    uiSyncContext);
+                                    }
+
+                                    if (timeToInstantData && !scanning[n_flonit.ToString() + "_inst"])
+                                    {
+                                        Task.Factory.StartNew(() => GetInstantData(line), TaskCreationOptions.LongRunning)
+                                            .ContinueWith((getInstantDataResult) =>
+                                            {
+                                                if (getInstantDataResult.Exception != null)
+                                                {
+                                                    LogException(log, "Ошибка опроса мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, getInstantDataResult.Exception);
+                                                    throw getInstantDataResult.Exception;
+                                                }
+                                                else
+                                                    return getInstantDataResult.Result;
+                                            },
+                                            uiSyncContext)
+                                                .ContinueWith((getInstantDataLogResult) =>
+                                                {
+                                                    if (getInstantDataLogResult.Exception == null)
+                                                    {
+                                                        SaveInstantData(line, getInstantDataLogResult.Result);
+                                                        return true;
+                                                    }
+                                                    else
+                                                        return false;
+                                                },
+                                                TaskContinuationOptions.LongRunning)
+                                                    .ContinueWith((saveInstantDataResult) =>
+                                                    {
+                                                        if (saveInstantDataResult.Exception != null)
+                                                            LogException(log, "Ошибка сохранения мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveInstantDataResult.Exception);
+                                                        else if (saveInstantDataResult.Result)
+                                                            Logger.Log(log, "Опрос мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", LogType.Success);
+
+                                                        scanning[n_flonit.ToString() + "_inst"] = false;
+                                                    },
+                                                    uiSyncContext); ;
+                                    }
+                                },
+                                TaskContinuationOptions.LongRunning);
+            }         
         }
 
         private FloutecIdentData GetIdentData(FloutecMeasureLine line)
@@ -338,6 +265,8 @@ namespace NGVSCAN.EXEC.Common
         {
             int address = ((Floutec)line.Estimator).Address;
 
+            dateStartHourlyDataScan = DateTime.Now;
+
             List<FloutecHourlyData> hourlyData = new List<FloutecHourlyData>();
 
             try
@@ -381,11 +310,27 @@ namespace NGVSCAN.EXEC.Common
                     throw ex;
                 }
             }
+
+            try
+            {
+                using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
+                {
+                    FloutecMeasureLine existingLine = repo.Get(line.Id);
+                    existingLine.DateHourlyDataLastScanned = dateStartHourlyDataScan;
+                    repo.Update(existingLine);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private FloutecInstantData GetInstantData(FloutecMeasureLine line)
         {
             int address = ((Floutec)line.Estimator).Address;
+
+            dateStartInstantDataScan = DateTime.Now;
 
             FloutecInstantData instantData = new FloutecInstantData();
 
@@ -434,6 +379,20 @@ namespace NGVSCAN.EXEC.Common
                     throw ex;
                 }
             }
+
+            try
+            {
+                using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
+                {
+                    FloutecMeasureLine existingLine = repo.Get(line.Id);
+                    existingLine.DateInstantDataLastScanned = dateStartInstantDataScan;
+                    repo.Update(existingLine);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private List<FloutecMeasureLine> GetLinesForScanning()
@@ -452,15 +411,20 @@ namespace NGVSCAN.EXEC.Common
                     .Where(l => !l.IsDeleted && !l.Estimator.IsDeleted)
                     .ToList();
 
-                    lines.ForEach((l) =>
+                    if (scanning == null)
                     {
-                        int address = ((Floutec)l.Estimator).Address;
-                        int n_flonit = address * 10 + l.Number;
+                        scanning = new Dictionary<string, bool>();
 
-                        scanning.Add(n_flonit.ToString() + "_ident", false);
-                        scanning.Add(n_flonit.ToString() + "_inst", false);
-                        scanning.Add(n_flonit.ToString() + "_hour", false);
-                    });
+                        lines.ForEach((l) =>
+                        {
+                            int address = ((Floutec)l.Estimator).Address;
+                            int n_flonit = address * 10 + l.Number;
+
+                            scanning.Add(n_flonit.ToString() + "_ident", false);
+                            scanning.Add(n_flonit.ToString() + "_inst", false);
+                            scanning.Add(n_flonit.ToString() + "_hour", false);
+                        });
+                    }
 
                     return lines;
                 }
