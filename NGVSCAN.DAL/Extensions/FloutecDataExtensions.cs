@@ -1,4 +1,5 @@
 ﻿using NGVSCAN.CORE.Entities;
+using NGVSCAN.CORE.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
@@ -88,27 +89,21 @@ namespace NGVSCAN.DAL.Extensions
         /// <param name="reader"><see cref="OleDbDataReader"/></param>
         public static void FromHourTable(this List<FloutecHourlyData> hourlyData, OleDbDataReader reader)
         {
-            try
-            {
-                hourlyData.Add(new FloutecHourlyData
-                {
-                    DAT = DateTime.ParseExact(GetReaderValue(reader, "DAT", "").Trim(), datetimeFormats, new CultureInfo("en-US"), DateTimeStyles.None),
-                    DAT_END = DateTime.ParseExact(GetReaderValue(reader, "DAT_END", "").Trim(), datetimeFormats, new CultureInfo("en-US"), DateTimeStyles.None),
-                    RASX = GetReaderValue(reader, "RASX", 0.0),
-                    DAVL = GetReaderValue(reader, "DAVL", 0.0),
-                    PD = GetReaderValue(reader, "PD", ""),
-                    TEMP = GetReaderValue(reader, "TEMP", 0.0),
-                    PT = GetReaderValue(reader, "PT", ""),
-                    PEREP = GetReaderValue(reader, "PEREP", 0.0),
-                    PP = GetReaderValue(reader, "PP", ""),
-                    PLOTN = GetReaderValue(reader, "PLOTN", 0.0),
-                    PL = GetReaderValue(reader, "PL", "")
-                });
-            }
-            catch(Exception)
-            {
-                throw;
-            }
+                FloutecHourlyData data = new FloutecHourlyData();
+
+                data.DAT = DateTime.ParseExact(GetReaderValue(reader, "DAT", "").Trim(), datetimeFormats, new CultureInfo("en-US"), DateTimeStyles.None);
+                data.DAT_END = DateTime.ParseExact(GetReaderValue(reader, "DAT_END", "").Trim(), datetimeFormats, new CultureInfo("en-US"), DateTimeStyles.None);
+                data.RASX = GetReaderValue(reader, "RASX", 0.0);
+                data.DAVL = GetReaderValue(reader, "DAVL", 0.0);
+                data.PD = GetReaderValue(reader, "PD", "");
+                data.TEMP = GetReaderValue(reader, "TEMP", 0.0);
+                data.PT = GetReaderValue(reader, "PT", "");
+                data.PEREP = GetReaderValue(reader, "PEREP", 0.0);
+                data.PP = GetReaderValue(reader, "PP", "");
+                data.PLOTN = GetReaderValue(reader, "PLOTN", 0.0);
+                data.PL = GetReaderValue(reader, "PL", "");
+
+                hourlyData.Add(data);
         }
 
         #endregion
