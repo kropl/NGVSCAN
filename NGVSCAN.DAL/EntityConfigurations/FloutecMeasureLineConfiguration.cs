@@ -32,6 +32,12 @@ namespace NGVSCAN.DAL.EntityConfigurations
             // Линия измерения имеет отношение один-ко-многим с данными идентификации
             HasMany(m => m.IdentData).WithRequired(m => m.MeasureLine);
 
+            // Линия измерения имеет отношение один-ко-многим с мгновенными данными
+            HasMany(m => m.InstantData).WithRequired(m => m.MeasureLine);
+
+            // Линия измерения имеет отношение один-ко-многим с данными аварий
+            HasMany(m => m.AlarmData).WithRequired(m => m.MeasureLine);
+
             /*
                 Кофигурация имени таблицы для линий измерения вычислителей ФЛОУТЭК:
                 таким образом задаётся полиморфное отношение между абстрактной сущностью "Линия измерения" 

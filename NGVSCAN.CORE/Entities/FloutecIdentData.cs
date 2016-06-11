@@ -172,6 +172,11 @@ namespace NGVSCAN.CORE.Entities
         /// </summary>
         public double MAXRSCH { get; set; }
 
+        /// <summary>
+        /// Версия программного обеспечения
+        /// </summary>
+        public double TYPDAN { get; set; }
+
         #endregion
 
         #region Навигационные свойства

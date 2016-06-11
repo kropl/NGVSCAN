@@ -18,6 +18,12 @@ namespace NGVSCAN.CORE.Entities
 
             // Инициализация коллекции данных идентификации
             IdentData = new HashSet<FloutecIdentData>();
+
+            // Инициализация коллекции мгновенных данных
+            InstantData = new HashSet<FloutecInstantData>();
+
+            // Инициализация коллекции данных аварий
+            AlarmData = new HashSet<FloutecAlarmData>();
         }
 
         #endregion
@@ -72,6 +78,11 @@ namespace NGVSCAN.CORE.Entities
         /// Коллекция мгновенных данных 
         /// </summary>
         public virtual ICollection<FloutecInstantData> InstantData { get; set; }
+
+        /// <summary>
+        /// Коллекция данных аварий 
+        /// </summary>
+        public virtual ICollection<FloutecAlarmData> AlarmData { get; set; }
 
         #endregion
     }

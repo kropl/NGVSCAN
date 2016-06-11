@@ -38,6 +38,7 @@ namespace NGVSCAN.DAL.Extensions
             identData.NIZP = GetReaderValue(reader, "NIZP", 0.0);
             identData.VERXT = GetReaderValue(reader, "VERXT", 0.0);
             identData.NIZT = GetReaderValue(reader, "NIZT", 0.0);
+            identData.TYPDAN = GetReaderValue(reader, "TYPDAN", 0.0);
         }
 
         /// <summary>

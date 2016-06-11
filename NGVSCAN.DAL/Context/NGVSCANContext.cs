@@ -1,5 +1,7 @@
 ﻿using NGVSCAN.CORE.Entities;
+using NGVSCAN.CORE.Entities.Common;
 using NGVSCAN.DAL.EntityConfigurations;
+using NGVSCAN.DAL.EntityConfigurations.Common;
 using System.Data.Entity;
 
 namespace NGVSCAN.DAL.Context
@@ -13,7 +15,10 @@ namespace NGVSCAN.DAL.Context
         /// Конструктор по умолчанию
         /// NGVSCAN - название строки подключения, установленной в App.config
         /// </summary>
-        public NGVSCANContext() : base("NGVSCAN") { }
+        public NGVSCANContext() : base("NGVSCAN")
+        {
+            Database.SetInitializer(new NGVSCANInitializer());
+        }
 
         #region Наборы сущностей
 
@@ -67,6 +72,15 @@ namespace NGVSCAN.DAL.Context
         /// </summary>
         public IDbSet<FloutecInstantData> FloutecInstantData { get; set; }
 
+        /// <summary>
+        /// Данные аварий вычислителей ФЛОУТЭК
+        /// </summary>
+        public IDbSet<FloutecAlarmData> FloutecAlarmData { get; set; }
+
+        public IDbSet<FloutecParamsTypes> FloutecParamsTypes { get; set; }
+
+        public IDbSet<FloutecAlarmsTypes> FloutecAlarmsTypes { get; set; }
+
         #endregion
 
         /// <summary>
@@ -99,11 +113,18 @@ namespace NGVSCAN.DAL.Context
             // Добавление конфигурации мгновенных данных вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecInstantDataConfiguration());
 
+            // Добавление конфигурации данных аварий вычислителей ФЛОУТЭК
+            modelBuilder.Configurations.Add(new FloutecAlarmDataConfiguration());
+
             // Добавление конфигурации вычислителей ROC809
             modelBuilder.Configurations.Add(new ROC809Configuration());
 
             // Добавление конфигурации точек измерения вычислителей ROC809
             modelBuilder.Configurations.Add(new ROC809MeasurePointConfiguration());
+
+            modelBuilder.Configurations.Add(new FloutecParamsTypesConfiguration());
+
+            modelBuilder.Configurations.Add(new FloutecAlarmsTypesConfiguration());
         }
     }
 }

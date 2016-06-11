@@ -50,7 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\NGVSCANContext.cs" />
+    <Compile Include="Context\NGVSCANInitializer.cs" />
     <Compile Include="EntityConfigurations\Common\EntityConfiguration.cs" />
+    <Compile Include="EntityConfigurations\Common\FloutecAlarmsTypesConfiguration.cs" />
+    <Compile Include="EntityConfigurations\Common\FloutecParamsTypesConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecAlarmDataConfiguration.cs" />
     <Compile Include="EntityConfigurations\FloutecHourlyDataConfiguration.cs" />
     <Compile Include="EntityConfigurations\FloutecIdentDataConfiguration.cs" />
     <Compile Include="EntityConfigurations\FloutecInstantDataConfiguration.cs" />
@@ -110,6 +114,14 @@
     <Compile Include="Migrations\201606091313362_RemovedFloutecDataStatus.Designer.cs">
       <DependentUpon>201606091313362_RemovedFloutecDataStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606111156332_AddedFloutecAlarmData.cs" />
+    <Compile Include="Migrations\201606111156332_AddedFloutecAlarmData.Designer.cs">
+      <DependentUpon>201606111156332_AddedFloutecAlarmData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606111201030_AddedInitializer.cs" />
+    <Compile Include="Migrations\201606111201030_AddedInitializer.Designer.cs">
+      <DependentUpon>201606111201030_AddedInitializer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbfRepository.cs" />
@@ -161,6 +173,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606091313362_RemovedFloutecDataStatus.resx">
       <DependentUpon>201606091313362_RemovedFloutecDataStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606111156332_AddedFloutecAlarmData.resx">
+      <DependentUpon>201606111156332_AddedFloutecAlarmData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606111201030_AddedInitializer.resx">
+      <DependentUpon>201606111201030_AddedInitializer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

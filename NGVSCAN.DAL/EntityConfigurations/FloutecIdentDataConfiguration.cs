@@ -82,6 +82,9 @@ namespace NGVSCAN.DAL.EntityConfigurations
             // Свойство MAXRSCH данных идентификации - обязательно (не допускает значений NULL)
             Property(i => i.MAXRSCH).IsRequired();
 
+            // Свойство TYPDAN данных идентификации - обязательно (не допускает значений NULL)
+            Property(i => i.TYPDAN).IsRequired();
+
             // Задание названия таблицы
             ToTable("FloutecIdentData");
         }
