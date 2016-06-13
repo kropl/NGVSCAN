@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 
 namespace NGVSCAN.DAL.Extensions
 {
@@ -159,6 +160,363 @@ namespace NGVSCAN.DAL.Extensions
         public static bool IsEqual(this FloutecInstantData newData, FloutecInstantData exData)
         {
             return newData != null && exData != null && newData.DAT.Equals(exData.DAT);
+        }
+
+        #endregion
+
+        #region Методы расширения для FloutecAlarmData
+
+        public static void FromAvarTable(this List<FloutecAlarmData> alarmData, OleDbDataReader reader)
+        {
+            FloutecAlarmData data = new FloutecAlarmData();
+
+            data.DAT = DateTime.ParseExact(GetReaderValue(reader, "DAT", "").Trim(), datetimeFormats, new CultureInfo("en-US"), DateTimeStyles.None);
+            data.T_AVAR = GetReaderValue(reader, "T_AVAR", 0);
+            data.T_PARAM = GetReaderValue(reader, "T_PARAM", 0);
+            data.VAL = GetReaderValue(reader, "VAL", 0.0);
+
+            alarmData.Add(data);
+        }
+
+        #endregion
+
+        #region Методы расширения для FloutecInterData
+
+        public static void FromVmeshTable(this List<FloutecInterData> interData, OleDbDataReader reader)
+        {
+            FloutecInterData data = new FloutecInterData();
+
+            data.DAT = DateTime.ParseExact(GetReaderValue(reader, "DAT", "").Trim(), datetimeFormats, new CultureInfo("en-US"), DateTimeStyles.None);
+            data.CH_PAR = GetReaderValue(reader, "CH_PAR", 0);
+            data.GetValues(reader);
+
+            interData.Add(data);
+        }
+
+        private static void GetValues(this FloutecInterData data, OleDbDataReader reader)
+        {
+            byte bval11 = GetReaderValue(reader, "BVAL11", (byte)0);
+            byte bval12 = GetReaderValue(reader, "BVAL12", (byte)0);
+            byte bval13 = GetReaderValue(reader, "BVAL13", (byte)0);
+            byte bval14 = GetReaderValue(reader, "BVAL14", (byte)0);
+
+            byte bval21 = GetReaderValue(reader, "BVAL21", (byte)0);
+            byte bval22 = GetReaderValue(reader, "BVAL22", (byte)0);
+            byte bval23 = GetReaderValue(reader, "BVAL23", (byte)0);
+            byte bval24 = GetReaderValue(reader, "BVAL24", (byte)0);
+
+            if (data.CH_PAR == 0)
+            {
+                byte[] oldChars = new byte[] { bval11, bval12, bval13, bval14 };
+                byte[] newChars = new byte[] { bval21, bval22, bval23, bval24 };
+
+                data.VAL_OLD = Encoding.UTF8.GetString(oldChars);
+                data.VAL_NEW = Encoding.UTF8.GetString(newChars);
+            }
+            else if ((data.CH_PAR >= 1 && data.CH_PAR <= 11) || 
+                (data.CH_PAR >= 13 && data.CH_PAR <= 27) || 
+                (data.CH_PAR >= 33 && data.CH_PAR <= 37) || 
+                (data.CH_PAR >= 48 && data.CH_PAR <= 60) ||
+                data.CH_PAR == 129 || data.CH_PAR == 132 || data.CH_PAR == 138 ||
+                data.CH_PAR == 142 || data.CH_PAR == 143 ||
+                (data.CH_PAR >= 147 && data.CH_PAR <= 150) || 
+                (data.CH_PAR >= 153 && data.CH_PAR <= 177) ||
+                (data.CH_PAR >= 181 && data.CH_PAR <= 185))
+            {
+                data.VAL_OLD = GetReaderValue(reader, "SVAL1", 0.0).ToString();
+                data.VAL_NEW = GetReaderValue(reader, "SVAL2", 0.0).ToString();
+            }
+            else if (data.CH_PAR == 12)
+            {
+                if (bval11 == 0)
+                    data.VAL_OLD = "Угловой";
+                else if (bval11 == 1)
+                    data.VAL_OLD = "Фланцевый";
+                else
+                    data.VAL_OLD = "";
+
+                if (bval21 == 0)
+                    data.VAL_NEW = "Угловой";
+                else if (bval21 == 1)
+                    data.VAL_NEW = "Фланцевый";
+                else
+                    data.VAL_NEW = "";
+            }
+            else if (data.CH_PAR == 28 || data.CH_PAR == 29)
+            {
+                bool oldDayFormat = (bval12 & (1 << 6)) != 0;
+                bool newDayFormat = (bval22 & (1 << 6)) != 0;
+
+                if (bval11 > 0)
+                {
+                    if (!oldDayFormat)
+                    {
+                        if (bval13 == 1 || bval13 == 21)
+                            data.VAL_OLD = bval13.ToString() + " час ";
+                        else if ((bval13 >= 2 && bval13 <= 4) || (bval13 >= 22 && bval13 <= 24))
+                            data.VAL_OLD = bval13.ToString() + " часа ";
+                        else
+                            data.VAL_OLD = bval13.ToString() + " часов ";
+
+                        data.VAL_OLD = data.VAL_OLD + (bval12 >> 4).ToString() + "-го";
+
+                        switch (bval11)
+                        {
+                            case 1:
+                                data.VAL_OLD = data.VAL_OLD + " января";
+                                break;
+                            case 2:
+                                data.VAL_OLD = data.VAL_OLD + " февраля";
+                                break;
+                            case 3:
+                                data.VAL_OLD = data.VAL_OLD + " марта";
+                                break;
+                            case 4:
+                                data.VAL_OLD = data.VAL_OLD + " апреля";
+                                break;
+                            case 5:
+                                data.VAL_OLD = data.VAL_OLD + " мая";
+                                break;
+                            case 6:
+                                data.VAL_OLD = data.VAL_OLD + " июня";
+                                break;
+                            case 7:
+                                data.VAL_OLD = data.VAL_OLD + " июля";
+                                break;
+                            case 8:
+                                data.VAL_OLD = data.VAL_OLD + " августа";
+                                break;
+                            case 9:
+                                data.VAL_OLD = data.VAL_OLD + " сентября";
+                                break;
+                            case 10:
+                                data.VAL_OLD = data.VAL_OLD + " октября";
+                                break;
+                            case 11:
+                                data.VAL_OLD = data.VAL_OLD + " ноября";
+                                break;
+                            case 12:
+                                data.VAL_OLD = data.VAL_OLD + " декабря";
+                                break;
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else
+                    data.VAL_OLD = "Запрет перехода";
+
+                if (bval21 > 0)
+                {
+                    if (!newDayFormat)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else
+                    data.VAL_NEW = "Запрет перехода";
+
+            }
+            else if (data.CH_PAR == 30 || data.CH_PAR == 31)
+            {
+
+            }
+            else if (data.CH_PAR == 32 || data.CH_PAR == 46 || data.CH_PAR == 47
+                || data.CH_PAR == 130 || data.CH_PAR == 131 || 
+                (data.CH_PAR >= 186 && data.CH_PAR <= 188) || data.CH_PAR == 191 || data.CH_PAR == 192)
+            {
+                data.VAL_OLD = bval11.ToString();
+                data.VAL_NEW = bval21.ToString();
+            }
+            else if (data.CH_PAR >= 38 && data.CH_PAR <= 40) // Модели ?????
+            {
+                data.VAL_OLD = "";
+                data.VAL_NEW = "";
+            }
+            else if (data.CH_PAR == 41)
+            {
+                if (bval11 == 0)
+                    data.VAL_OLD = "кг/см2";
+                else if (bval11 == 1)
+                    data.VAL_OLD = "МПа";
+                else
+                    data.VAL_OLD = "";
+
+                if (bval21 == 0)
+                    data.VAL_NEW = "кг/см2";
+                else if (bval21 == 1)
+                    data.VAL_NEW = "МПа";
+                else
+                    data.VAL_NEW = "";
+            }
+            else if (data.CH_PAR == 42)
+            {
+                if (bval11 == 0)
+                    data.VAL_OLD = "кг/м2";
+                else if (bval11 == 1)
+                    data.VAL_OLD = "кПа";
+                else
+                    data.VAL_OLD = "";
+
+                if (bval21 == 0)
+                    data.VAL_NEW = "кг/м2";
+                else if (bval21 == 1)
+                    data.VAL_NEW = "кПа";
+                else
+                    data.VAL_NEW = "";
+            }
+            else if (data.CH_PAR == 43) // Ед. измерения атм. давления ?????
+            {
+                data.VAL_OLD = "";
+                data.VAL_NEW = "";
+            }
+            else if (data.CH_PAR == 44)
+            {
+                if (bval11 == 0)
+                    data.VAL_OLD = "Абсолютное";
+                else if (bval11 == 1)
+                    data.VAL_OLD = "Избыточное";
+                else
+                    data.VAL_OLD = "";
+
+                if (bval21 == 0)
+                    data.VAL_NEW = "Абсолютное";
+                else if (bval21 == 1)
+                    data.VAL_NEW = "Избыточное";
+                else
+                    data.VAL_NEW = "";
+            }
+            else if (data.CH_PAR == 45)
+            {
+                if (bval11 == 0)
+                    data.VAL_OLD = "Ненужный";
+                else if (bval11 == 1)
+                    data.VAL_OLD = "Необходимый";
+                else
+                    data.VAL_OLD = "";
+
+                if (bval21 == 0)
+                    data.VAL_NEW = "Ненужный";
+                else if (bval21 == 1)
+                    data.VAL_NEW = "Необходимый";
+                else
+                    data.VAL_NEW = "";
+            }
+            else if (data.CH_PAR >= 61 && data.CH_PAR <= 72)
+            {
+                if (bval11 == 0)
+                    data.VAL_OLD = "Выключено";
+                else if (bval11 == 1)
+                    data.VAL_OLD = "Включено";
+                else
+                    data.VAL_OLD = "";
+
+                if (bval21 == 0)
+                    data.VAL_NEW = "Выключено";
+                else if (bval21 == 1)
+                    data.VAL_NEW = "Включено";
+                else
+                    data.VAL_NEW = "";
+            }
+            else if (data.CH_PAR >= 61 && data.CH_PAR <= 72)
+            {
+                if (bval11 == 0)
+                    data.VAL_OLD = "Перепад";
+                else if (bval11 == 1)
+                    data.VAL_OLD = "Счётчик";
+                else
+                    data.VAL_OLD = "";
+
+                if (bval21 == 0)
+                    data.VAL_NEW = "Перепад";
+                else if (bval21 == 1)
+                    data.VAL_NEW = "Счётчик";
+                else
+                    data.VAL_NEW = "";
+            }
+            else if(data.CH_PAR == 128)
+            {
+                TimeSpan oldTime = new TimeSpan(bval11, bval12, bval13);
+                TimeSpan newTime = new TimeSpan(bval21, bval22, bval23);
+
+                data.VAL_OLD = oldTime.ToString("hh:mm:ss");
+                data.VAL_NEW = newTime.ToString("hh:mm:ss");
+            }
+            else if (data.CH_PAR == 144 || data.CH_PAR == 179)
+            {
+                data.T_PARAM = bval11;
+                data.VAL_OLD = "Измерение";
+                data.VAL_NEW = GetReaderValue(reader, "SVAL2", 0.0).ToString();
+            }
+            else if (data.CH_PAR == 145 || data.CH_PAR == 180)
+            {
+                data.T_PARAM = bval21;
+                data.VAL_NEW = "Измерение";
+                data.VAL_OLD = GetReaderValue(reader, "SVAL1", 0.0).ToString();
+            }
+            else if (data.CH_PAR == 146 || data.CH_PAR == 151)
+            {
+                data.T_PARAM = bval11;
+                data.VAL_NEW = "";
+                data.VAL_OLD = "";
+            }
+            else if (data.CH_PAR == 178)
+            {
+                data.T_PARAM = bval11;
+                data.VAL_NEW = "";
+                data.VAL_OLD = "HART команда " + bval21.ToString();
+            }
+            else if (data.CH_PAR == 189)
+            {
+                if (bval11 == 0)
+                    data.VAL_OLD = "LE,le";
+                else if (bval11 == 1)
+                    data.VAL_OLD = "LE,be";
+                else if (bval11 == 2)
+                    data.VAL_OLD = "BE,le";
+                else if (bval11 == 3)
+                    data.VAL_OLD = "BE,be";
+                else
+                    data.VAL_OLD = "";
+
+                if (bval21 == 0)
+                    data.VAL_NEW = "LE,le";
+                else if (bval21 == 1)
+                    data.VAL_NEW = "LE,be";
+                else if (bval21 == 2)
+                    data.VAL_NEW = "BE,le";
+                else if (bval21 == 3)
+                    data.VAL_NEW = "BE,be";
+                else
+                    data.VAL_NEW = "";
+            }
+            else if (data.CH_PAR == 190)
+            {
+                if (bval11 == 0)
+                    data.VAL_OLD = "ASCII";
+                else if (bval11 == 1)
+                    data.VAL_OLD = "RTU";
+                else
+                    data.VAL_OLD = "";
+
+                if (bval21 == 0)
+                    data.VAL_NEW = "ASCII";
+                else if (bval21 == 1)
+                    data.VAL_NEW = "RTU";
+                else
+                    data.VAL_NEW = "";
+            }
+            else
+            {
+                data.VAL_OLD = "";
+                data.VAL_NEW = "";
+            }
         }
 
         #endregion

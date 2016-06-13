@@ -454,13 +454,13 @@ namespace NGVSCAN.EXEC
                         floutec.DateCreated = DateTime.Now;
                         floutec.DateModified = DateTime.Now;
 
-                        field.Estimators.Add(floutec);
-
                         try
                         {
                             using (SqlRepository<Field> repo = new SqlRepository<Field>())
                             {
-                                repo.Update(field);
+                                Field existingField = repo.Get(field.Id);
+                                existingField.Estimators.Add(floutec);
+                                repo.Update(existingField);
                             }
                         }
                         catch(Exception ex)
@@ -587,13 +587,13 @@ namespace NGVSCAN.EXEC
                         line.DateCreated = DateTime.Now;
                         line.DateModified = DateTime.Now;
 
-                        selectedFloutec.MeasureLines.Add(line);
-
                         try
                         {
                             using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
                             {
-                                repo.Update(selectedFloutec);
+                                Floutec existingFloutec = repo.Get(selectedFloutec.Id);
+                                existingFloutec.MeasureLines.Add(line);
+                                repo.Update(existingFloutec);
                             }
                         }
                         catch (Exception ex)

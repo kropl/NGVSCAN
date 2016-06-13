@@ -4,34 +4,34 @@ using System;
 namespace NGVSCAN.CORE.Entities
 {
     /// <summary>
-    /// Описание сущности "Данные аварий вычислителя ФЛОУТЭК"
+    /// Описание сущности "Данные вмешательств вычислителя ФЛОУТЭК"
     /// </summary>
-    public class FloutecAlarmData : IEntity, IFloutecData
+    public class FloutecInterData : IEntity, IFloutecData
     {
         #region Общие свойства
 
         /// <summary>
-        /// Идентификатор (первичный ключ) данных аварий
+        /// Идентификатор (первичный ключ) данных вмешательств
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Дата и время создания (добавления) данных аварий
+        /// Дата и время создания (добавления) данных вмешательств
         /// </summary>
         public DateTime DateCreated { get; set; }
 
         /// <summary>
-        /// Дата и время изменения (модификации) данных аварий
+        /// Дата и время изменения (модификации) данных вмешательств
         /// </summary>
         public DateTime DateModified { get; set; }
 
         /// <summary>
-        /// Признак удаления данных аварий
+        /// Признак удаления данных вмешательств
         /// </summary>
         public bool IsDeleted { get; set; }
 
         /// <summary>
-        /// Дата и время удаления данных аварий
+        /// Дата и время удаления данных вмешательств
         /// </summary>
         public DateTime? DateDeleted { get; set; }
 
@@ -45,24 +45,29 @@ namespace NGVSCAN.CORE.Entities
         #region Свойства
 
         /// <summary>
-        /// Дата и время возникновения аварийной ситуации
+        /// Дата и время вмешательства
         /// </summary>
         public DateTime DAT { get; set; }
 
         /// <summary>
-        /// Тип аварии
+        /// Тип вмешательства
         /// </summary>
-        public int T_AVAR { get; set; }
+        public int CH_PAR { get; set; }
 
         /// <summary>
         /// Тип параметра
         /// </summary>
-        public int T_PARAM { get; set; }
+        public int? T_PARAM { get; set; }
 
         /// <summary>
-        /// Поле данных (объём с начала суток)
+        /// Старое значение
         /// </summary>
-        public double VAL { get; set; }
+        public string VAL_OLD { get; set; }
+
+        /// <summary>
+        /// Новое значение
+        /// </summary>
+        public string VAL_NEW { get; set; }
 
         #endregion
 

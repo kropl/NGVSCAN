@@ -256,6 +256,143 @@ namespace NGVSCAN.DAL.Repositories
 
         #endregion
 
+        #region Операции доступа к данным аварий
+
+        /// <summary>
+        /// Получение данных аварий за указанный период
+        /// </summary>
+        /// <param name="address">Адрес вычислителя</param>
+        /// <param name="line">Номер нитки</param>
+        /// <param name="from">Начало периода</param>
+        /// <param name="to">Конец периода</param>
+        /// <returns>Данные аварий</returns>
+        public List<FloutecAlarmData> GetAlarmData(int address, int line, DateTime from, DateTime to)
+        {
+            // Инициализация пустой коллекции данных аварий
+            List<FloutecAlarmData> alarmData = new List<FloutecAlarmData>();
+
+            // Если период указан верно, то ...
+            if (to >= from)
+            {
+                int n_flonit = address * 10 + line;
+
+                // Определение коллекции дней в указанном периоде
+                List<DateTime> days = new List<DateTime>();
+
+                for (var date = from; date <= to; date = date.AddDays(1))
+                {
+                    days.Add(date);
+                }
+
+                // Для каждого дня в указанном периоде
+                foreach (var date in days)
+                {
+                    // Формирование запроса
+                    _command.CommandText = "SELECT DISTINCT * FROM avar.DBF WHERE N_FLONIT=" + n_flonit + " AND DAT LIKE('" + date.ToString("dd.MM.yyyy") + " __:00:00" + "')";
+
+                    try
+                    {
+                        // Выполнение команды
+                        using (OleDbDataReader reader = _command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                alarmData.FromAvarTable(reader);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+
+                alarmData.ForEach(h => h.N_FLONIT = n_flonit);
+            }
+
+            return alarmData.Where(h => h.DAT > from && h.DAT <= to).ToList();
+        }
+
+        /// <summary>
+        /// Получение всех данных аварий
+        /// </summary>
+        /// <param name="address">Адрес вычислителя</param>
+        /// <param name="line">Номер нитки</param>
+        /// <returns>Все данные аварий</returns>
+        public List<FloutecAlarmData> GetAllAlarmData(int address, int line)
+        {
+            // Инициализация пустой коллекции данных
+            List<FloutecAlarmData> alarmData = new List<FloutecAlarmData>();
+
+            int n_flonit = address * 10 + line;
+
+            // Формирование запроса
+            _command.CommandText = "SELECT DISTINCT * FROM avar.DBF WHERE N_FLONIT=" + n_flonit;
+
+            try
+            {
+                // Выполнение команды
+                using (OleDbDataReader reader = _command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        alarmData.FromAvarTable(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            alarmData.ForEach(h => h.N_FLONIT = n_flonit);
+
+            return alarmData;
+        }
+
+        #endregion
+
+        #region Операции доступа к данным вмешательств
+
+        /// <summary>
+        /// Получение всех данных вмешательств
+        /// </summary>
+        /// <param name="address">Адрес вычислителя</param>
+        /// <param name="line">Номер нитки</param>
+        /// <returns>Все данные вмешательств</returns>
+        public List<FloutecInterData> GetAllInterData(int address, int line)
+        {
+            // Инициализация пустой коллекции данных
+            List<FloutecInterData> interData = new List<FloutecInterData>();
+
+            int n_flonit = address * 10 + line;
+
+            // Формирование запроса
+            _command.CommandText = "SELECT DISTINCT * FROM vmesh.DBF WHERE N_FLONIT=" + n_flonit;
+
+            try
+            {
+                // Выполнение команды
+                using (OleDbDataReader reader = _command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        interData.FromVmeshTable(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            interData.ForEach(h => h.N_FLONIT = n_flonit);
+
+            return interData;
+        }
+
+        #endregion
+
         #region Освобождение ресурсов
 
         /*

@@ -77,9 +77,25 @@ namespace NGVSCAN.DAL.Context
         /// </summary>
         public IDbSet<FloutecAlarmData> FloutecAlarmData { get; set; }
 
+        /// <summary>
+        /// Данные вмешательств вычислителей ФЛОУТЭК
+        /// </summary>
+        public IDbSet<FloutecInterData> FloutecInterData { get; set; }
+
+        /// <summary>
+        /// Коды параметров вычислителей ФЛОУТЭК
+        /// </summary>
         public IDbSet<FloutecParamsTypes> FloutecParamsTypes { get; set; }
 
+        /// <summary>
+        /// Коды аварий вычислителей ФЛОУТЭК
+        /// </summary>
         public IDbSet<FloutecAlarmsTypes> FloutecAlarmsTypes { get; set; }
+
+        /// <summary>
+        /// Коды вмешательств вычислителей ФЛОУТЭК
+        /// </summary>
+        public IDbSet<FloutecIntersTypes> FloutecIntersTypes { get; set; }
 
         #endregion
 
@@ -116,15 +132,23 @@ namespace NGVSCAN.DAL.Context
             // Добавление конфигурации данных аварий вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecAlarmDataConfiguration());
 
+            // Добавление конфигурации данных вмешательств вычислителей ФЛОУТЭК
+            modelBuilder.Configurations.Add(new FloutecInterDataConfiguration());
+
             // Добавление конфигурации вычислителей ROC809
             modelBuilder.Configurations.Add(new ROC809Configuration());
 
             // Добавление конфигурации точек измерения вычислителей ROC809
             modelBuilder.Configurations.Add(new ROC809MeasurePointConfiguration());
 
+            // Добавление конфигурации кодов параметров вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecParamsTypesConfiguration());
 
+            // Добавление конфигурации кодов аварий вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecAlarmsTypesConfiguration());
+
+            // Добавление конфигурации кодов вмешательств вычислителей ФЛОУТЭК
+            modelBuilder.Configurations.Add(new FloutecIntersTypesConfiguration());
         }
     }
 }

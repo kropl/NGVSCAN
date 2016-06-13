@@ -1,6 +1,6 @@
 ﻿namespace NGVSCAN.CORE.Entities.Common
 {
-    public class FloutecAlarmsTypes
+    public class FloutecIntersTypes
     {
         public int Code { get; set; }
 

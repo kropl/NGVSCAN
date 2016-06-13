@@ -24,6 +24,9 @@ namespace NGVSCAN.CORE.Entities
 
             // Инициализация коллекции данных аварий
             AlarmData = new HashSet<FloutecAlarmData>();
+
+            // Инициализация коллекции данных вмешательств
+            InterData = new HashSet<FloutecInterData>();
         }
 
         #endregion
@@ -83,6 +86,11 @@ namespace NGVSCAN.CORE.Entities
         /// Коллекция данных аварий 
         /// </summary>
         public virtual ICollection<FloutecAlarmData> AlarmData { get; set; }
+
+        /// <summary>
+        /// Коллекция данных вмешательств 
+        /// </summary>
+        public virtual ICollection<FloutecInterData> InterData { get; set; }
 
         #endregion
     }

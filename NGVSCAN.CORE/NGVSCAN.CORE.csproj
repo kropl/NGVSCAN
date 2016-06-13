@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Common\FloutecIntersTypes.cs" />
     <Compile Include="Entities\Common\FloutecAlarmsTypes.cs" />
     <Compile Include="Entities\Common\IEntity.cs" />
     <Compile Include="Entities\Common\IFloutecData.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Entities\FloutecHourlyData.cs" />
     <Compile Include="Entities\FloutecIdentData.cs" />
     <Compile Include="Entities\FloutecInstantData.cs" />
+    <Compile Include="Entities\FloutecInterData.cs" />
     <Compile Include="Entities\FloutecMeasureLine.cs" />
     <Compile Include="Entities\Common\FloutecParamsTypes.cs" />
     <Compile Include="Entities\MeasureLine.cs" />
