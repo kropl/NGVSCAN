@@ -52,21 +52,22 @@
     <Compile Include="Context\NGVSCANContext.cs" />
     <Compile Include="Context\NGVSCANInitializer.cs" />
     <Compile Include="EntityConfigurations\Common\EntityConfiguration.cs" />
-    <Compile Include="EntityConfigurations\Common\FloutecIntersTypesConfiguration.cs" />
-    <Compile Include="EntityConfigurations\Common\FloutecAlarmsTypesConfiguration.cs" />
-    <Compile Include="EntityConfigurations\Common\FloutecParamsTypesConfiguration.cs" />
-    <Compile Include="EntityConfigurations\FloutecInterDataConfiguration.cs" />
-    <Compile Include="EntityConfigurations\FloutecAlarmDataConfiguration.cs" />
-    <Compile Include="EntityConfigurations\FloutecHourlyDataConfiguration.cs" />
-    <Compile Include="EntityConfigurations\FloutecIdentDataConfiguration.cs" />
-    <Compile Include="EntityConfigurations\FloutecInstantDataConfiguration.cs" />
-    <Compile Include="EntityConfigurations\ROC809MeasurePointConfiguration.cs" />
-    <Compile Include="EntityConfigurations\FloutecMeasureLineConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\Common\FloutecIntersTypesConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\Common\FloutecAlarmsTypesConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\Common\FloutecSensorsTypesConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\Common\FloutecParamsTypesConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\FloutecInterDataConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\FloutecAlarmDataConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\FloutecHourlyDataConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\FloutecIdentDataConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\FloutecInstantDataConfiguration.cs" />
+    <Compile Include="EntityConfigurations\ROC809sConfigurations\ROC809MeasurePointConfiguration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\FloutecMeasureLineConfiguration.cs" />
     <Compile Include="EntityConfigurations\MeasureLineConfiguration.cs" />
     <Compile Include="EntityConfigurations\EstimatorConfiguration.cs" />
     <Compile Include="EntityConfigurations\FieldConfiguration.cs" />
-    <Compile Include="EntityConfigurations\FloutecConfiguration.cs" />
-    <Compile Include="EntityConfigurations\ROC809Configuration.cs" />
+    <Compile Include="EntityConfigurations\FloutecsConfigurations\FloutecConfiguration.cs" />
+    <Compile Include="EntityConfigurations\ROC809sConfigurations\ROC809Configuration.cs" />
     <Compile Include="Extensions\FloutecDataExtensions.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.Designer.cs">
@@ -132,6 +133,10 @@
     <Compile Include="Migrations\201606131144230_AddedFloutecInterData.Designer.cs">
       <DependentUpon>201606131144230_AddedFloutecInterData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606141344123_AddedFloutecSensorsTypes.cs" />
+    <Compile Include="Migrations\201606141344123_AddedFloutecSensorsTypes.Designer.cs">
+      <DependentUpon>201606141344123_AddedFloutecSensorsTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbfRepository.cs" />
@@ -196,6 +201,12 @@
     <EmbeddedResource Include="Migrations\201606131144230_AddedFloutecInterData.resx">
       <DependentUpon>201606131144230_AddedFloutecInterData.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606141344123_AddedFloutecSensorsTypes.resx">
+      <DependentUpon>201606141344123_AddedFloutecSensorsTypes.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EntityConfigurations\ROC809sConfigurations\Common\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

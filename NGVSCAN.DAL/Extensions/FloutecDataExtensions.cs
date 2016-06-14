@@ -1,9 +1,7 @@
-﻿using NGVSCAN.CORE.Entities;
-using NGVSCAN.CORE.Entities.Common;
+﻿using NGVSCAN.CORE.Entities.Floutecs;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
-using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 

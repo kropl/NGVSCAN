@@ -1,7 +1,8 @@
 ﻿using NGVSCAN.CORE.Entities.Common;
+using NGVSCAN.CORE.Entities.Floutecs.Common;
 using System;
 
-namespace NGVSCAN.CORE.Entities
+namespace NGVSCAN.CORE.Entities.Floutecs
 {
     /// <summary>
     /// Описание сущности "Данные вмешательств вычислителя ФЛОУТЭК"

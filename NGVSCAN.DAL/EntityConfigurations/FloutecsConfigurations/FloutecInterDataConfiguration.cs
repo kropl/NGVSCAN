@@ -1,10 +1,16 @@
-﻿using NGVSCAN.CORE.Entities;
+﻿using NGVSCAN.CORE.Entities.Floutecs;
 using NGVSCAN.DAL.EntityConfigurations.Common;
 
-namespace NGVSCAN.DAL.EntityConfigurations
+namespace NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations
 {
+    /// <summary>
+    /// Конфигурация сущности "Данные вмешательств вычислителя ФЛОУТЭК"
+    /// </summary>
     public class FloutecInterDataConfiguration : EntityConfiguration<FloutecInterData>
     {
+        /// <summary>
+        /// Конфигурация сущности "Данные вмешательств вычислителя ФЛОУТЭК"
+        /// </summary>
         public FloutecInterDataConfiguration()
         {
             Property(i => i.N_FLONIT).IsRequired();

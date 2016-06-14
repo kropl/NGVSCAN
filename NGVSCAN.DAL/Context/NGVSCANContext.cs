@@ -1,7 +1,10 @@
 ﻿using NGVSCAN.CORE.Entities;
-using NGVSCAN.CORE.Entities.Common;
+using NGVSCAN.CORE.Entities.Floutecs;
+using NGVSCAN.CORE.Entities.Floutecs.Common;
 using NGVSCAN.DAL.EntityConfigurations;
-using NGVSCAN.DAL.EntityConfigurations.Common;
+using NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations;
+using NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations.Common;
+using NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations;
 using System.Data.Common;
 using System.Data.Entity;
 
@@ -13,16 +16,22 @@ namespace NGVSCAN.DAL.Context
     public class NGVSCANContext : DbContext
     {
         /// <summary>
-        /// Конструктор по умолчанию
-        /// NGVSCAN - название строки подключения, установленной в App.config
+        /// Контекст сохранённых данных опроса вычислителей
+        /// Строка подключения установлена в App.config
         /// </summary>
         public NGVSCANContext() : base("NGVSCAN")
         {
+            // Инициализация базы данных при создании
             Database.SetInitializer(new NGVSCANInitializer());
         }
 
-        public NGVSCANContext(DbConnection connection) : base(connection, true)
+        /// <summary>
+        /// Контекст сохранённых данных опроса вычислителей
+        /// </summary>
+        /// <param name="connection">Соединение с базой данных</param>
+        public NGVSCANContext(DbConnection connection) : base(connection, false)
         {
+            // Инициализация базы данных при создании
             Database.SetInitializer(new NGVSCANInitializer());
         }
 
@@ -103,58 +112,34 @@ namespace NGVSCAN.DAL.Context
         /// </summary>
         public IDbSet<FloutecIntersTypes> FloutecIntersTypes { get; set; }
 
+        /// <summary>
+        /// Типы датчиков вычислителей ФЛОУТЭК
+        /// </summary>
+        public IDbSet<FloutecSensorsTypes> FloutecSensorsTypes { get; set; }
+
         #endregion
 
-        /// <summary>
-        /// Конфигурирование базы данных при создании
-        /// </summary>
-        /// <param name="modelBuilder"><see cref="DbModelBuilder"/></param>
+        // Конфигурирование базы данных при создании
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            // Добавление конфигурации установок
+            // Добавление конфигураций
+
             modelBuilder.Configurations.Add(new FieldConfiguration());
-
-            // Добавление конфигурации вычислителей
             modelBuilder.Configurations.Add(new EstimatorConfiguration());
-
-            // Добавление конфигурации линий измерения
             modelBuilder.Configurations.Add(new MeasureLineConfiguration());
-
-            // Добавление конфигурации вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecConfiguration());
-
-            // Добавление конфигурации линий измерения вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecMeasureLineConfiguration());
-
-            // Добавление конфигурации часовых данных вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecHourlyDataConfiguration());
-
-            // Добавление конфигурации данных идентификации вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecIdentDataConfiguration());
-
-            // Добавление конфигурации мгновенных данных вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecInstantDataConfiguration());
-
-            // Добавление конфигурации данных аварий вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecAlarmDataConfiguration());
-
-            // Добавление конфигурации данных вмешательств вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecInterDataConfiguration());
-
-            // Добавление конфигурации вычислителей ROC809
             modelBuilder.Configurations.Add(new ROC809Configuration());
-
-            // Добавление конфигурации точек измерения вычислителей ROC809
             modelBuilder.Configurations.Add(new ROC809MeasurePointConfiguration());
-
-            // Добавление конфигурации кодов параметров вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecParamsTypesConfiguration());
-
-            // Добавление конфигурации кодов аварий вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecAlarmsTypesConfiguration());
-
-            // Добавление конфигурации кодов вмешательств вычислителей ФЛОУТЭК
             modelBuilder.Configurations.Add(new FloutecIntersTypesConfiguration());
+            modelBuilder.Configurations.Add(new FloutecSensorsTypesConfiguration());
         }
     }
 }

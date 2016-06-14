@@ -1,8 +1,7 @@
-﻿using NGVSCAN.CORE.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace NGVSCAN.CORE.Entities
+namespace NGVSCAN.CORE.Entities.Floutecs
 {
     /// <summary>
     /// Описание сущности "Линия измерения вычислителя ФЛОУТЭК"
@@ -39,9 +38,9 @@ namespace NGVSCAN.CORE.Entities
         public int Number { get; set; }
 
         /// <summary>
-        /// Тип датчика: <see cref="SensorTypeEnum"/>
+        /// Тип датчика
         /// </summary>
-        public SensorTypeEnum SensorType { get; set; }
+        public int SensorType { get; set; }
 
         /// <summary>
         /// Период опроса часовых данных, минут

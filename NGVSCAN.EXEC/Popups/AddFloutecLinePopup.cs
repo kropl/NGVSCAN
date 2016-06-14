@@ -1,5 +1,4 @@
-﻿using NGVSCAN.CORE.Entities;
-using NGVSCAN.CORE.Enums;
+﻿using NGVSCAN.CORE.Entities.Floutecs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +18,7 @@ namespace NGVSCAN.EXEC.Popups
         {
             InitializeComponent();
 
-            comboSensorTypes.Items.AddRange(Enum.GetNames(typeof(SensorTypeEnum)));
+            comboSensorTypes.Items.AddRange(new string[] { "Диафрагма", "Счётчик", "Массовый расходомер" });
         }
 
         private void buttonAddFloutec_Click(object sender, EventArgs e)
@@ -84,7 +83,7 @@ namespace NGVSCAN.EXEC.Popups
                 FloutecLine.Number = (int)numericNumber.Value;
                 FloutecLine.Name = textName.Text;
                 FloutecLine.Description = textDescription.Text;
-                FloutecLine.SensorType = (SensorTypeEnum)Enum.Parse(typeof(SensorTypeEnum), comboSensorTypes.SelectedItem.ToString());
+                FloutecLine.SensorType = comboSensorTypes.SelectedIndex + 1;
                 FloutecLine.HourlyDataScanPeriod = (int)numericHourlyPeriod.Value;
                 FloutecLine.InstantDataScanPeriod = (int)numericInstantPeriod.Value;
 
@@ -110,7 +109,7 @@ namespace NGVSCAN.EXEC.Popups
                 numericNumber.Value = FloutecLine.Number;
                 textName.Text = FloutecLine.Name;
                 textDescription.Text = FloutecLine.Description;
-                comboSensorTypes.SelectedItem = Enum.GetName(typeof(SensorTypeEnum), FloutecLine.SensorType);
+                comboSensorTypes.SelectedIndex = FloutecLine.SensorType - 1;
                 numericHourlyPeriod.Value = FloutecLine.HourlyDataScanPeriod;
                 numericInstantPeriod.Value = FloutecLine.InstantDataScanPeriod;
             }

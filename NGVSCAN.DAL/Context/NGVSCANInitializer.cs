@@ -1,16 +1,21 @@
 ﻿using NGVSCAN.CORE.Entities;
-using NGVSCAN.CORE.Entities.Common;
+using NGVSCAN.CORE.Entities.Floutecs.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace NGVSCAN.DAL.Context
 {
+    /// <summary>
+    /// Инициализация базы данных при создании
+    /// </summary>
     public class NGVSCANInitializer : CreateDatabaseIfNotExists<NGVSCANContext>
     {
         protected override void Seed(NGVSCANContext context)
         {
-            IList<FloutecParamsTypes> paramsTypes = new List<FloutecParamsTypes>();
+            #region Инициализация типов параметров для вычислителей ФЛОУТЭК
+
+            List<FloutecParamsTypes> paramsTypes = new List<FloutecParamsTypes>();
 
             paramsTypes.Add(new FloutecParamsTypes() { Code = 0, Param = "Д", Description = "Давление" });
             paramsTypes.Add(new FloutecParamsTypes() { Code = 1, Param = "Т", Description = "Температура" });
@@ -26,12 +31,13 @@ namespace NGVSCAN.DAL.Context
             paramsTypes.Add(new FloutecParamsTypes() { Code = 40, Param = "С", Description = "Счётчик" });
             paramsTypes.Add(new FloutecParamsTypes() { Code = 42, Param = "Р,Т,П", Description = "Расход, температура, плотность" });
 
-            foreach (FloutecParamsTypes param in paramsTypes)
-            {
-                context.FloutecParamsTypes.Add(param);
-            }
+            paramsTypes.ForEach((p) => { context.FloutecParamsTypes.Add(p); });
 
-            IList<FloutecAlarmsTypes> alarmsTypes = new List<FloutecAlarmsTypes>();
+            #endregion
+
+            #region Инициализация типов аварий для вычислителей ФЛОУТЭК
+
+            List<FloutecAlarmsTypes> alarmsTypes = new List<FloutecAlarmsTypes>();
 
             alarmsTypes.Add(new FloutecAlarmsTypes() { Code = 0, Description = "Опрос в норме, конец замены предыдущим значением", Description_45 = "Опрос в норме, конец замены предыдущим значением" });
             alarmsTypes.Add(new FloutecAlarmsTypes() { Code = 128, Description = "Опрос не в норме, начало замены предыдущим значением", Description_45 = "Опрос не в норме, начало замены предыдущим значением" });
@@ -169,12 +175,13 @@ namespace NGVSCAN.DAL.Context
             alarmsTypes.Add(new FloutecAlarmsTypes() { Code = 163, Description = "Изменено смещение в канале", Description_45 = "Изменено смещение в канале" });
             alarmsTypes.Add(new FloutecAlarmsTypes() { Code = 169, Description = "", Description_45 = "Изменены параметры АЦП" });
 
-            foreach (FloutecAlarmsTypes alarmType in alarmsTypes)
-            {
-                context.FloutecAlarmsTypes.Add(alarmType);
-            }
+            alarmsTypes.ForEach((a) => { context.FloutecAlarmsTypes.Add(a); });
 
-            IList<FloutecIntersTypes> intersTypes = new List<FloutecIntersTypes>();
+            #endregion
+
+            #region Инициализация типов вмешательств для вычислителей ФЛОУТЭК
+
+            List<FloutecIntersTypes> intersTypes = new List<FloutecIntersTypes>();
 
             intersTypes.Add(new FloutecIntersTypes() { Code = 0, Description = "Наименование трубопровода", Description_45 = "Наименование трубопровода" });
             intersTypes.Add(new FloutecIntersTypes() { Code = 1, Description = "Плотность, кг/м3", Description_45 = "Плотность, кг/м3" });
@@ -322,21 +329,33 @@ namespace NGVSCAN.DAL.Context
             intersTypes.Add(new FloutecIntersTypes() { Code = 204, Description = "Объём газа на 1 импульс для импульсного выхода №2, м3", Description_45 = "" });
             intersTypes.Add(new FloutecIntersTypes() { Code = 205, Description = "Объём газа на 1 импульс для импульсного выхода №3, м3", Description_45 = "" });
 
-            foreach (FloutecIntersTypes interType in intersTypes)
-            {
-                context.FloutecIntersTypes.Add(interType);
-            }
+            intersTypes.ForEach((i) => { context.FloutecIntersTypes.Add(i); });
 
-            IList<Field> fields = new List<Field>();
+            #endregion
+
+            #region Инициализация типов датчиков для вычислителей ФЛОУТЭК
+
+            List<FloutecSensorsTypes> sensorsTypes = new List<FloutecSensorsTypes>();
+
+            sensorsTypes.Add(new FloutecSensorsTypes() { Code = 1, Name = "Диафрагма" });
+            sensorsTypes.Add(new FloutecSensorsTypes() { Code = 2, Name = "Счётчик" });
+            sensorsTypes.Add(new FloutecSensorsTypes() { Code = 3, Name = "Массовый расходомер" });
+
+            sensorsTypes.ForEach((s) => { context.FloutecSensorsTypes.Add(s); });
+
+            #endregion
+
+            #region Инициализация установок
+
+            List<Field> fields = new List<Field>();
 
             fields.Add(new Field() { DateCreated = DateTime.Now, DateModified = DateTime.Now, IsDeleted = false, Id = 1, Name = "SEM-SRV", Description = "УКПГ Семиренки" });
             fields.Add(new Field() { DateCreated = DateTime.Now, DateModified = DateTime.Now, IsDeleted = false, Id = 2, Name = "OLEF-SRV", Description = "УППГ Олефировка" });
             fields.Add(new Field() { DateCreated = DateTime.Now, DateModified = DateTime.Now, IsDeleted = false, Id = 2, Name = "MACH-SRV", Description = "УПГ Мачухи" });
 
-            foreach (Field field in fields)
-            {
-                context.Fields.Add(field);
-            }
+            fields.ForEach((f) => { context.Fields.Add(f); });
+
+            #endregion
 
             base.Seed(context);
         }

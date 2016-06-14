@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.groupAddFloutec = new System.Windows.Forms.GroupBox();
+            this.numericInstantPeriod = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.numericHourlyPeriod = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
@@ -46,13 +49,10 @@
             this.textName = new System.Windows.Forms.TextBox();
             this.buttonAddFloutec = new System.Windows.Forms.Button();
             this.buttonCancelAddFloutec = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.numericInstantPeriod = new System.Windows.Forms.NumericUpDown();
             this.groupAddFloutec.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericInstantPeriod)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericHourlyPeriod)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericNumber)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericInstantPeriod)).BeginInit();
             this.SuspendLayout();
             // 
             // groupAddFloutec
@@ -82,6 +82,46 @@
             this.groupAddFloutec.TabStop = false;
             this.groupAddFloutec.Text = "Свойства";
             // 
+            // numericInstantPeriod
+            // 
+            this.numericInstantPeriod.Location = new System.Drawing.Point(151, 208);
+            this.numericInstantPeriod.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.numericInstantPeriod.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericInstantPeriod.Name = "numericInstantPeriod";
+            this.numericInstantPeriod.Size = new System.Drawing.Size(143, 20);
+            this.numericInstantPeriod.TabIndex = 4;
+            this.numericInstantPeriod.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 218);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(138, 13);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "мгновенных данных, мин.";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(7, 205);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(84, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "Период опроса";
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -106,7 +146,7 @@
             0});
             this.numericHourlyPeriod.Name = "numericHourlyPeriod";
             this.numericHourlyPeriod.Size = new System.Drawing.Size(143, 20);
-            this.numericHourlyPeriod.TabIndex = 14;
+            this.numericHourlyPeriod.TabIndex = 3;
             this.numericHourlyPeriod.Value = new decimal(new int[] {
             1,
             0,
@@ -159,7 +199,7 @@
             this.comboSensorTypes.Location = new System.Drawing.Point(151, 75);
             this.comboSensorTypes.Name = "comboSensorTypes";
             this.comboSensorTypes.Size = new System.Drawing.Size(143, 21);
-            this.comboSensorTypes.TabIndex = 9;
+            this.comboSensorTypes.TabIndex = 1;
             // 
             // labelDescriptionError
             // 
@@ -207,7 +247,7 @@
             0});
             this.numericNumber.Name = "numericNumber";
             this.numericNumber.Size = new System.Drawing.Size(143, 20);
-            this.numericNumber.TabIndex = 4;
+            this.numericNumber.TabIndex = 0;
             this.numericNumber.Value = new decimal(new int[] {
             1,
             0,
@@ -247,14 +287,14 @@
             this.textName.MaxLength = 25;
             this.textName.Name = "textName";
             this.textName.Size = new System.Drawing.Size(143, 20);
-            this.textName.TabIndex = 0;
+            this.textName.TabIndex = 2;
             // 
             // buttonAddFloutec
             // 
             this.buttonAddFloutec.Location = new System.Drawing.Point(156, 336);
             this.buttonAddFloutec.Name = "buttonAddFloutec";
             this.buttonAddFloutec.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddFloutec.TabIndex = 1;
+            this.buttonAddFloutec.TabIndex = 6;
             this.buttonAddFloutec.Text = "Сохранить";
             this.buttonAddFloutec.UseVisualStyleBackColor = true;
             this.buttonAddFloutec.Click += new System.EventHandler(this.buttonAddFloutec_Click);
@@ -264,50 +304,10 @@
             this.buttonCancelAddFloutec.Location = new System.Drawing.Point(237, 336);
             this.buttonCancelAddFloutec.Name = "buttonCancelAddFloutec";
             this.buttonCancelAddFloutec.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancelAddFloutec.TabIndex = 2;
+            this.buttonCancelAddFloutec.TabIndex = 7;
             this.buttonCancelAddFloutec.Text = "Отмена";
             this.buttonCancelAddFloutec.UseVisualStyleBackColor = true;
             this.buttonCancelAddFloutec.Click += new System.EventHandler(this.buttonCancelAddFloutec_Click);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(7, 205);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(84, 13);
-            this.label6.TabIndex = 17;
-            this.label6.Text = "Период опроса";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(7, 218);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(138, 13);
-            this.label8.TabIndex = 18;
-            this.label8.Text = "мгновенных данных, мин.";
-            // 
-            // numericInstantPeriod
-            // 
-            this.numericInstantPeriod.Location = new System.Drawing.Point(151, 208);
-            this.numericInstantPeriod.Maximum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.numericInstantPeriod.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericInstantPeriod.Name = "numericInstantPeriod";
-            this.numericInstantPeriod.Size = new System.Drawing.Size(143, 20);
-            this.numericInstantPeriod.TabIndex = 19;
-            this.numericInstantPeriod.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // AddFloutecLinePopup
             // 
@@ -323,13 +323,13 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(340, 410);
             this.Name = "AddFloutecLinePopup";
-            this.Text = "form";
+            this.Text = "Добавление нитки для вычислителя ФЛОУТЭК";
             this.Load += new System.EventHandler(this.AddFloutecLinePopup_Load);
             this.groupAddFloutec.ResumeLayout(false);
             this.groupAddFloutec.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericInstantPeriod)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericHourlyPeriod)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericNumber)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericInstantPeriod)).EndInit();
             this.ResumeLayout(false);
 
         }

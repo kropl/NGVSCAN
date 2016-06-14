@@ -1,15 +1,16 @@
-﻿using NGVSCAN.CORE.Entities;
+﻿using NGVSCAN.CORE.Entities.Floutecs;
 using NGVSCAN.DAL.EntityConfigurations.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NGVSCAN.DAL.EntityConfigurations
+namespace NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations
 {
+    /// <summary>
+    /// Конфигурация сущности "Данные аварий вычислителя ФЛОУТЭК"
+    /// </summary>
     public class FloutecAlarmDataConfiguration : EntityConfiguration<FloutecAlarmData>
     {
+        /// <summary>
+        /// Конфигурация сущности "Данные аварий вычислителя ФЛОУТЭК"
+        /// </summary>
         public FloutecAlarmDataConfiguration()
         {
             Property(a => a.N_FLONIT).IsRequired();

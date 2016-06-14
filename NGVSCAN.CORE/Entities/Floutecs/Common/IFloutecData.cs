@@ -1,4 +1,4 @@
-﻿namespace NGVSCAN.CORE.Entities.Common
+﻿namespace NGVSCAN.CORE.Entities.Floutecs.Common
 {
     /// <summary>
     /// Интерфейс общего содержания сущностей записей данных для вычислителя ФЛОУТЭК

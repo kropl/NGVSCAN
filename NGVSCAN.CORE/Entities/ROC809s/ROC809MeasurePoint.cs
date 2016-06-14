@@ -5,10 +5,6 @@
     /// </summary>
     public class ROC809MeasurePoint : MeasureLine
     {
-        #region Конструктор и поля
-
-        #endregion
-
         #region Свойства
 
         /// <summary>

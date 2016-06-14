@@ -1,4 +1,4 @@
-﻿namespace NGVSCAN.CORE.Entities
+﻿namespace NGVSCAN.CORE.Entities.Floutecs
 {
     /// <summary>
     /// Описание сущности "Вычислитель ФЛОУТЭК"

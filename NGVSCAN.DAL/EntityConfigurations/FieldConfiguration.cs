@@ -9,19 +9,12 @@ namespace NGVSCAN.DAL.EntityConfigurations
     public class FieldConfiguration : EntityConfiguration<Field>
     {
         /// <summary>
-        /// Конструктор по умолчанию конфигурации установок
+        /// Конфигурация сущности "Установка"
         /// </summary>
         public FieldConfiguration()
         {
-            // Свойство Name установки - обязательно (не допускает значений NULL), 
-            // максимальная длина строки - 25 символов
             Property(f => f.Name).IsRequired().HasMaxLength(25);
-
-            // Свойство Description установки - обязательно (не допускает значений NULL), 
-            // максимальная длина строки - 200 символов
             Property(f => f.Description).IsRequired().HasMaxLength(200);
-
-            // Установка имеет отношение один-ко-многим с вычислителями
             HasMany(f => f.Estimators).WithRequired(e => e.Field);
         }
     }

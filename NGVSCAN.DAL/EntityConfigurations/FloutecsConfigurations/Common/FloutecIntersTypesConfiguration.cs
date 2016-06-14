@@ -1,11 +1,17 @@
-﻿using NGVSCAN.CORE.Entities.Common;
+﻿using NGVSCAN.CORE.Entities.Floutecs.Common;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
-namespace NGVSCAN.DAL.EntityConfigurations.Common
+namespace NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations.Common
 {
+    /// <summary>
+    /// Конфигурация типов вмешательств вычислителей ФЛОУТЭК
+    /// </summary>
     public class FloutecIntersTypesConfiguration : EntityTypeConfiguration<FloutecIntersTypes>
     {
+        /// <summary>
+        /// Конфигурация типов вмешательств вычислителей ФЛОУТЭК
+        /// </summary>
         public FloutecIntersTypesConfiguration()
         {
             HasKey(p => p.Code);

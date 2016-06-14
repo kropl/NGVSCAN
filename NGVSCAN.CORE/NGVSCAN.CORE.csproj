@@ -40,25 +40,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Common\FloutecIntersTypes.cs" />
-    <Compile Include="Entities\Common\FloutecAlarmsTypes.cs" />
+    <Compile Include="Entities\Floutecs\Common\FloutecIntersTypes.cs" />
+    <Compile Include="Entities\Floutecs\Common\FloutecAlarmsTypes.cs" />
     <Compile Include="Entities\Common\IEntity.cs" />
-    <Compile Include="Entities\Common\IFloutecData.cs" />
+    <Compile Include="Entities\Floutecs\Common\IFloutecData.cs" />
     <Compile Include="Entities\Estimator.cs" />
     <Compile Include="Entities\Field.cs" />
-    <Compile Include="Entities\Floutec.cs" />
-    <Compile Include="Entities\FloutecAlarmData.cs" />
-    <Compile Include="Entities\FloutecHourlyData.cs" />
-    <Compile Include="Entities\FloutecIdentData.cs" />
-    <Compile Include="Entities\FloutecInstantData.cs" />
-    <Compile Include="Entities\FloutecInterData.cs" />
-    <Compile Include="Entities\FloutecMeasureLine.cs" />
-    <Compile Include="Entities\Common\FloutecParamsTypes.cs" />
+    <Compile Include="Entities\Floutecs\Floutec.cs" />
+    <Compile Include="Entities\Floutecs\FloutecAlarmData.cs" />
+    <Compile Include="Entities\Floutecs\FloutecHourlyData.cs" />
+    <Compile Include="Entities\Floutecs\FloutecIdentData.cs" />
+    <Compile Include="Entities\Floutecs\FloutecInstantData.cs" />
+    <Compile Include="Entities\Floutecs\FloutecInterData.cs" />
+    <Compile Include="Entities\Floutecs\FloutecMeasureLine.cs" />
+    <Compile Include="Entities\Floutecs\Common\FloutecParamsTypes.cs" />
     <Compile Include="Entities\MeasureLine.cs" />
-    <Compile Include="Entities\ROC809.cs" />
-    <Compile Include="Entities\ROC809MeasurePoint.cs" />
-    <Compile Include="Enums\SensorTypeEnum.cs" />
+    <Compile Include="Entities\ROC809s\ROC809.cs" />
+    <Compile Include="Entities\ROC809s\ROC809MeasurePoint.cs" />
+    <Compile Include="Entities\Floutecs\Common\FloutecSensorsTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\ROC809s\Common\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

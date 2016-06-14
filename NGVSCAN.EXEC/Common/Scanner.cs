@@ -1,4 +1,5 @@
 ﻿using NGVSCAN.CORE.Entities;
+using NGVSCAN.CORE.Entities.Floutecs;
 using NGVSCAN.DAL.Extensions;
 using NGVSCAN.DAL.Repositories;
 using System;

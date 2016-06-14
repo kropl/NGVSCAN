@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NGVSCAN.CORE.Entities;
+using NGVSCAN.CORE.Entities.Floutecs;
 
 namespace NGVSCAN.EXEC.Controls
 {

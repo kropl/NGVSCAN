@@ -1,4 +1,5 @@
 ﻿using NGVSCAN.CORE.Entities;
+using NGVSCAN.CORE.Entities.Floutecs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

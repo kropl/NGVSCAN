@@ -9,16 +9,11 @@ namespace NGVSCAN.DAL.EntityConfigurations
     public class MeasureLineConfiguration : EntityConfiguration<MeasureLine>
     {
         /// <summary>
-        /// Конструктор по умолчанию конфигурации линии измерения
+        /// Конфигурация сущности "Линия измерения"
         /// </summary>
         public MeasureLineConfiguration()
         {
-            // Свойство Name линии измерения - обязательно (не допускает значений NULL), 
-            // максимальная длина строки - 25 символов
             Property(m => m.Name).IsRequired().HasMaxLength(25);
-
-            // Свойство Description измерения - обязательно (не допускает значений NULL), 
-            // максимальная длина строки - 200 символов
             Property(m => m.Description).IsRequired().HasMaxLength(200);
         }
     }

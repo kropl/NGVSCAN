@@ -102,7 +102,7 @@
             this.textDescription.Multiline = true;
             this.textDescription.Name = "textDescription";
             this.textDescription.Size = new System.Drawing.Size(176, 54);
-            this.textDescription.TabIndex = 5;
+            this.textDescription.TabIndex = 2;
             // 
             // numericAddress
             // 
@@ -119,7 +119,7 @@
             0});
             this.numericAddress.Name = "numericAddress";
             this.numericAddress.Size = new System.Drawing.Size(113, 20);
-            this.numericAddress.TabIndex = 4;
+            this.numericAddress.TabIndex = 0;
             this.numericAddress.Value = new decimal(new int[] {
             1,
             0,
@@ -159,14 +159,14 @@
             this.textName.MaxLength = 25;
             this.textName.Name = "textName";
             this.textName.Size = new System.Drawing.Size(176, 20);
-            this.textName.TabIndex = 0;
+            this.textName.TabIndex = 1;
             // 
             // buttonAddFloutec
             // 
             this.buttonAddFloutec.Location = new System.Drawing.Point(116, 206);
             this.buttonAddFloutec.Name = "buttonAddFloutec";
             this.buttonAddFloutec.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddFloutec.TabIndex = 1;
+            this.buttonAddFloutec.TabIndex = 3;
             this.buttonAddFloutec.Text = "Сохранить";
             this.buttonAddFloutec.UseVisualStyleBackColor = true;
             this.buttonAddFloutec.Click += new System.EventHandler(this.buttonAddFloutec_Click);
@@ -176,7 +176,7 @@
             this.buttonCancelAddFloutec.Location = new System.Drawing.Point(197, 206);
             this.buttonCancelAddFloutec.Name = "buttonCancelAddFloutec";
             this.buttonCancelAddFloutec.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancelAddFloutec.TabIndex = 2;
+            this.buttonCancelAddFloutec.TabIndex = 4;
             this.buttonCancelAddFloutec.Text = "Отмена";
             this.buttonCancelAddFloutec.UseVisualStyleBackColor = true;
             this.buttonCancelAddFloutec.Click += new System.EventHandler(this.buttonCancelAddFloutec_Click);

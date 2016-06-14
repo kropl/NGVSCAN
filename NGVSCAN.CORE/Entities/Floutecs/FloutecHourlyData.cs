@@ -1,21 +1,14 @@
 ﻿using NGVSCAN.CORE.Entities.Common;
+using NGVSCAN.CORE.Entities.Floutecs.Common;
 using System;
 
-namespace NGVSCAN.CORE.Entities
+namespace NGVSCAN.CORE.Entities.Floutecs
 {
     /// <summary>
     /// Описание сущности "Часовые данные вычислителя ФЛОУТЭК"
     /// </summary>
     public class FloutecHourlyData : IEntity, IFloutecData
     {
-        #region Конструктор и поля
-
-        public FloutecHourlyData()
-        {
-        }
-
-        #endregion
-
         #region Общие свойства
 
         /// <summary>

@@ -1,21 +1,14 @@
 ﻿using NGVSCAN.CORE.Entities.Common;
+using NGVSCAN.CORE.Entities.Floutecs.Common;
 using System;
 
-namespace NGVSCAN.CORE.Entities
+namespace NGVSCAN.CORE.Entities.Floutecs
 {
     /// <summary>
     /// Описание сущности "Данные идентификации вычислителя ФЛОУТЭК"
     /// </summary>
     public class FloutecIdentData : IEntity, IFloutecData
     {
-        #region Конструктор и поля
-
-        public FloutecIdentData()
-        {
-        }
-
-        #endregion
-
         #region Общие свойства
 
         /// <summary>

@@ -27,18 +27,83 @@ namespace NGVSCAN.EXEC.Popups
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
+            if(string.IsNullOrEmpty(textServerName.Text))
+            {
+                labelServerNameError.Text = "Укажите имя текущего сервера";
+                labelServerNameError.Visible = true;
+            }
+            else
+            {
+                labelServerNameError.Visible = false;
+            }
 
-            Settings.DbfTablesPath = labelDbfTablesPath.Text;
-            Settings.ServerName = textServerName.Text;
-            Settings.SqlDatabaseName = textSqlDatabaseName.Text;
-            Settings.SqlServerPath = textSqlServerPath.Text;
-            Settings.SqlUserName = textSqlUserName.Text;
-            Settings.SqlUserPassword = textSqlUserPassword.Text;
+            if (string.IsNullOrEmpty(textSqlServerPath.Text))
+            {
+                labelSqlServerPathError.Text = "Укажите имя сервера БД SQL";
+                labelSqlServerPathError.Visible = true;
+            }
+            else
+            {
+                labelSqlServerPathError.Visible = false;
+            }
 
-            Settings.Save();
+            if (string.IsNullOrEmpty(textSqlDatabaseName.Text))
+            {
+                labelSqlDatabaseNameError.Text = "Укажите название БД SQL";
+                labelSqlDatabaseNameError.Visible = true;
+            }
+            else
+            {
+                labelSqlDatabaseNameError.Visible = false;
+            }
 
-            Close();
+            if (string.IsNullOrEmpty(labelDbfTablesPath.Text))
+            {
+                labelDbfTablesPathError.Text = "Укажите путь к таблицам DBF";
+                labelDbfTablesPathError.Visible = true;
+            }
+            else
+            {
+                labelDbfTablesPathError.Visible = false;
+            }
+
+            if (string.IsNullOrEmpty(textSqlUserName.Text) & !string.IsNullOrEmpty(textSqlUserPassword.Text))
+            {
+                labelSqlUserNameError.Text = "Укажите имя пользователя БД SQL";
+                labelSqlUserNameError.Visible = true;
+            }
+            else
+            {
+                labelSqlUserNameError.Visible = false;
+            }
+
+            if (string.IsNullOrEmpty(textSqlUserPassword.Text) & !string.IsNullOrEmpty(textSqlUserName.Text))
+            {
+                labelSqlUserPasswordError.Text = "Укажите пароль пользователя БД SQL";
+                labelSqlUserPasswordError.Visible = true;
+            }
+            else
+            {
+                labelSqlUserPasswordError.Visible = false;
+            }
+
+            if (!labelServerNameError.Visible && !labelSqlServerPathError.Visible &&
+                !labelSqlDatabaseNameError.Visible && !labelDbfTablesPathError.Visible &&
+                !labelSqlUserNameError.Visible && !labelSqlUserPasswordError.Visible)
+            {
+                DialogResult = DialogResult.OK;
+
+                Settings.DbfTablesPath = labelDbfTablesPath.Text;
+                Settings.ServerName = textServerName.Text;
+                Settings.SqlDatabaseName = textSqlDatabaseName.Text;
+                Settings.SqlServerPath = textSqlServerPath.Text;
+                Settings.SqlUserName = textSqlUserName.Text;
+                Settings.SqlUserPassword = textSqlUserPassword.Text;
+
+                Settings.Save();
+
+                Close();
+            }
         }
 
         private void buttonOpenDirDialogue_Click(object sender, EventArgs e)
