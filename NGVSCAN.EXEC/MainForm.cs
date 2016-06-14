@@ -7,11 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.Entity;
-using System.Diagnostics;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NGVSCAN.EXEC
@@ -38,6 +36,8 @@ namespace NGVSCAN.EXEC
         // Коллекция точек измерения вычислителей ROC809 данной установки
         private List<ROC809MeasurePoint> rocPoints;
 
+        private SqlConnection sqlConnection;
+
         Timer scanTimer;
 
         Scanner scanner;
@@ -50,17 +50,36 @@ namespace NGVSCAN.EXEC
             // Инициализация содержимого формы
             InitializeComponent();
 
+            InitializeSqlConnection();
+
             // Обновление данных
             UpdateData();
 
             scanTimer = new Timer();
 
-            scanner = new Scanner();
+            scanner = new Scanner(sqlConnection);
         }
 
         #endregion
 
         #region Вспомогательные методы
+
+        private void InitializeSqlConnection()
+        {
+            SqlConnectionStringBuilder sb = new SqlConnectionStringBuilder();
+            sb.DataSource = Settings.SqlServerPath;
+            sb.InitialCatalog = Settings.SqlDatabaseName;
+            if (string.IsNullOrEmpty(Settings.SqlUserName) || string.IsNullOrEmpty(Settings.SqlUserPassword))
+                sb.IntegratedSecurity = true;
+            else
+            {
+                sb.UserID = Settings.SqlUserName;
+                sb.Password = Settings.SqlUserPassword;
+            }
+            sb.MultipleActiveResultSets = true;
+
+            sqlConnection = new SqlConnection(sb.ToString());
+        }
 
         /// <summary>
         /// Обновление данных
@@ -69,10 +88,9 @@ namespace NGVSCAN.EXEC
         {
             try
             {
-                using (SqlRepository<Field> repo = new SqlRepository<Field>())
+                using (SqlRepository<Field> repo = new SqlRepository<Field>(sqlConnection))
                 {
                     // Инициализация установки
-                    // FAKE        !!! Имя установки задано жёстко временно !!!
                     field = repo.GetAll().Where(f => f.Name.Equals(Settings.ServerName)).SingleOrDefault();
 
                     // Если установка была определена ...
@@ -104,6 +122,10 @@ namespace NGVSCAN.EXEC
                                 rocPoints.AddRange(r.MeasureLines.Select(p => p as ROC809MeasurePoint).ToList());
                             });
                         }
+                    }
+                    else
+                    {
+                        Logger.Log(listLogMessages, "Указанная установка отсутствует в базе данных", LogType.Error);
                     }
                 }
             }
@@ -229,8 +251,6 @@ namespace NGVSCAN.EXEC
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            backgroundWorker.CancelAsync();
-            backgroundWorker.Dispose();
         }
 
         // Событие открытия контекстного меню дерева объектов на закладке вычислителей ФЛОУТЭК
@@ -456,7 +476,7 @@ namespace NGVSCAN.EXEC
 
                         try
                         {
-                            using (SqlRepository<Field> repo = new SqlRepository<Field>())
+                            using (SqlRepository<Field> repo = new SqlRepository<Field>(sqlConnection))
                             {
                                 Field existingField = repo.Get(field.Id);
                                 existingField.Estimators.Add(floutec);
@@ -503,7 +523,7 @@ namespace NGVSCAN.EXEC
 
                             try
                             {
-                                using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
+                                using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>(sqlConnection))
                                 {
                                     repo.Update(selectedFloutec);
                                 }
@@ -546,7 +566,7 @@ namespace NGVSCAN.EXEC
 
                             try
                             {
-                                using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
+                                using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(sqlConnection))
                                 {
                                     repo.Update(selectedFloutecLine);
                                 }
@@ -589,7 +609,7 @@ namespace NGVSCAN.EXEC
 
                         try
                         {
-                            using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
+                            using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>(sqlConnection))
                             {
                                 Floutec existingFloutec = repo.Get(selectedFloutec.Id);
                                 existingFloutec.MeasureLines.Add(line);
@@ -635,7 +655,7 @@ namespace NGVSCAN.EXEC
                             {
                                 try
                                 {
-                                    using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
+                                    using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>(sqlConnection))
                                     {
                                         repo.Delete(selectedFloutec.Id);
                                     }
@@ -667,7 +687,7 @@ namespace NGVSCAN.EXEC
 
                                 try
                                 {
-                                    using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
+                                    using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>(sqlConnection))
                                     {
                                         repo.Update(selectedFloutec);
                                     }
@@ -708,7 +728,7 @@ namespace NGVSCAN.EXEC
                             {
                                 try
                                 {
-                                    using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
+                                    using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(sqlConnection))
                                     {
                                         repo.Delete(selectedFloutecLine.Id);
                                     }
@@ -740,7 +760,7 @@ namespace NGVSCAN.EXEC
 
                                 try
                                 {
-                                    using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
+                                    using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(sqlConnection))
                                     {
                                         repo.Update(selectedFloutecLine);
                                     }
@@ -774,7 +794,7 @@ namespace NGVSCAN.EXEC
 
                         try
                         {
-                            using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>())
+                            using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>(sqlConnection))
                             {
                                 repo.Update(selectedFloutec);
                             }
@@ -803,7 +823,7 @@ namespace NGVSCAN.EXEC
 
                         try
                         {
-                            using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>())
+                            using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(sqlConnection))
                             {
                                 repo.Update(selectedFloutecLine);
                             }
@@ -834,6 +854,11 @@ namespace NGVSCAN.EXEC
             if (dialogResult == DialogResult.OK)
             {
                 Logger.Log(listLogMessages, "Были изменены настройки", LogType.Info);
+
+                InitializeSqlConnection();
+                UpdateData();
+                FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                scanner = new Scanner(sqlConnection);
             }
         }
 
@@ -868,7 +893,7 @@ namespace NGVSCAN.EXEC
             menuSettings.Enabled = true;
 
             Logger.Log(listLogMessages, "Опрос остановлен", LogType.Info);
-        }
+        } 
 
         #endregion
 

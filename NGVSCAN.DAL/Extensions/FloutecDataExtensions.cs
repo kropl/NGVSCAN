@@ -244,8 +244,8 @@ namespace NGVSCAN.DAL.Extensions
             }
             else if (data.CH_PAR == 28 || data.CH_PAR == 29)
             {
-                bool oldDayFormat = (bval12 & (1 << 6)) != 0;
-                bool newDayFormat = (bval22 & (1 << 6)) != 0;
+                bool oldDayFormat = (bval12 & (1 << 7)) != 0;
+                bool newDayFormat = (bval22 & (1 << 7)) != 0;
 
                 if (bval11 > 0)
                 {
@@ -258,51 +258,27 @@ namespace NGVSCAN.DAL.Extensions
                         else
                             data.VAL_OLD = bval13.ToString() + " часов ";
 
-                        data.VAL_OLD = data.VAL_OLD + (bval12 >> 4).ToString() + "-го";
-
-                        switch (bval11)
-                        {
-                            case 1:
-                                data.VAL_OLD = data.VAL_OLD + " января";
-                                break;
-                            case 2:
-                                data.VAL_OLD = data.VAL_OLD + " февраля";
-                                break;
-                            case 3:
-                                data.VAL_OLD = data.VAL_OLD + " марта";
-                                break;
-                            case 4:
-                                data.VAL_OLD = data.VAL_OLD + " апреля";
-                                break;
-                            case 5:
-                                data.VAL_OLD = data.VAL_OLD + " мая";
-                                break;
-                            case 6:
-                                data.VAL_OLD = data.VAL_OLD + " июня";
-                                break;
-                            case 7:
-                                data.VAL_OLD = data.VAL_OLD + " июля";
-                                break;
-                            case 8:
-                                data.VAL_OLD = data.VAL_OLD + " августа";
-                                break;
-                            case 9:
-                                data.VAL_OLD = data.VAL_OLD + " сентября";
-                                break;
-                            case 10:
-                                data.VAL_OLD = data.VAL_OLD + " октября";
-                                break;
-                            case 11:
-                                data.VAL_OLD = data.VAL_OLD + " ноября";
-                                break;
-                            case 12:
-                                data.VAL_OLD = data.VAL_OLD + " декабря";
-                                break;
-                        }
+                        data.VAL_OLD = data.VAL_OLD + (bval12 >> 4).ToString() + "-го " + GetMonthName(bval11);
                     }
                     else
                     {
+                        bool dayCountDirection = (bval12 & (1 << 5)) != 0;
+                        int dayOfWeek = (bval12 >> 3) & 7;
+                        int weekOfMonth = (bval12 >> 0) & 7;
 
+                        if (!dayCountDirection)
+                            data.VAL_OLD = GetDayName(weekOfMonth, dayOfWeek);
+                        else
+                            data.VAL_OLD = GetOrdinalDayName(weekOfMonth, dayOfWeek);
+
+                        data.VAL_OLD = data.VAL_OLD + " " + GetMonthName(bval11) + ", ";
+
+                        if (bval13 == 1 || bval13 == 21)
+                            data.VAL_OLD = data.VAL_OLD + bval13.ToString() + " час";
+                        else if ((bval13 >= 2 && bval13 <= 4) || (bval13 >= 22 && bval13 <= 24))
+                            data.VAL_OLD = data.VAL_OLD + bval13.ToString() + " часа";
+                        else
+                            data.VAL_OLD = data.VAL_OLD + bval13.ToString() + " часов";
                     }
                 }
                 else
@@ -312,22 +288,41 @@ namespace NGVSCAN.DAL.Extensions
                 {
                     if (!newDayFormat)
                     {
+                        if (bval23 == 1 || bval23 == 21)
+                            data.VAL_NEW = bval23.ToString() + " час ";
+                        else if ((bval23 >= 2 && bval23 <= 4) || (bval23 >= 22 && bval23 <= 24))
+                            data.VAL_NEW = bval23.ToString() + " часа ";
+                        else
+                            data.VAL_NEW = bval23.ToString() + " часов ";
 
+                        data.VAL_NEW = data.VAL_NEW + (bval22 >> 4).ToString() + "-го " + GetMonthName(bval21);
                     }
                     else
                     {
+                        bool dayCountDirection = (bval22 & (1 << 6)) != 0;
+                        int dayOfWeek = (bval22 >> 3) & 7;
+                        int weekOfMonth = (bval22 >> 0) & 7;
 
+                        if (!dayCountDirection)
+                            data.VAL_NEW = GetDayName(weekOfMonth, dayOfWeek);
+                        else
+                            data.VAL_NEW = GetOrdinalDayName(weekOfMonth, dayOfWeek);
+
+                        data.VAL_NEW = data.VAL_NEW + " " + GetMonthName(bval21) + ", ";
+
+                        if (bval23 == 1 || bval23 == 21)
+                            data.VAL_NEW = data.VAL_NEW + bval23.ToString() + " час";
+                        else if ((bval23 >= 2 && bval23 <= 4) || (bval23 >= 22 && bval23 <= 24))
+                            data.VAL_NEW = data.VAL_NEW + bval23.ToString() + " часа";
+                        else
+                            data.VAL_NEW = data.VAL_NEW + bval23.ToString() + " часов";
                     }
                 }
                 else
                     data.VAL_NEW = "Запрет перехода";
 
             }
-            else if (data.CH_PAR == 30 || data.CH_PAR == 31)
-            {
-
-            }
-            else if (data.CH_PAR == 32 || data.CH_PAR == 46 || data.CH_PAR == 47
+            else if ((data.CH_PAR >= 30 && data.CH_PAR <= 32) || data.CH_PAR == 46 || data.CH_PAR == 47
                 || data.CH_PAR == 130 || data.CH_PAR == 131 || 
                 (data.CH_PAR >= 186 && data.CH_PAR <= 188) || data.CH_PAR == 191 || data.CH_PAR == 192)
             {
@@ -442,11 +437,11 @@ namespace NGVSCAN.DAL.Extensions
             }
             else if(data.CH_PAR == 128)
             {
-                TimeSpan oldTime = new TimeSpan(bval11, bval12, bval13);
-                TimeSpan newTime = new TimeSpan(bval21, bval22, bval23);
+                DateTime oldTime = new DateTime(1, 1, 1, bval11, bval12, bval13);
+                DateTime newTime = new DateTime(1, 1, 1, bval21, bval22, bval23);
 
-                data.VAL_OLD = oldTime.ToString("hh:mm:ss");
-                data.VAL_NEW = newTime.ToString("hh:mm:ss");
+                data.VAL_OLD = oldTime.ToString("HH:mm:ss");
+                data.VAL_NEW = newTime.ToString("HH:mm:ss");
             }
             else if (data.CH_PAR == 144 || data.CH_PAR == 179)
             {
@@ -534,6 +529,92 @@ namespace NGVSCAN.DAL.Extensions
             {
                 return defaultValue;
             }
+        }
+
+        private static string GetMonthName(int monthNumber)
+        {
+            switch (monthNumber)
+            {
+                case 1:
+                    return "января";
+                case 2:
+                    return "февраля";
+                case 3:
+                    return "марта";
+                case 4:
+                    return "апреля";
+                case 5:
+                    return "мая";
+                case 6:
+                    return "июня";
+                case 7:
+                    return "июля";
+                case 8:
+                    return "августа";
+                case 9:
+                    return "сентября";
+                case 10:
+                    return "октября";
+                case 11:
+                    return "ноября";
+                case 12:
+                    return "декабря";
+                default:
+                    return "";
+            }
+        }
+
+        private static string GetOrdinalDayName(int weekOfMonth, int dayOfWeek)
+        {
+            string ret = "";
+
+            if (weekOfMonth == 1)
+                ret = "Последн";
+            else if (weekOfMonth == 2)
+                ret = "Предпоследн";
+            else if (weekOfMonth == 3)
+                ret = "Предпредпоследн";
+            else
+                return "";
+
+            if (dayOfWeek == 1)
+                ret = ret + "ее воскресенье";
+            else if (dayOfWeek == 2)
+                ret = ret + "ий понедельник";
+            else if (dayOfWeek == 3)
+                ret = ret + "ий вторник";
+            else if (dayOfWeek == 4)
+                ret = ret + "яя среда";
+            else if (dayOfWeek == 5)
+                ret = ret + "ий четверг";
+            else if (dayOfWeek == 6)
+                ret = ret + "яя пятница";
+            else if (dayOfWeek == 7)
+                ret = ret + "яя суббота";
+            else
+                return "";
+
+            return ret;
+        }
+
+        private static string GetDayName(int weekOfMonth, int dayOfWeek)
+        {
+            if (dayOfWeek == 1)
+                return weekOfMonth.ToString() + "-е воскресенье";
+            else if (dayOfWeek == 2)
+                return weekOfMonth.ToString() + "-й понедельник";
+            else if (dayOfWeek == 3)
+                return weekOfMonth.ToString() + "-й вторник";
+            else if (dayOfWeek == 4)
+                return weekOfMonth.ToString() + "-я среда";
+            else if (dayOfWeek == 5)
+                return weekOfMonth.ToString() + "-й четверг";
+            else if (dayOfWeek == 6)
+                return weekOfMonth.ToString() + "-я пятница";
+            else if (dayOfWeek == 7)
+                return weekOfMonth.ToString() + "-я суббота";
+            else
+                return "";
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using NGVSCAN.DAL.Context;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
 
@@ -24,10 +25,10 @@ namespace NGVSCAN.DAL.Repositories
         /// <summary>
         /// Конструктор репозитория доступа к данным СУБД MS SQL
         /// </summary>
-        public SqlRepository()
+        public SqlRepository(DbConnection connection)
         {
             // Инициализация контекста доступа к данным
-            _context = new NGVSCANContext();
+            _context = new NGVSCANContext(connection);
         }
 
         #endregion

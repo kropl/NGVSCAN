@@ -13,13 +13,13 @@ namespace NGVSCAN.EXEC.Common
 
         public static string ServerName { get; set; } = "SEM-SRV";
 
-        public static string SqlServerPath { get; set; }
+        public static string SqlServerPath { get; set; } = @"DESKTOP-UF08V9V\SQLEXPRESS";
 
         public static string SqlDatabaseName { get; set; } = "NGVSCAN";
 
-        public static string SqlUserName { get; set; } = "sa";
+        public static string SqlUserName { get; set; } = "";
 
-        public static string SqlUserPassword { get; set; } = "sa";
+        public static string SqlUserPassword { get; set; } = "";
 
         public static string DbfTablesPath { get; set; } = @"C:\Dispatch\tabDbf";
 

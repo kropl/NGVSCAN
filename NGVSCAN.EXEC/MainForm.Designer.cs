@@ -72,11 +72,10 @@
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.status = new System.Windows.Forms.StatusStrip();
             this.menu = new System.Windows.Forms.MenuStrip();
-            this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.menuRun = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.groupEstimatorsLog.SuspendLayout();
             this.groupEstimators.SuspendLayout();
             this.contextMenuEstimators.SuspendLayout();
@@ -280,26 +279,6 @@
             this.menu.TabIndex = 2;
             this.menu.Text = "menuStrip1";
             // 
-            // menuSettings
-            // 
-            this.menuSettings.Image = ((System.Drawing.Image)(resources.GetObject("menuSettings.Image")));
-            this.menuSettings.Name = "menuSettings";
-            this.menuSettings.Size = new System.Drawing.Size(95, 20);
-            this.menuSettings.Text = "Настройки";
-            this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
-            // 
-            // menuAbout
-            // 
-            this.menuAbout.Image = ((System.Drawing.Image)(resources.GetObject("menuAbout.Image")));
-            this.menuAbout.Name = "menuAbout";
-            this.menuAbout.Size = new System.Drawing.Size(110, 20);
-            this.menuAbout.Text = "О программе";
-            this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
-            // 
-            // backgroundWorker
-            // 
-            this.backgroundWorker.WorkerSupportsCancellation = true;
-            // 
             // menuRun
             // 
             this.menuRun.Image = ((System.Drawing.Image)(resources.GetObject("menuRun.Image")));
@@ -316,6 +295,22 @@
             this.menuStop.Text = "Останов";
             this.menuStop.Visible = false;
             this.menuStop.Click += new System.EventHandler(this.menuStop_Click);
+            // 
+            // menuSettings
+            // 
+            this.menuSettings.Image = ((System.Drawing.Image)(resources.GetObject("menuSettings.Image")));
+            this.menuSettings.Name = "menuSettings";
+            this.menuSettings.Size = new System.Drawing.Size(95, 20);
+            this.menuSettings.Text = "Настройки";
+            this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
+            // 
+            // menuAbout
+            // 
+            this.menuAbout.Image = ((System.Drawing.Image)(resources.GetObject("menuAbout.Image")));
+            this.menuAbout.Name = "menuAbout";
+            this.menuAbout.Size = new System.Drawing.Size(110, 20);
+            this.menuAbout.Text = "О программе";
+            this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
             // MainForm
             // 
@@ -366,7 +361,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem menuRestore;
         private System.Windows.Forms.ImageList imageList;
-        private System.ComponentModel.BackgroundWorker backgroundWorker;
         private System.Windows.Forms.ColumnHeader columnDateTime;
         private System.Windows.Forms.ColumnHeader columnMessage;
         private System.Windows.Forms.ImageList imageListLog;

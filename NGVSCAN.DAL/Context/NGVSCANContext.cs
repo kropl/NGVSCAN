@@ -2,6 +2,7 @@
 using NGVSCAN.CORE.Entities.Common;
 using NGVSCAN.DAL.EntityConfigurations;
 using NGVSCAN.DAL.EntityConfigurations.Common;
+using System.Data.Common;
 using System.Data.Entity;
 
 namespace NGVSCAN.DAL.Context
@@ -16,6 +17,11 @@ namespace NGVSCAN.DAL.Context
         /// NGVSCAN - название строки подключения, установленной в App.config
         /// </summary>
         public NGVSCANContext() : base("NGVSCAN")
+        {
+            Database.SetInitializer(new NGVSCANInitializer());
+        }
+
+        public NGVSCANContext(DbConnection connection) : base(connection, true)
         {
             Database.SetInitializer(new NGVSCANInitializer());
         }

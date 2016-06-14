@@ -150,7 +150,7 @@ namespace NGVSCAN.DAL.Repositories
                 foreach (var date in days)
                 {
                     // Формирование запроса
-                    _command.CommandText = "SELECT DISTINCT * FROM rour.DBF WHERE N_FLONIT=" + n_flonit + " AND DAT LIKE('" + date.ToString("dd.MM.yyyy") + " __:00:00" + "')";
+                    _command.CommandText = "SELECT DISTINCT * FROM rour.DBF WHERE N_FLONIT=" + n_flonit + " AND DAT LIKE('" + date.ToString("dd.MM.yyyy") + "')";
 
                     try
                     {
@@ -288,7 +288,7 @@ namespace NGVSCAN.DAL.Repositories
                 foreach (var date in days)
                 {
                     // Формирование запроса
-                    _command.CommandText = "SELECT DISTINCT * FROM avar.DBF WHERE N_FLONIT=" + n_flonit + " AND DAT LIKE('" + date.ToString("dd.MM.yyyy") + " __:00:00" + "')";
+                    _command.CommandText = "SELECT DISTINCT * FROM avar.DBF WHERE N_FLONIT=" + n_flonit + " AND DAT LIKE('" + date.ToString("dd.MM.yyyy") + "')";
 
                     try
                     {
@@ -390,6 +390,62 @@ namespace NGVSCAN.DAL.Repositories
 
             return interData;
         }
+
+        /// <summary>
+        /// Получение данных вмешательств за указанный период
+        /// </summary>
+        /// <param name="address">Адрес вычислителя</param>
+        /// <param name="line">Номер нитки</param>
+        /// <param name="from">Начало периода</param>
+        /// <param name="to">Конец периода</param>
+        /// <returns>Данные вмешательств</returns>
+        public List<FloutecInterData> GetInterData(int address, int line, DateTime from, DateTime to)
+        {
+            // Инициализация пустой коллекции данных вмешательств
+            List<FloutecInterData> interData = new List<FloutecInterData>();
+
+            // Если период указан верно, то ...
+            if (to >= from)
+            {
+                int n_flonit = address * 10 + line;
+
+                // Определение коллекции дней в указанном периоде
+                List<DateTime> days = new List<DateTime>();
+
+                for (var date = from; date <= to; date = date.AddDays(1))
+                {
+                    days.Add(date);
+                }
+
+                // Для каждого дня в указанном периоде
+                foreach (var date in days)
+                {
+                    // Формирование запроса
+                    _command.CommandText = "SELECT DISTINCT * FROM vmesh.DBF WHERE N_FLONIT=" + n_flonit + " AND DAT LIKE('" + date.ToString("dd.MM.yyyy") + "')";
+
+                    try
+                    {
+                        // Выполнение команды
+                        using (OleDbDataReader reader = _command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                interData.FromVmeshTable(reader);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+
+                interData.ForEach(h => h.N_FLONIT = n_flonit);
+            }
+
+            return interData.Where(h => h.DAT > from && h.DAT <= to).ToList();
+        }
+
 
         #endregion
 
