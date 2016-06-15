@@ -68,7 +68,11 @@
     <Compile Include="EntityConfigurations\FieldConfiguration.cs" />
     <Compile Include="EntityConfigurations\FloutecsConfigurations\FloutecConfiguration.cs" />
     <Compile Include="EntityConfigurations\ROC809sConfigurations\ROC809Configuration.cs" />
+    <Compile Include="EntityConfigurations\ROC809sConfigurations\ROC809DailyDataConfiguration.cs" />
+    <Compile Include="EntityConfigurations\ROC809sConfigurations\ROC809PeriodicDataConfiguration.cs" />
+    <Compile Include="EntityConfigurations\ROC809sConfigurations\ROC809MinuteDataConfiguration.cs" />
     <Compile Include="Extensions\FloutecDataExtensions.cs" />
+    <Compile Include="Extensions\ROC809Extensions.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.Designer.cs">
       <DependentUpon>201605141507267_InitialMigration.cs</DependentUpon>
@@ -141,10 +145,16 @@
     <Compile Include="Migrations\201606150605457_RemovedSomePropertiesFromROCMeasurePoint.Designer.cs">
       <DependentUpon>201606150605457_RemovedSomePropertiesFromROCMeasurePoint.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606151308276_AddedROCDataEntities.cs" />
+    <Compile Include="Migrations\201606151308276_AddedROCDataEntities.Designer.cs">
+      <DependentUpon>201606151308276_AddedROCDataEntities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbfRepository.cs" />
     <Compile Include="Repositories\SqlRepository.cs" />
+    <Compile Include="ROC809Connection\Crc16.cs" />
+    <Compile Include="ROC809Connection\TCPIPClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NGVSCAN.CORE\NGVSCAN.CORE.csproj">
@@ -211,10 +221,12 @@
     <EmbeddedResource Include="Migrations\201606150605457_RemovedSomePropertiesFromROCMeasurePoint.resx">
       <DependentUpon>201606150605457_RemovedSomePropertiesFromROCMeasurePoint.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606151308276_AddedROCDataEntities.resx">
+      <DependentUpon>201606151308276_AddedROCDataEntities.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EntityConfigurations\ROC809sConfigurations\Common\" />
-    <Folder Include="ROC809Connection\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

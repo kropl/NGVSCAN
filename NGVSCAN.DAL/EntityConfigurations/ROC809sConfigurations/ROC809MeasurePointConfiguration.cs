@@ -15,6 +15,9 @@ namespace NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations
         {
             Property(p => p.Number).IsRequired();
             Property(p => p.HistSegment).IsRequired();
+            HasMany(p => p.MinuteData).WithRequired(p => p.MeasurePoint);
+            HasMany(p => p.PeriodicData).WithRequired(p => p.MeasurePoint);
+            HasMany(p => p.DailyData).WithRequired(m => m.MeasurePoint);
             ToTable("ROC809MeasurePoints");
         }
     }

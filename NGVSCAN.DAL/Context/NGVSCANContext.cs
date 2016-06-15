@@ -118,6 +118,21 @@ namespace NGVSCAN.DAL.Context
         /// </summary>
         public IDbSet<FloutecSensorsTypes> FloutecSensorsTypes { get; set; }
 
+        /// <summary>
+        /// Минутные данные вычислителей ROC809
+        /// </summary>
+        public IDbSet<ROC809MinuteData> ROC809MinuteData { get; set; }
+
+        /// <summary>
+        /// Периодические данные вычислителей ROC809
+        /// </summary>
+        public IDbSet<ROC809PeriodicData> ROC809PeriodicData { get; set; }
+
+        /// <summary>
+        /// Суточные данные вычислителей ROC809
+        /// </summary>
+        public IDbSet<ROC809DailyData> ROC809DailyData { get; set; }
+
         #endregion
 
         // Конфигурирование базы данных при создании
@@ -141,6 +156,9 @@ namespace NGVSCAN.DAL.Context
             modelBuilder.Configurations.Add(new FloutecAlarmsTypesConfiguration());
             modelBuilder.Configurations.Add(new FloutecIntersTypesConfiguration());
             modelBuilder.Configurations.Add(new FloutecSensorsTypesConfiguration());
+            modelBuilder.Configurations.Add(new ROC809DailyDataConfiguration());
+            modelBuilder.Configurations.Add(new ROC809MinuteDataConfiguration());
+            modelBuilder.Configurations.Add(new ROC809PeriodicDataConfiguration());
         }
     }
 }
