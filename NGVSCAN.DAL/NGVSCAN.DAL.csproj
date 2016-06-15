@@ -154,6 +154,7 @@
     <Compile Include="Repositories\DbfRepository.cs" />
     <Compile Include="Repositories\SqlRepository.cs" />
     <Compile Include="ROC809Connection\Crc16.cs" />
+    <Compile Include="ROC809Connection\ROC809PeriodicDataType.cs" />
     <Compile Include="ROC809Connection\TCPIPClient.cs" />
   </ItemGroup>
   <ItemGroup>
