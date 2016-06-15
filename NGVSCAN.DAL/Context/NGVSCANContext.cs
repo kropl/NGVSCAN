@@ -1,6 +1,7 @@
 ﻿using NGVSCAN.CORE.Entities;
 using NGVSCAN.CORE.Entities.Floutecs;
 using NGVSCAN.CORE.Entities.Floutecs.Common;
+using NGVSCAN.CORE.Entities.ROC809s;
 using NGVSCAN.DAL.EntityConfigurations;
 using NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations;
 using NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations.Common;

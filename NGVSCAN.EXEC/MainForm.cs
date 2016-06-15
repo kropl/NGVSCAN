@@ -1,5 +1,6 @@
 ﻿using NGVSCAN.CORE.Entities;
 using NGVSCAN.CORE.Entities.Floutecs;
+using NGVSCAN.CORE.Entities.ROC809s;
 using NGVSCAN.DAL.Repositories;
 using NGVSCAN.EXEC.Common;
 using NGVSCAN.EXEC.Controls;
@@ -100,7 +101,7 @@ namespace NGVSCAN.EXEC
                         // Инициализация коллекции вычислителей ФЛОУТЭК данной установки
                         floutecs = field.Estimators.Where(e => e is Floutec).Select(e => e as Floutec).OrderBy(o => o.Address).ToList();
 
-                        rocs = field.Estimators.Where(e => e is ROC809).Select(e => e as ROC809).ToList();
+                        rocs = field.Estimators.Where(e => e is ROC809).Select(e => e as ROC809).OrderBy(o => o.Address).ToList();
 
                         // Если коллекция вычислителей ФЛОУТЭК была определена ...
                         if (floutecs != null)
@@ -120,7 +121,7 @@ namespace NGVSCAN.EXEC
                             rocPoints = new List<ROC809MeasurePoint>();
                             rocs.ForEach((r) =>
                             {
-                                rocPoints.AddRange(r.MeasureLines.Select(p => p as ROC809MeasurePoint).ToList());
+                                rocPoints.AddRange(r.MeasureLines.Select(p => p as ROC809MeasurePoint).OrderBy(o => o.HistSegment).OrderBy(o => o.Number).ToList());
                             });
                         }
                     }
@@ -204,8 +205,9 @@ namespace NGVSCAN.EXEC
                     if (r != null)
                     {
                         // Добавление вычислителя в коллекцию вложенных элементов группы вычислителей ROC809
-                        TreeNode child = rocsGroup.Nodes.Add(r.Address + " " + r.Port + " " + r.Name);
+                        TreeNode child = rocsGroup.Nodes.Add(r.Address + " " + r.Name);
                         child.Tag = r;
+                        child.NodeFont = r.IsDeleted ? new Font(new FontFamily("Microsoft Sans Serif"), 8, FontStyle.Strikeout) : null;
                         child.ImageIndex = 3;
                         child.SelectedImageIndex = 3;
 
@@ -217,9 +219,10 @@ namespace NGVSCAN.EXEC
                             // Если точка определена и принадлежит текущему вычислителю ...
                             if (p != null && p.EstimatorId == r.Id)
                             {
-                                // Добавление линии в коллекцию дочерных элементов текущего вычислителя
-                                subchild = child.Nodes.Add(p.Number + " " + p.Name);
+                                // Добавление точки в коллекцию дочерных элементов текущего вычислителя
+                                subchild = child.Nodes.Add(p.HistSegment + " " + p.Number + " " + p.Name);
                                 subchild.Tag = p;
+                                subchild.NodeFont = p.IsDeleted ? new Font(new FontFamily("Microsoft Sans Serif"), 8, FontStyle.Strikeout) : null;
                                 subchild.ImageIndex = 4;
                                 subchild.SelectedImageIndex = 4;
                             }
@@ -270,17 +273,17 @@ namespace NGVSCAN.EXEC
                     treeEstimators.SelectedNode = nodeAtMousePosition;
             }
 
-            Floutec selectedFloutec = null;
-            FloutecMeasureLine selectedFloutecLine = null;
+            Estimator selectedEstimator = null;
+            MeasureLine selectedMeasureLine = null;
 
-            if (treeEstimators.SelectedNode.Tag is Floutec)
+            if (treeEstimators.SelectedNode.Tag is Estimator)
             {
-                selectedFloutec = (Floutec)treeEstimators.SelectedNode.Tag;
+                selectedEstimator = (Estimator)treeEstimators.SelectedNode.Tag;
             }
-            else if (treeEstimators.SelectedNode.Tag is FloutecMeasureLine)
+            else if (treeEstimators.SelectedNode.Tag is MeasureLine)
             {
-                selectedFloutec = (Floutec)treeEstimators.SelectedNode.Parent.Tag;
-                selectedFloutecLine = (FloutecMeasureLine)treeEstimators.SelectedNode.Tag;
+                selectedEstimator = (Estimator)treeEstimators.SelectedNode.Parent.Tag;
+                selectedMeasureLine = (MeasureLine)treeEstimators.SelectedNode.Tag;
             }
 
             // Контекстное меню отображается только для всех узлов кроме установки
@@ -291,23 +294,24 @@ namespace NGVSCAN.EXEC
             contextMenuEstimators.Items[0].Visible = treeEstimators.SelectedNode.Level == 1 ? true : false;
 
             // Пункт меню "Добавить нитку" доступен только для вычислителей, не отмеченных как удалённые
-            contextMenuEstimators.Items[1].Enabled = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted ? true : false;
-            contextMenuEstimators.Items[1].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted ? true : false;
-            contextMenuEstimators.Items[2].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted ? true : false;
+            contextMenuEstimators.Items[1].Text = treeEstimators.SelectedNode.Tag is Floutec ? "Добавить нитку" : "Добавить точку";
+            contextMenuEstimators.Items[1].Enabled = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted ? true : false;
+            contextMenuEstimators.Items[1].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted ? true : false;
+            contextMenuEstimators.Items[2].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted ? true : false;
 
             // Пункт меню "Изменить" доступен для вычислителей и ниток вычислителей, не отмеченных как удалённые
-            contextMenuEstimators.Items[3].Enabled = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedFloutecLine.IsDeleted ? true : false;
-            contextMenuEstimators.Items[3].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedFloutecLine.IsDeleted ? true : false;
-            contextMenuEstimators.Items[4].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedFloutecLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[3].Enabled = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedMeasureLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[3].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedMeasureLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[4].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedMeasureLine.IsDeleted ? true : false;
 
             // Пункт меню "Удалить" доступен для вычислителей и ниток вычислителей
             contextMenuEstimators.Items[5].Enabled = treeEstimators.SelectedNode.Level > 1 ? true : false;
             contextMenuEstimators.Items[5].Visible = treeEstimators.SelectedNode.Level > 1 ? true : false;
 
             // Пункт меню "Восстановить" доступен для вычислителей и ниток вычислителей, отмеченных как удалённые
-            contextMenuEstimators.Items[6].Visible = treeEstimators.SelectedNode.Level == 2 && selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedFloutecLine.IsDeleted ? true : false;
-            contextMenuEstimators.Items[7].Enabled = treeEstimators.SelectedNode.Level == 2 && selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedFloutecLine.IsDeleted ? true : false;
-            contextMenuEstimators.Items[7].Visible = treeEstimators.SelectedNode.Level == 2 && selectedFloutec.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedFloutecLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[6].Visible = treeEstimators.SelectedNode.Level == 2 && selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedMeasureLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[7].Enabled = treeEstimators.SelectedNode.Level == 2 && selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedMeasureLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[7].Visible = treeEstimators.SelectedNode.Level == 2 && selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedMeasureLine.IsDeleted ? true : false;
         }
 
         // Событие выбора объекта в дереве объектов на закладке вычислителей ФЛОУТЭК
@@ -391,6 +395,13 @@ namespace NGVSCAN.EXEC
                             ROC809Details rocDetails = new ROC809Details();
 
                             rocDetails.Dock = DockStyle.Fill;
+                            rocDetails.AutoSize = true;
+
+                            int id = ((ROC809)treeEstimators.SelectedNode.Tag).Id;
+
+                            ROC809 roc = rocs.Where(r => r.Id == id).SingleOrDefault();
+
+                            rocDetails.ROC = roc;
 
                             groupEstimatorsProperties.Controls.Add(rocDetails);
 
@@ -425,6 +436,13 @@ namespace NGVSCAN.EXEC
 
                             rocPointDetails.Dock = DockStyle.Fill;
 
+                            int rocId = ((ROC809)treeEstimators.SelectedNode.Parent.Tag).Id;
+                            int pointId = ((ROC809MeasurePoint)treeEstimators.SelectedNode.Tag).Id;
+
+                            ROC809MeasurePoint point = rocPoints.Where(p => p.Id == pointId && p.EstimatorId == rocId).SingleOrDefault();
+
+                            rocPointDetails.ROCPoint = point;
+
                             groupEstimatorsProperties.Controls.Add(rocPointDetails);
 
                             groupEstimatorsProperties.Text = "Свойства точки измерения вычислителя ROC809";
@@ -446,6 +464,8 @@ namespace NGVSCAN.EXEC
 
             Floutec selectedFloutec = null;
             FloutecMeasureLine selectedFloutecLine = null;
+            ROC809 selectedROC = null;
+            ROC809MeasurePoint selectedROCPoint = null;
 
             if (treeEstimators.SelectedNode.Tag is Floutec)
             {
@@ -455,6 +475,15 @@ namespace NGVSCAN.EXEC
             {
                 selectedFloutec = (Floutec)treeEstimators.SelectedNode.Parent.Tag;
                 selectedFloutecLine = (FloutecMeasureLine)treeEstimators.SelectedNode.Tag;
+            }
+            else if (treeEstimators.SelectedNode.Tag is ROC809)
+            {
+                selectedROC = (ROC809)treeEstimators.SelectedNode.Tag;
+            }
+            else if (treeEstimators.SelectedNode.Tag is ROC809MeasurePoint)
+            {
+                selectedROC = (ROC809)treeEstimators.SelectedNode.Parent.Tag;
+                selectedROCPoint = (ROC809MeasurePoint)treeEstimators.SelectedNode.Tag;
             }
 
             if (menuItem.Equals("menuAddEstimator"))
@@ -498,7 +527,36 @@ namespace NGVSCAN.EXEC
                 {
                     AddROC809Popup popup = new AddROC809Popup();
 
+                    popup.IsEdit = false;
+
+                    popup.ROC809s = rocs;
+
                     DialogResult dialogResult = popup.ShowDialog();
+
+                    if (dialogResult == DialogResult.OK)
+                    {
+                        ROC809 roc = popup.ROC809;
+                        roc.DateCreated = DateTime.Now;
+                        roc.DateModified = DateTime.Now;
+
+                        try
+                        {
+                            using (SqlRepository<Field> repo = new SqlRepository<Field>(sqlConnection))
+                            {
+                                Field existingField = repo.Get(field.Id);
+                                existingField.Estimators.Add(roc);
+                                repo.Update(existingField);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                        }
+
+                        UpdateData();
+
+                        FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                    }
                 }                           
             }
             else if (menuItem.Equals("menuEdit"))
@@ -543,7 +601,35 @@ namespace NGVSCAN.EXEC
                     {
                         AddROC809Popup popup = new AddROC809Popup();
 
+                        popup.IsEdit = true;
+
+                        popup.ROC809s = rocs;
+
+                        popup.ROC809 = selectedROC;
+
                         DialogResult dialogResult = popup.ShowDialog();
+
+                        if (dialogResult == DialogResult.OK)
+                        {
+                            selectedROC = popup.ROC809;
+                            selectedROC.DateModified = DateTime.Now;
+
+                            try
+                            {
+                                using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(sqlConnection))
+                                {
+                                    repo.Update(selectedROC);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            }
+
+                            UpdateData();
+
+                            FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                        }
                     }
                 }
                 else if (treeEstimators.SelectedNode.Level == 3)
@@ -586,7 +672,35 @@ namespace NGVSCAN.EXEC
                     {
                         AddROC809PointPopup popup = new AddROC809PointPopup();
 
+                        popup.IsEdit = true;
+
+                        popup.ROCPoint = selectedROCPoint;
+
+                        popup.ROCPoints = rocPoints.Where(p => p.EstimatorId == selectedROC.Id).ToList();
+
                         DialogResult dialogResult = popup.ShowDialog();
+
+                        if (dialogResult == DialogResult.OK)
+                        {
+                            selectedROCPoint = popup.ROCPoint;
+                            selectedROCPoint.DateModified = DateTime.Now;
+
+                            try
+                            {
+                                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(sqlConnection))
+                                {
+                                    repo.Update(selectedROCPoint);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            }
+
+                            UpdateData();
+
+                            FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                        }
                     }
                 }
             }
@@ -631,7 +745,36 @@ namespace NGVSCAN.EXEC
                 {
                     AddROC809PointPopup popup = new AddROC809PointPopup();
 
+                    popup.IsEdit = false;
+
+                    popup.ROCPoints = rocPoints.Where(p => p.EstimatorId == selectedROC.Id).ToList();
+
                     DialogResult dialogResult = popup.ShowDialog();
+
+                    if (dialogResult == DialogResult.OK)
+                    {
+                        ROC809MeasurePoint point = popup.ROCPoint;
+                        point.DateCreated = DateTime.Now;
+                        point.DateModified = DateTime.Now;
+
+                        try
+                        {
+                            using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(sqlConnection))
+                            {
+                                ROC809 existingROC = repo.Get(selectedROC.Id);
+                                existingROC.MeasureLines.Add(point);
+                                repo.Update(existingROC);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                        }
+
+                        UpdateData();
+
+                        FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                    }
                 }
             }
             else if (menuItem.Equals("menuDelete"))
@@ -706,7 +849,69 @@ namespace NGVSCAN.EXEC
                     }
                     else if (treeEstimators.SelectedNode.Parent.Name.Equals("rocsGroup"))
                     {
+                        contextMenuEstimators.Close();
 
+                        if (selectedROC.IsDeleted)
+                        {
+                            var confirmResult = MessageBox.Show(
+                                "Вы действительно хотите удалить вычислитель ROC809 с адресом " +
+                                selectedROC.Address + "? Вычислитель и его точки будут удалены без возможности восстановления",
+                                "Удаление вычислителя ROC809",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button2);
+
+                            if (confirmResult == DialogResult.Yes)
+                            {
+                                try
+                                {
+                                    using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(sqlConnection))
+                                    {
+                                        repo.Delete(selectedROC.Id);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                }
+
+                                UpdateData();
+
+                                FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                            }
+                        }
+                        else
+                        {
+                            var confirmResult = MessageBox.Show(
+                                "Вы действительно хотите отметить вычислитель ROC809 с адресом " +
+                                selectedROC.Address + " как удалённый? Вычислитель и его точки будут изъяты из очереди опроса с возможностью восстановления",
+                                "Удаление вычислителя ROC809",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button2);
+
+                            if (confirmResult == DialogResult.Yes)
+                            {
+                                selectedROC.IsDeleted = true;
+                                selectedROC.DateDeleted = DateTime.Now;
+
+                                try
+                                {
+                                    using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(sqlConnection))
+                                    {
+                                        repo.Update(selectedROC);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                }
+
+                                UpdateData();
+
+                                FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                            }
+                        }
                     }                  
                 }
                 else if (treeEstimators.SelectedNode.Level == 3)
@@ -749,7 +954,7 @@ namespace NGVSCAN.EXEC
                             var confirmResult = MessageBox.Show(
                                 "Вы действительно хотите отметить нитку измерения №" + selectedFloutecLine.Number + " вычислителя ФЛОУТЭК с адресом " +
                                 selectedFloutec.Address + " как удалённую? Нитка будет изъята из очереди опроса с возможностью восстановления",
-                                "Удаление вычислителя ФЛОУТЭК",
+                                "Удаление нитки вычислителя ФЛОУТЭК",
                                 MessageBoxButtons.YesNo,
                                 MessageBoxIcon.Warning,
                                 MessageBoxDefaultButton.Button2);
@@ -779,7 +984,69 @@ namespace NGVSCAN.EXEC
                     }
                     else if (treeEstimators.SelectedNode.Parent.Parent.Name.Equals("rocsGroup"))
                     {
+                        contextMenuEstimators.Close();
 
+                        if (selectedROCPoint.IsDeleted)
+                        {
+                            var confirmResult = MessageBox.Show(
+                                "Вы действительно хотите удалить точку измерения №" + selectedROCPoint.Number + " в историческом сегменте №" + selectedROCPoint.HistSegment + " вычислителя ROC809 с адресом " +
+                                selectedROC.Address + "? Точка будет удалена без возможности восстановления",
+                                "Удаление точки вычислителя ROC809",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button2);
+
+                            if (confirmResult == DialogResult.Yes)
+                            {
+                                try
+                                {
+                                    using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(sqlConnection))
+                                    {
+                                        repo.Delete(selectedROCPoint.Id);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                }
+
+                                UpdateData();
+
+                                FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                            }
+                        }
+                        else
+                        {
+                            var confirmResult = MessageBox.Show(
+                                "Вы действительно хотите отметить точку измерения №" + selectedROCPoint.Number + " в историческом сегменте №" + selectedROCPoint.HistSegment + " вычислителя ROC809 с адресом " +
+                                selectedROC.Address + " как удалённую? Точка будет изъята из очереди опроса с возможностью восстановления",
+                                "Удаление точки вычислителя ROC809",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button2);
+
+                            if (confirmResult == DialogResult.Yes)
+                            {
+                                selectedROCPoint.IsDeleted = true;
+                                selectedROCPoint.DateDeleted = DateTime.Now;
+
+                                try
+                                {
+                                    using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(sqlConnection))
+                                    {
+                                        repo.Update(selectedROCPoint);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                }
+
+                                UpdateData();
+
+                                FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
+                            }
+                        }
                     }
                 }
             }
@@ -811,7 +1078,25 @@ namespace NGVSCAN.EXEC
                     }
                     else if (treeEstimators.SelectedNode.Parent.Name.Equals("rocsGroup"))
                     {
+                        contextMenuEstimators.Close();
 
+                        selectedROC.IsDeleted = false;
+
+                        try
+                        {
+                            using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(sqlConnection))
+                            {
+                                repo.Update(selectedROC);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                        }
+
+                        UpdateData();
+
+                        FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                     }
                 }
                 else if (treeEstimators.SelectedNode.Level == 3)
@@ -840,7 +1125,25 @@ namespace NGVSCAN.EXEC
                     }
                     else if (treeEstimators.SelectedNode.Parent.Parent.Name.Equals("rocsGroup"))
                     {
+                        contextMenuEstimators.Close();
 
+                        selectedROCPoint.IsDeleted = false;
+
+                        try
+                        {
+                            using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(sqlConnection))
+                            {
+                                repo.Update(selectedROCPoint);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                        }
+
+                        UpdateData();
+
+                        FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
                     }
                 }
             }

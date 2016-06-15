@@ -137,6 +137,10 @@
     <Compile Include="Migrations\201606141344123_AddedFloutecSensorsTypes.Designer.cs">
       <DependentUpon>201606141344123_AddedFloutecSensorsTypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606150605457_RemovedSomePropertiesFromROCMeasurePoint.cs" />
+    <Compile Include="Migrations\201606150605457_RemovedSomePropertiesFromROCMeasurePoint.Designer.cs">
+      <DependentUpon>201606150605457_RemovedSomePropertiesFromROCMeasurePoint.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbfRepository.cs" />
@@ -204,9 +208,13 @@
     <EmbeddedResource Include="Migrations\201606141344123_AddedFloutecSensorsTypes.resx">
       <DependentUpon>201606141344123_AddedFloutecSensorsTypes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606150605457_RemovedSomePropertiesFromROCMeasurePoint.resx">
+      <DependentUpon>201606150605457_RemovedSomePropertiesFromROCMeasurePoint.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EntityConfigurations\ROC809sConfigurations\Common\" />
+    <Folder Include="ROC809Connection\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,4 @@
-﻿using NGVSCAN.CORE.Entities;
+﻿using NGVSCAN.CORE.Entities.ROC809s;
 using NGVSCAN.DAL.EntityConfigurations.Common;
 
 namespace NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations
@@ -14,9 +14,6 @@ namespace NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations
         public ROC809MeasurePointConfiguration()
         {
             Property(p => p.Number).IsRequired();
-            Property(p => p.Type).IsRequired();
-            Property(p => p.LogicalNumber).IsRequired();
-            Property(p => p.ParameterNumber).IsRequired();
             Property(p => p.HistSegment).IsRequired();
             ToTable("ROC809MeasurePoints");
         }

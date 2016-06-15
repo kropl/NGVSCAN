@@ -1,4 +1,4 @@
-﻿namespace NGVSCAN.CORE.Entities
+﻿namespace NGVSCAN.CORE.Entities.ROC809s
 {
     /// <summary>
     /// Описание сущности "Точка измерения вычислителя ROC809"
@@ -11,21 +11,6 @@
         /// Номер точки измерения
         /// </summary>
         public int Number { get; set; }
-
-        /// <summary>
-        /// Тип точки измерения
-        /// </summary>
-        public int Type { get; set; }
-
-        /// <summary>
-        /// Логический номер точки измерения
-        /// </summary>
-        public int LogicalNumber { get; set; }
-
-        /// <summary>
-        /// Номер параметра точки измерения
-        /// </summary>
-        public int ParameterNumber { get; set; }
 
         /// <summary>
         /// Исторический сегмент точки измерения

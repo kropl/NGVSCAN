@@ -118,7 +118,7 @@
             0,
             0});
             this.numericAddress.Name = "numericAddress";
-            this.numericAddress.Size = new System.Drawing.Size(113, 20);
+            this.numericAddress.Size = new System.Drawing.Size(176, 20);
             this.numericAddress.TabIndex = 0;
             this.numericAddress.Value = new decimal(new int[] {
             1,

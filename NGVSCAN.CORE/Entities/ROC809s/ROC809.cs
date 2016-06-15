@@ -1,5 +1,5 @@
 ﻿
-namespace NGVSCAN.CORE.Entities
+namespace NGVSCAN.CORE.Entities.ROC809s
 {
     /// <summary>
     /// Описание сущности "Вычислитель ROC809"

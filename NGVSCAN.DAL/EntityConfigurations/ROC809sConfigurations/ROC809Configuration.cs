@@ -1,4 +1,4 @@
-﻿using NGVSCAN.CORE.Entities;
+﻿using NGVSCAN.CORE.Entities.ROC809s;
 using NGVSCAN.DAL.EntityConfigurations.Common;
 
 namespace NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations

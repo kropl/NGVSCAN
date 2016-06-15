@@ -25,7 +25,7 @@ namespace NGVSCAN.EXEC.Popups
         {
             if (string.IsNullOrEmpty(textName.Text))
             {
-                labelNameError.Text = "Укажите название вычислителя";
+                labelNameError.Text = "Укажите название нитки";
                 labelNameError.Visible = true;
             }
             else
@@ -35,7 +35,7 @@ namespace NGVSCAN.EXEC.Popups
 
             if (string.IsNullOrEmpty(textDescription.Text))
             {
-                labelDescriptionError.Text = "Укажите описание вычислителя";
+                labelDescriptionError.Text = "Укажите описание нитки";
                 labelDescriptionError.Visible = true;
             }
             else

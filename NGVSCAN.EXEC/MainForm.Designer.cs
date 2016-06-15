@@ -76,18 +76,29 @@
             this.menuStop = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupEstimatorsLog.SuspendLayout();
             this.groupEstimators.SuspendLayout();
             this.contextMenuEstimators.SuspendLayout();
             this.menu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupEstimatorsLog
             // 
             this.groupEstimatorsLog.Controls.Add(this.listLogMessages);
-            this.groupEstimatorsLog.Location = new System.Drawing.Point(12, 403);
+            this.groupEstimatorsLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupEstimatorsLog.Location = new System.Drawing.Point(0, 0);
             this.groupEstimatorsLog.Name = "groupEstimatorsLog";
-            this.groupEstimatorsLog.Size = new System.Drawing.Size(860, 133);
+            this.groupEstimatorsLog.Size = new System.Drawing.Size(884, 182);
             this.groupEstimatorsLog.TabIndex = 2;
             this.groupEstimatorsLog.TabStop = false;
             this.groupEstimatorsLog.Text = "Сообщения";
@@ -104,7 +115,7 @@
             this.listLogMessages.FullRowSelect = true;
             this.listLogMessages.Location = new System.Drawing.Point(3, 16);
             this.listLogMessages.Name = "listLogMessages";
-            this.listLogMessages.Size = new System.Drawing.Size(854, 114);
+            this.listLogMessages.Size = new System.Drawing.Size(878, 163);
             this.listLogMessages.SmallImageList = this.imageListLog;
             this.listLogMessages.TabIndex = 0;
             this.listLogMessages.UseCompatibleStateImageBehavior = false;
@@ -133,9 +144,10 @@
             // 
             // groupEstimatorsProperties
             // 
-            this.groupEstimatorsProperties.Location = new System.Drawing.Point(318, 27);
+            this.groupEstimatorsProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupEstimatorsProperties.Location = new System.Drawing.Point(0, 0);
             this.groupEstimatorsProperties.Name = "groupEstimatorsProperties";
-            this.groupEstimatorsProperties.Size = new System.Drawing.Size(554, 370);
+            this.groupEstimatorsProperties.Size = new System.Drawing.Size(634, 329);
             this.groupEstimatorsProperties.TabIndex = 1;
             this.groupEstimatorsProperties.TabStop = false;
             this.groupEstimatorsProperties.Text = "Свойства";
@@ -143,9 +155,10 @@
             // groupEstimators
             // 
             this.groupEstimators.Controls.Add(this.treeEstimators);
-            this.groupEstimators.Location = new System.Drawing.Point(12, 27);
+            this.groupEstimators.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupEstimators.Location = new System.Drawing.Point(0, 0);
             this.groupEstimators.Name = "groupEstimators";
-            this.groupEstimators.Size = new System.Drawing.Size(300, 370);
+            this.groupEstimators.Size = new System.Drawing.Size(246, 329);
             this.groupEstimators.TabIndex = 0;
             this.groupEstimators.TabStop = false;
             this.groupEstimators.Text = "Вычислители";
@@ -177,7 +190,7 @@
             this.treeEstimators.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode7});
             this.treeEstimators.SelectedImageIndex = 0;
-            this.treeEstimators.Size = new System.Drawing.Size(294, 351);
+            this.treeEstimators.Size = new System.Drawing.Size(240, 310);
             this.treeEstimators.TabIndex = 0;
             this.treeEstimators.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeFloutecs_AfterSelect);
             // 
@@ -312,22 +325,52 @@
             this.menuAbout.Text = "О программе";
             this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.groupEstimatorsLog);
+            this.splitContainer1.Size = new System.Drawing.Size(884, 515);
+            this.splitContainer1.SplitterDistance = 329;
+            this.splitContainer1.TabIndex = 3;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.groupEstimators);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.groupEstimatorsProperties);
+            this.splitContainer2.Size = new System.Drawing.Size(884, 329);
+            this.splitContainer2.SplitterDistance = 246;
+            this.splitContainer2.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(884, 561);
-            this.Controls.Add(this.groupEstimatorsLog);
-            this.Controls.Add(this.groupEstimatorsProperties);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.status);
-            this.Controls.Add(this.groupEstimators);
             this.Controls.Add(this.menu);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menu;
-            this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(900, 600);
-            this.MinimumSize = new System.Drawing.Size(900, 600);
+            this.MinimumSize = new System.Drawing.Size(450, 300);
             this.Name = "MainForm";
             this.Text = "mainform";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -337,6 +380,14 @@
             this.contextMenuEstimators.ResumeLayout(false);
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -368,6 +419,8 @@
         private System.Windows.Forms.ToolStripMenuItem menuRun;
         private System.Windows.Forms.ToolStripMenuItem menuStop;
         private LogListView listLogMessages;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainer2;
     }
 }
 
