@@ -77,6 +77,9 @@ namespace NGVSCAN.EXEC.Popups
                 ROCPoint.Name = textName.Text;
                 ROCPoint.Description = textDescription.Text;
                 ROCPoint.HistSegment = (int)numericSegment.Value;
+                ROCPoint.MinuteDataScanPeriod = (int)numericMinuteScanPeriod.Value;
+                ROCPoint.PeriodicDataScanPeriod = (int)numericPeriodicScanPeriod.Value;
+                ROCPoint.DailyDataScanPeriod = (int)numericDailyScanPeriod.Value;
 
                 DialogResult = DialogResult.OK;
 
@@ -101,6 +104,9 @@ namespace NGVSCAN.EXEC.Popups
                 numericSegment.Value = ROCPoint.HistSegment;
                 textName.Text = ROCPoint.Name;
                 textDescription.Text = ROCPoint.Description;
+                numericMinuteScanPeriod.Value = ROCPoint.MinuteDataScanPeriod;
+                numericPeriodicScanPeriod.Value = ROCPoint.PeriodicDataScanPeriod;
+                numericDailyScanPeriod.Value = ROCPoint.DailyDataScanPeriod;
             }
         }
     }

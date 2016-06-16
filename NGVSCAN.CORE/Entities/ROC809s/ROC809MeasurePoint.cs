@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace NGVSCAN.CORE.Entities.ROC809s
 {
@@ -34,6 +35,36 @@ namespace NGVSCAN.CORE.Entities.ROC809s
         /// Исторический сегмент точки измерения
         /// </summary>
         public int HistSegment { get; set; }
+
+        /// <summary>
+        /// Период опроса минутных данных
+        /// </summary>
+        public int MinuteDataScanPeriod { get; set; }
+
+        /// <summary>
+        /// Дата и время последнего опроса минутных данных
+        /// </summary>
+        public DateTime? DateMinuteDataLastScanned { get; set; }
+
+        /// <summary>
+        /// Период опроса периодических данных
+        /// </summary>
+        public int PeriodicDataScanPeriod { get; set; }
+
+        /// <summary>
+        /// Дата и время последнего опроса периодических данных
+        /// </summary>
+        public DateTime? DatePeriodicDataLastScanned { get; set; }
+
+        /// <summary>
+        /// Период опроса суточных данных
+        /// </summary>
+        public int DailyDataScanPeriod { get; set; }
+
+        /// <summary>
+        /// Дата и время последнего опроса суточных данных
+        /// </summary>
+        public DateTime? DateDailyDataLastScanned { get; set; }
 
         #endregion
 

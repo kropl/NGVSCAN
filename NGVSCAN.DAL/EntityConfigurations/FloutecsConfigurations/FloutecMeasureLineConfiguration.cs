@@ -16,6 +16,8 @@ namespace NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations
             Property(m => m.Number).IsRequired();
             Property(m => m.HourlyDataScanPeriod).IsRequired();
             Property(m => m.DateHourlyDataLastScanned).IsOptional().HasColumnType("datetime2");
+            Property(m => m.InstantDataScanPeriod).IsRequired();
+            Property(m => m.DateInstantDataLastScanned).IsOptional().HasColumnType("datetime2");
             Property(m => m.SensorType).IsRequired();
             HasMany(m => m.HourlyData).WithRequired(m => m.MeasureLine);
             HasMany(m => m.IdentData).WithRequired(m => m.MeasureLine);

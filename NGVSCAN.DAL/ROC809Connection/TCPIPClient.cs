@@ -61,7 +61,7 @@ namespace NGVSCAN.DAL.ROC809Connection
                     else
                     {
                         // Определение соответствующего исключения
-                        throw new SocketException();
+                        throw new SocketException(10060);
                     }
                 }
                 // Перехват исключения ArgumentNullException

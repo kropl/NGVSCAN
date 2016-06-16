@@ -38,7 +38,7 @@ namespace NGVSCAN.EXEC
         // Коллекция точек измерения вычислителей ROC809 данной установки
         private List<ROC809MeasurePoint> rocPoints;
 
-        private SqlConnection sqlConnection;
+        private string sqlConnection;
 
         Timer scanTimer;
 
@@ -75,12 +75,13 @@ namespace NGVSCAN.EXEC
                 sb.IntegratedSecurity = true;
             else
             {
+                sb.IntegratedSecurity = false;
                 sb.UserID = Settings.SqlUserName;
                 sb.Password = Settings.SqlUserPassword;
             }
             sb.MultipleActiveResultSets = true;
 
-            sqlConnection = new SqlConnection(sb.ToString());
+            sqlConnection = sb.ToString();
         }
 
         /// <summary>

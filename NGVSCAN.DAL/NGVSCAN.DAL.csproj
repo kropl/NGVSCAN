@@ -149,6 +149,10 @@
     <Compile Include="Migrations\201606151308276_AddedROCDataEntities.Designer.cs">
       <DependentUpon>201606151308276_AddedROCDataEntities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606160716285_AddedDataScanPeriodsForROCs.cs" />
+    <Compile Include="Migrations\201606160716285_AddedDataScanPeriodsForROCs.Designer.cs">
+      <DependentUpon>201606160716285_AddedDataScanPeriodsForROCs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbfRepository.cs" />
@@ -224,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606151308276_AddedROCDataEntities.resx">
       <DependentUpon>201606151308276_AddedROCDataEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606160716285_AddedDataScanPeriodsForROCs.resx">
+      <DependentUpon>201606160716285_AddedDataScanPeriodsForROCs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

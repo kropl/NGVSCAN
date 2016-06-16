@@ -30,7 +30,7 @@ namespace NGVSCAN.DAL.Context
         /// Контекст сохранённых данных опроса вычислителей
         /// </summary>
         /// <param name="connection">Соединение с базой данных</param>
-        public NGVSCANContext(DbConnection connection) : base(connection, false)
+        public NGVSCANContext(DbConnection connection) : base(connection, true)
         {
             // Инициализация базы данных при создании
             Database.SetInitializer(new NGVSCANInitializer());
