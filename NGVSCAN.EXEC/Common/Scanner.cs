@@ -895,7 +895,7 @@ namespace NGVSCAN.EXEC.Common
                     }
                     else
                     {
-                        foreach (var item in result.Where(m => m.Key > lastData))
+                        foreach (var item in result.Where(m => m.Key > lastData.Value))
                         {
                             minuteData.Add(new ROC809MinuteData() { DatePeriod = item.Key, Value = item.Value });
                         }

@@ -351,7 +351,7 @@ namespace NGVSCAN.DAL.Context
 
             fields.Add(new Field() { DateCreated = DateTime.Now, DateModified = DateTime.Now, IsDeleted = false, Id = 1, Name = "SEM-SRV", Description = "УКПГ Семиренки" });
             fields.Add(new Field() { DateCreated = DateTime.Now, DateModified = DateTime.Now, IsDeleted = false, Id = 2, Name = "OLEF-SRV", Description = "УППГ Олефировка" });
-            fields.Add(new Field() { DateCreated = DateTime.Now, DateModified = DateTime.Now, IsDeleted = false, Id = 2, Name = "MACH-SRV", Description = "УПГ Мачухи" });
+            fields.Add(new Field() { DateCreated = DateTime.Now, DateModified = DateTime.Now, IsDeleted = false, Id = 3, Name = "MACH-SRV", Description = "УПГ Мачухи" });
 
             fields.ForEach((f) => { context.Fields.Add(f); });
 
