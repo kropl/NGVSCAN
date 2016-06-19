@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using NGVSCAN.DAL.ROC809Connection;
 
 namespace NGVSCAN.EXEC.Common
 {
@@ -26,8 +27,8 @@ namespace NGVSCAN.EXEC.Common
         private DateTime dateStartHourlyDataScan;
         private DateTime dateStartInstantDataScan;
         private DateTime dateStartMinuteDataScan;
-        //private DateTime dateStartPeriodicDataScan;
-        //private DateTime dateStartDailyDataScan;
+        private DateTime dateStartPeriodicDataScan;
+        private DateTime dateStartDailyDataScan;
 
         // Соединение с БД SQL
         private string connection;
@@ -443,10 +444,83 @@ namespace NGVSCAN.EXEC.Common
 
                 #region Опрос и сохранение периодических данных
 
-                #endregion
+                                    if (timeToPeriodicData && !rocsScanningState[ident + "_periodic"])
+                                    {
+                                        Task.Factory.StartNew(() => GetPeriodicData(point), TaskCreationOptions.LongRunning)
+                                            .ContinueWith((getPeriodicDataResult) =>
+                                            {
+                                                if (getPeriodicDataResult.Exception != null)
+                                                {
+                                                    LogException(log, "Ошибка опроса периодических данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, getPeriodicDataResult.Exception);
+                                                    throw getPeriodicDataResult.Exception;
+                                                }
+                                                else
+                                                    return getPeriodicDataResult.Result;
+                                            },
+                                            uiSyncContext)
+                                                .ContinueWith((getPeriodicDataLogResult) =>
+                                                {
+                                                    if (getPeriodicDataLogResult.Exception == null)
+                                                    {
+                                                        SavePeriodicData(point, getPeriodicDataLogResult.Result);
+                                                        return true;
+                                                    }
+                                                    else
+                                                        return false;
+                                                },
+                                                TaskContinuationOptions.LongRunning)
+                                                    .ContinueWith((savePeriodicDataResult) =>
+                                                    {
+                                                        if (savePeriodicDataResult.Exception != null)
+                                                            LogException(log, "Ошибка сохранения периодических данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, savePeriodicDataResult.Exception);
+                                                        else if (savePeriodicDataResult.Result)
+                                                            Logger.Log(log, "Опрос периодических данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, LogType.Success);
+
+                                                        rocsScanningState[ident + "_periodic"] = false;
+                                                    },
+                                                    uiSyncContext);
+                                    }
+
+                                    #endregion
 
                 #region Опрос и сохранение суточных данных
 
+                                    if (timeToDailyData && !rocsScanningState[ident + "_daily"])
+                                    {
+                                        Task.Factory.StartNew(() => GetDailyData(point), TaskCreationOptions.LongRunning)
+                                            .ContinueWith((getDailyDataResult) =>
+                                            {
+                                                if (getDailyDataResult.Exception != null)
+                                                {
+                                                    LogException(log, "Ошибка опроса суточных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, getDailyDataResult.Exception);
+                                                    throw getDailyDataResult.Exception;
+                                                }
+                                                else
+                                                    return getDailyDataResult.Result;
+                                            },
+                                            uiSyncContext)
+                                                .ContinueWith((getDailyDataLogResult) =>
+                                                {
+                                                    if (getDailyDataLogResult.Exception == null)
+                                                    {
+                                                        SaveDailyData(point, getDailyDataLogResult.Result);
+                                                        return true;
+                                                    }
+                                                    else
+                                                        return false;
+                                                },
+                                                TaskContinuationOptions.LongRunning)
+                                                    .ContinueWith((saveDailyDataResult) =>
+                                                    {
+                                                        if (saveDailyDataResult.Exception != null)
+                                                            LogException(log, "Ошибка сохранения суточных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, saveDailyDataResult.Exception);
+                                                        else if (saveDailyDataResult.Result)
+                                                            Logger.Log(log, "Опрос суточных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, LogType.Success);
+
+                                                        rocsScanningState[ident + "_daily"] = false;
+                                                    },
+                                                    uiSyncContext);
+                                    }
                                 },
                                 TaskContinuationOptions.LongRunning);
 
@@ -880,7 +954,7 @@ namespace NGVSCAN.EXEC.Common
 
             try
             {
-                var result = point.GetMinuteData();
+                var result = point.GetPeriodicData(ROC809HistoryType.Minute);
 
                 if (result.Count > 0)
                 {
@@ -940,6 +1014,160 @@ namespace NGVSCAN.EXEC.Common
                 {
                     ROC809MeasurePoint existingPoint = repo.Get(point.Id);
                     existingPoint.DateMinuteDataLastScanned = dateStartMinuteDataScan;
+                    repo.Update(existingPoint);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private List<ROC809PeriodicData> GetPeriodicData(ROC809MeasurePoint point)
+        {
+            dateStartPeriodicDataScan = DateTime.Now;
+
+            List<ROC809PeriodicData> periodicData = new List<ROC809PeriodicData>();
+
+            try
+            {
+                var result = point.GetPeriodicData(ROC809HistoryType.Periodic);
+
+                if (result.Count > 0)
+                {
+                    DateTime? lastData = point.PeriodicData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
+
+                    if (!lastData.HasValue)
+                    {
+                        foreach (var item in result)
+                        {
+                            periodicData.Add(new ROC809PeriodicData() { DatePeriod = item.Key, Value = item.Value });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in result.Where(m => m.Key > lastData.Value))
+                        {
+                            periodicData.Add(new ROC809PeriodicData() { DatePeriod = item.Key, Value = item.Value });
+                        }
+                    }
+                }
+
+                return periodicData;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void SavePeriodicData(ROC809MeasurePoint point, List<ROC809PeriodicData> data)
+        {
+            if (data.Count > 0)
+            {
+                data.ForEach((d) =>
+                {
+                    d.DateCreated = DateTime.Now;
+                    d.DateModified = DateTime.Now;
+                    d.ROC809MeasurePointId = point.Id;
+                });
+
+                try
+                {
+                    using (SqlRepository<ROC809PeriodicData> repo = new SqlRepository<ROC809PeriodicData>(connection))
+                    {
+                        repo.Insert(data);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            try
+            {
+                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(connection))
+                {
+                    ROC809MeasurePoint existingPoint = repo.Get(point.Id);
+                    existingPoint.DatePeriodicDataLastScanned = dateStartPeriodicDataScan;
+                    repo.Update(existingPoint);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private List<ROC809DailyData> GetDailyData(ROC809MeasurePoint point)
+        {
+            dateStartDailyDataScan = DateTime.Now;
+
+            List<ROC809DailyData> dailyData = new List<ROC809DailyData>();
+
+            try
+            {
+                var result = point.GetPeriodicData(ROC809HistoryType.Daily);
+
+                if (result.Count > 0)
+                {
+                    DateTime? lastData = point.DailyData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
+
+                    if (!lastData.HasValue)
+                    {
+                        foreach (var item in result)
+                        {
+                            dailyData.Add(new ROC809DailyData() { DatePeriod = item.Key, Value = item.Value });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in result.Where(m => m.Key > lastData.Value))
+                        {
+                            dailyData.Add(new ROC809DailyData() { DatePeriod = item.Key, Value = item.Value });
+                        }
+                    }
+                }
+
+                return dailyData;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void SaveDailyData(ROC809MeasurePoint point, List<ROC809DailyData> data)
+        {
+            if (data.Count > 0)
+            {
+                data.ForEach((d) =>
+                {
+                    d.DateCreated = DateTime.Now;
+                    d.DateModified = DateTime.Now;
+                    d.ROC809MeasurePointId = point.Id;
+                });
+
+                try
+                {
+                    using (SqlRepository<ROC809DailyData> repo = new SqlRepository<ROC809DailyData>(connection))
+                    {
+                        repo.Insert(data);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            try
+            {
+                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(connection))
+                {
+                    ROC809MeasurePoint existingPoint = repo.Get(point.Id);
+                    existingPoint.DateDailyDataLastScanned = dateStartDailyDataScan;
                     repo.Update(existingPoint);
                 }
             }

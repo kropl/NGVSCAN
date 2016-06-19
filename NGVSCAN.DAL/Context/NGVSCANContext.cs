@@ -8,6 +8,8 @@ using NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations.Common;
 using NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations;
 using System.Data.Common;
 using System.Data.Entity;
+using NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations.Common;
+using NGVSCAN.CORE.Entities.ROC809s.Common;
 
 namespace NGVSCAN.DAL.Context
 {
@@ -133,6 +135,16 @@ namespace NGVSCAN.DAL.Context
         /// </summary>
         public IDbSet<ROC809DailyData> ROC809DailyData { get; set; }
 
+        /// <summary>
+        /// Данные событий вычислителей ROC809
+        /// </summary>
+        public IDbSet<ROC809EventData> ROC809EventData { get; set; }
+
+        /// <summary>
+        /// Типы событий вычислителей ROC809
+        /// </summary>
+        public IDbSet<ROC809EventsTypes> ROC809EventsTypes { get; set; }
+
         #endregion
 
         // Конфигурирование базы данных при создании
@@ -159,6 +171,8 @@ namespace NGVSCAN.DAL.Context
             modelBuilder.Configurations.Add(new ROC809DailyDataConfiguration());
             modelBuilder.Configurations.Add(new ROC809MinuteDataConfiguration());
             modelBuilder.Configurations.Add(new ROC809PeriodicDataConfiguration());
+            modelBuilder.Configurations.Add(new ROC809EventsTypesConfiguration());
+            modelBuilder.Configurations.Add(new ROC809EventDataConfiguration());
         }
     }
 }

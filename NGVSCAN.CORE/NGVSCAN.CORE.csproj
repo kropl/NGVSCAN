@@ -56,7 +56,9 @@
     <Compile Include="Entities\Floutecs\Common\FloutecParamsTypes.cs" />
     <Compile Include="Entities\MeasureLine.cs" />
     <Compile Include="Entities\ROC809s\Common\IROC809PeriodicData.cs" />
+    <Compile Include="Entities\ROC809s\Common\ROC809EventsTypes.cs" />
     <Compile Include="Entities\ROC809s\ROC809.cs" />
+    <Compile Include="Entities\ROC809s\ROC809EventData.cs" />
     <Compile Include="Entities\ROC809s\ROC809MeasurePoint.cs" />
     <Compile Include="Entities\Floutecs\Common\FloutecSensorsTypes.cs" />
     <Compile Include="Entities\ROC809s\ROC809DailyData.cs" />

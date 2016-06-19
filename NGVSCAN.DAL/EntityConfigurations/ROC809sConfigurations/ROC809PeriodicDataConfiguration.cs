@@ -13,6 +13,8 @@ namespace NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations
         /// </summary>
         public ROC809PeriodicDataConfiguration()
         {
+            Property(p => p.Value).IsRequired();
+            Property(p => p.DatePeriod).IsRequired().HasColumnType("datetime2");
             ToTable("ROC809PeriodicData");
         }
     }

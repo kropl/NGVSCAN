@@ -24,6 +24,7 @@ namespace NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations
             HasMany(p => p.DailyData).WithRequired(m => m.MeasurePoint);
             Property(p => p.DailyDataScanPeriod).IsRequired();
             Property(p => p.DateDailyDataLastScanned).IsOptional().HasColumnType("datetime2");
+            HasMany(p => p.EventData).WithRequired(p => p.MeasurePoint);
             ToTable("ROC809MeasurePoints");
         }
     }

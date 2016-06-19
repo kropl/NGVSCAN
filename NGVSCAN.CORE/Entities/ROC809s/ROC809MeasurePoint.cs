@@ -20,6 +20,9 @@ namespace NGVSCAN.CORE.Entities.ROC809s
 
             // Инициализация коллекции суточных данных
             DailyData = new HashSet<ROC809DailyData>();
+
+            // Инициализация коллекции данных событий
+            EventData = new HashSet<ROC809EventData>();
         }
 
         #endregion
@@ -84,6 +87,11 @@ namespace NGVSCAN.CORE.Entities.ROC809s
         /// Коллекция суточных данных 
         /// </summary>
         public virtual ICollection<ROC809DailyData> DailyData { get; set; }
+
+        /// <summary>
+        /// Коллекция данных событий 
+        /// </summary>
+        public virtual ICollection<ROC809EventData> EventData { get; set; }
 
         #endregion
     }

@@ -3,6 +3,7 @@ using NGVSCAN.CORE.Entities.Floutecs.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using NGVSCAN.CORE.Entities.ROC809s.Common;
 
 namespace NGVSCAN.DAL.Context
 {
@@ -342,6 +343,41 @@ namespace NGVSCAN.DAL.Context
             sensorsTypes.Add(new FloutecSensorsTypes() { Code = 3, Name = "Массовый расходомер" });
 
             sensorsTypes.ForEach((s) => { context.FloutecSensorsTypes.Add(s); });
+
+            #endregion
+
+            #region Инициализация типов событий вычислителей ROC809
+
+            List<ROC809EventsTypes> eventsTypes = new List<ROC809EventsTypes>();
+
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 0, Description = "Событие отсутствует" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 1, Description = "Событие изменения параметра" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 2, Description = "Системное событие" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 3, Description = "Событие таблицы последовательности функций (FST)" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 4, Description = "Пользовательское событие" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 5, Description = "Событие потери питания" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 6, Description = "Событие установки часов" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 7, Description = "Событие проверки калибровки" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 144, Description = "Последовательность инициализации" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 145, Description = "Отключено всё питание" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 146, Description = "Инициализация значениями по умолчанию" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 147, Description = "Ошибка контрольной суммы ПЗУ" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 148, Description = "Инициализация базы данных" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 150, Description = "Программирование FLASH-памяти" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 151, Description = "Зарезервировано для ROC809" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 152, Description = "Зарезервировано для ROC809" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 153, Description = "Зарезервировано для ROC809" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 154, Description = "Добавлен SMART-модуль" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 155, Description = "Удалён SMART-модуль" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 200, Description = "Установка часов" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 248, Description = "Текстовое сообщение" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 249, Description = "Конфигурирование загрузки" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 250, Description = "Конфигурирование выгрузки" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 251, Description = "Таймаут калибровки" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 252, Description = "Отмена калибровки" });
+            eventsTypes.Add(new ROC809EventsTypes() { Code = 253, Description = "Сброс мультисегментной виртуальной памяти (MVS) к заводским настройкам" });
+
+            eventsTypes.ForEach((e) => { context.ROC809EventsTypes.Add(e); });
 
             #endregion
 
