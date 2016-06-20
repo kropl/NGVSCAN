@@ -358,26 +358,84 @@ namespace NGVSCAN.DAL.Context
             eventsTypes.Add(new ROC809EventsTypes() { Code = 5, Description = "Событие потери питания" });
             eventsTypes.Add(new ROC809EventsTypes() { Code = 6, Description = "Событие установки часов" });
             eventsTypes.Add(new ROC809EventsTypes() { Code = 7, Description = "Событие проверки калибровки" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 144, Description = "Последовательность инициализации" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 145, Description = "Отключено всё питание" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 146, Description = "Инициализация значениями по умолчанию" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 147, Description = "Ошибка контрольной суммы ПЗУ" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 148, Description = "Инициализация базы данных" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 150, Description = "Программирование FLASH-памяти" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 151, Description = "Зарезервировано для ROC809" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 152, Description = "Зарезервировано для ROC809" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 153, Description = "Зарезервировано для ROC809" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 154, Description = "Добавлен SMART-модуль" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 155, Description = "Удалён SMART-модуль" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 200, Description = "Установка часов" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 248, Description = "Текстовое сообщение" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 249, Description = "Конфигурирование загрузки" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 250, Description = "Конфигурирование выгрузки" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 251, Description = "Таймаут калибровки" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 252, Description = "Отмена калибровки" });
-            eventsTypes.Add(new ROC809EventsTypes() { Code = 253, Description = "Сброс мультисегментной виртуальной памяти (MVS) к заводским настройкам" });
 
             eventsTypes.ForEach((e) => { context.ROC809EventsTypes.Add(e); });
+
+            List<ROC809EventsCodes> eventsCodes = new List<ROC809EventsCodes>();
+
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 144, Description = "Последовательность инициализации" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 145, Description = "Отключено всё питание" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 146, Description = "Инициализация значениями по умолчанию" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 147, Description = "Ошибка контрольной суммы ПЗУ" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 148, Description = "Инициализация базы данных" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 150, Description = "Программирование FLASH-памяти" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 151, Description = "Зарезервировано для ROC809" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 152, Description = "Зарезервировано для ROC809" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 153, Description = "Зарезервировано для ROC809" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 154, Description = "Добавлен SMART-модуль" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 155, Description = "Удалён SMART-модуль" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 200, Description = "Установка часов" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 248, Description = "Текстовое сообщение" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 249, Description = "Конфигурирование загрузки" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 250, Description = "Конфигурирование выгрузки" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 251, Description = "Таймаут калибровки" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 252, Description = "Отмена калибровки" });
+            eventsCodes.Add(new ROC809EventsCodes() { Code = 253, Description = "Сброс мультисегментной виртуальной памяти (MVS) к заводским настройкам" });
+
+            eventsCodes.ForEach((e) => { context.ROC809EventsCodes.Add(e); });
+
+            #endregion Инициализация типов аварий вычислителей ROC809
+
+            List<ROC809AlarmsTypes> rocAlarmsTypes = new List<ROC809AlarmsTypes>();
+
+            rocAlarmsTypes.Add(new ROC809AlarmsTypes() { Code = 0, Description = "Авария отсутствует" });
+            rocAlarmsTypes.Add(new ROC809AlarmsTypes() { Code = 1, Description = "Авария параметра" });
+            rocAlarmsTypes.Add(new ROC809AlarmsTypes() { Code = 2, Description = "Авария таблицы последовательности функций (FST)" });
+            rocAlarmsTypes.Add(new ROC809AlarmsTypes() { Code = 3, Description = "Авария пользовательского текста" });
+            rocAlarmsTypes.Add(new ROC809AlarmsTypes() { Code = 4, Description = "Авария пользовательского значения" });
+
+            rocAlarmsTypes.ForEach((a) => { context.ROC809AlarmsTypes.Add(a); });
+
+            List<ROC809AlarmsCodes> rocAlarmsCodes = new List<ROC809AlarmsCodes>();
+
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 0, Description = "Авария нижней предупредительной границы" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 1, Description = "Авария нижней аварийной границы" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 2, Description = "Авария верхней предупредительной границы" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 3, Description = "Авария верхней аварийной границы" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 4, Description = "Авария скорости изменения значения" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 5, Description = "Изменение статуса" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 6, Description = "Ошибка точки измерения" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 7, Description = "Сканирование отключено" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 8, Description = "Сканирование в ручном режиме" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 9, Description = "Переполнение суммирующих счётчиков" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 10, Description = "Переполнение регистра потока" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 11, Description = "Отсутствие потока" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 12, Description = "Режим 'заморозки' входов" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 13, Description = "Ошибка соединения с сенсором" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 14, Description = "Ошибка соединения интерфейса RS-485" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 15, Description = "Режим отключения сканирования" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 16, Description = "Ошибка температуры измерителя" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 17, Description = "Переполнение регистра потока" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 18, Description = "Ошибка расчёта сжимаемости" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 19, Description = "Сбой последовательности" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 20, Description = "Перекос фаз" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 21, Description = "Ошибка синхронизации импульсов" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 22, Description = "Несоответствие частот" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 23, Description = "Ошибка импульсного входа №1" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 24, Description = "Ошибка импульсного входа №2" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 25, Description = "Переполнение буфера импульсного выхода" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 26, Description = "Предупреждение о переполнении буфера импульсного выхода" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 27, Description = "Неисправность реле" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 28, Description = "Ошибка реле" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 29, Description = "Ограничение статического давления снизу" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 30, Description = "Ограничение температуры снизу" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 31, Description = "Ошибка обратной связи аналогового выхода" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 32, Description = "Плохой уровень потока импульсов" });
+            rocAlarmsCodes.Add(new ROC809AlarmsCodes() { Code = 33, Description = "Авария импульса масштабной отметки" });
+
+            rocAlarmsCodes.ForEach((a) => { context.ROC809AlarmsCodes.Add(a); });
+
+            #region
 
             #endregion
 
