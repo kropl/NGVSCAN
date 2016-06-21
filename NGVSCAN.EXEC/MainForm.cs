@@ -128,13 +128,13 @@ namespace NGVSCAN.EXEC
                     }
                     else
                     {
-                        Logger.Log(listLogMessages, "Указанная установка отсутствует в базе данных", LogType.Error);
+                        Logger.Log(listLogMessages, new LogEntry { Message = "Указанная установка отсутствует в базе данных", Status = LogStatus.Error, Type = LogType.System, Timestamp = DateTime.Now });
                     }
                 }
             }
             catch(Exception ex)
             {
-                Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.System, Timestamp = DateTime.Now });
             }        
         }
 
@@ -516,7 +516,7 @@ namespace NGVSCAN.EXEC
                         }
                         catch(Exception ex)
                         {
-                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.Floutec, Timestamp = DateTime.Now });
                         }
 
                         UpdateData();
@@ -551,7 +551,7 @@ namespace NGVSCAN.EXEC
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.ROC, Timestamp = DateTime.Now });
                         }
 
                         UpdateData();
@@ -590,7 +590,7 @@ namespace NGVSCAN.EXEC
                             }
                             catch (Exception ex)
                             {
-                                Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.Floutec, Timestamp = DateTime.Now });
                             }
 
                             UpdateData();
@@ -624,7 +624,7 @@ namespace NGVSCAN.EXEC
                             }
                             catch (Exception ex)
                             {
-                                Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.ROC, Timestamp = DateTime.Now });
                             }
 
                             UpdateData();
@@ -661,7 +661,7 @@ namespace NGVSCAN.EXEC
                             }
                             catch(Exception ex)
                             {
-                                Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.Floutec, Timestamp = DateTime.Now });
                             }
 
                             UpdateData();
@@ -695,7 +695,7 @@ namespace NGVSCAN.EXEC
                             }
                             catch (Exception ex)
                             {
-                                Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.ROC, Timestamp = DateTime.Now });
                             }
 
                             UpdateData();
@@ -734,7 +734,7 @@ namespace NGVSCAN.EXEC
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.Floutec, Timestamp = DateTime.Now });
                         }
 
                         UpdateData();
@@ -769,7 +769,7 @@ namespace NGVSCAN.EXEC
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.ROC, Timestamp = DateTime.Now });
                         }
 
                         UpdateData();
@@ -807,7 +807,7 @@ namespace NGVSCAN.EXEC
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                    Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.Floutec, Timestamp = DateTime.Now });
                                 }
 
                                 UpdateData();
@@ -839,7 +839,7 @@ namespace NGVSCAN.EXEC
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                    Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.Floutec, Timestamp = DateTime.Now });
                                 }
 
                                 UpdateData();
@@ -873,7 +873,7 @@ namespace NGVSCAN.EXEC
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                    Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.ROC, Timestamp = DateTime.Now });
                                 }
 
                                 UpdateData();
@@ -905,7 +905,7 @@ namespace NGVSCAN.EXEC
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                    Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.ROC, Timestamp = DateTime.Now });
                                 }
 
                                 UpdateData();
@@ -942,7 +942,7 @@ namespace NGVSCAN.EXEC
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                    Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.Floutec, Timestamp = DateTime.Now });
                                 }
 
                                 UpdateData();
@@ -974,7 +974,7 @@ namespace NGVSCAN.EXEC
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                    Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.Floutec, Timestamp = DateTime.Now });
                                 }
 
                                 UpdateData();
@@ -1008,7 +1008,7 @@ namespace NGVSCAN.EXEC
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                    Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.ROC, Timestamp = DateTime.Now });
                                 }
 
                                 UpdateData();
@@ -1040,7 +1040,7 @@ namespace NGVSCAN.EXEC
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                                    Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.ROC, Timestamp = DateTime.Now });
                                 }
 
                                 UpdateData();
@@ -1070,7 +1070,7 @@ namespace NGVSCAN.EXEC
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.Floutec, Timestamp = DateTime.Now });
                         }
 
                         UpdateData();
@@ -1092,7 +1092,7 @@ namespace NGVSCAN.EXEC
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.ROC, Timestamp = DateTime.Now });
                         }
 
                         UpdateData();
@@ -1117,7 +1117,7 @@ namespace NGVSCAN.EXEC
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.Floutec, Timestamp = DateTime.Now });
                         }
 
                         UpdateData();
@@ -1139,7 +1139,7 @@ namespace NGVSCAN.EXEC
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log(listLogMessages, ex.Message, LogType.Error);
+                            Logger.Log(listLogMessages, new LogEntry { Message = ex.Message, Status = LogStatus.Error, Type = LogType.ROC, Timestamp = DateTime.Now });
                         }
 
                         UpdateData();
@@ -1158,7 +1158,7 @@ namespace NGVSCAN.EXEC
 
             if (dialogResult == DialogResult.OK)
             {
-                Logger.Log(listLogMessages, "Были изменены настройки", LogType.Info);
+                Logger.Log(listLogMessages, new LogEntry { Message = "Были изменены настройки", Status = LogStatus.Info, Type = LogType.System, Timestamp = DateTime.Now });
 
                 InitializeSqlConnection();
                 UpdateData();
@@ -1184,7 +1184,7 @@ namespace NGVSCAN.EXEC
 
             scanTimer.Start();
 
-            Logger.Log(listLogMessages, "Опрос запущен", LogType.Info);
+            Logger.Log(listLogMessages, new LogEntry { Message = "Опрос запущен", Status = LogStatus.Info, Type = LogType.System, Timestamp = DateTime.Now });
         }
 
         private void menuStop_Click(object sender, EventArgs e)
@@ -1197,7 +1197,7 @@ namespace NGVSCAN.EXEC
             contextMenuEstimators.Enabled = true;
             menuSettings.Enabled = true;
 
-            Logger.Log(listLogMessages, "Опрос остановлен", LogType.Info);
+            Logger.Log(listLogMessages, new LogEntry { Message = "Опрос остановлен", Status = LogStatus.Info, Type = LogType.System, Timestamp = DateTime.Now });
         } 
 
         #endregion

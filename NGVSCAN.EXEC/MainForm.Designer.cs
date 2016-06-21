@@ -54,6 +54,7 @@
             this.groupEstimatorsLog = new System.Windows.Forms.GroupBox();
             this.listLogMessages = new LogListView();
             this.columnStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnDateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageListLog = new System.Windows.Forms.ImageList(this.components);
@@ -109,6 +110,7 @@
             this.listLogMessages.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listLogMessages.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnStatus,
+            this.columnType,
             this.columnDateTime,
             this.columnMessage});
             this.listLogMessages.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -123,7 +125,11 @@
             // 
             // columnStatus
             // 
-            this.columnStatus.Text = "";
+            this.columnStatus.Text = "Статус";
+            // 
+            // columnType
+            // 
+            this.columnType.Text = "Тип";
             // 
             // columnDateTime
             // 
@@ -421,6 +427,7 @@
         private LogListView listLogMessages;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.ColumnHeader columnType;
     }
 }
 

@@ -2,9 +2,8 @@
 {
     public enum LogType
     {
-        Info,
-        Success,
-        Error,
-        Warning
+        System,
+        Floutec,
+        ROC,
     }
 }

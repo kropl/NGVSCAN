@@ -1,34 +1,75 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace NGVSCAN.EXEC.Common
 {
     public static class Logger
     {
-        public static void Log(ListView console, string message, LogType type)
-        {
-            ListViewItem item = new ListViewItem(new[]
-                    {
-                        "",
-                        DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"),
-                        message
-                    });
+        private static readonly string _fileName = "Log.json";
 
-            switch (type)
+        private static List<LogEntry> log;
+
+        public static void Log(ListView console, LogEntry entry)
+        {
+            if (log == null)
+                log = new List<LogEntry>();
+
+            log.Add(entry);
+
+            LogToFile(entry);
+
+            LogToConsole(console, entry);
+        }
+
+        private static void LogToFile(LogEntry entry)
+        {
+            using (StreamWriter log = new StreamWriter(_fileName, true))
             {
-                case LogType.Info:
+                log.WriteLine(JsonConvert.SerializeObject(entry));
+            }
+        }
+
+        private static void LogToConsole(ListView console, LogEntry entry)
+        {
+            string type = "";
+            switch (entry.Type)
+            {
+                case LogType.System:
+                    type = "Система";
+                    break;
+                case LogType.Floutec:
+                    type = "ФЛОУТЭК";
+                    break;
+                case LogType.ROC:
+                    type = "ROC809";
+                    break;
+            }
+
+            ListViewItem item = new ListViewItem(new[]
+            {
+                "",
+                type,
+                entry.Timestamp.ToString("dd.MM.yyyy HH:mm:ss"),
+                entry.Message
+            });
+
+            switch (entry.Status)
+            {
+                case LogStatus.Info:
                     item.ImageIndex = 0;
                     item.StateImageIndex = 0;
                     break;
-                case LogType.Success:
+                case LogStatus.Success:
                     item.ImageIndex = 1;
                     item.StateImageIndex = 1;
                     break;
-                case LogType.Error:
+                case LogStatus.Error:
                     item.ImageIndex = 3;
                     item.StateImageIndex = 3;
                     break;
-                case LogType.Warning:
+                case LogStatus.Warning:
                     item.ImageIndex = 2;
                     item.StateImageIndex = 2;
                     break;
@@ -36,18 +77,27 @@ namespace NGVSCAN.EXEC.Common
                     break;
             }
 
-            AddLogItem(console, item);   
+            console.Items.Add(item);
+
+            console.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.HeaderSize);
+            console.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
+            console.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
+            console.AutoResizeColumn(3, ColumnHeaderAutoResizeStyle.ColumnContent);
+
+            console.Items[console.Items.Count - 1].EnsureVisible();
         }
 
-        private static void AddLogItem(ListView console, ListViewItem item)
+        public static void UpdateConsole(ListView console)
         {
-                console.Items.Add(item);
 
-                console.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
-                console.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
-                console.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
+        }
 
-                console.Items[console.Items.Count - 1].EnsureVisible();
+        private static List<LogEntry> GetExistingLog()
+        {
+            using (StreamReader file = new StreamReader(_fileName))
+            {
+                return JsonConvert.DeserializeObject<List<LogEntry>>(file.ReadToEnd());
+            }
         }
     }
 }
