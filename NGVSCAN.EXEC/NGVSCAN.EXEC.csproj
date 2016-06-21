@@ -87,6 +87,12 @@
     <Compile Include="Controls\FloutecsGroupDetails.Designer.cs">
       <DependentUpon>FloutecsGroupDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\LogListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\LogListView.Designer.cs">
+      <DependentUpon>LogListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ROC809Details.cs">
       <SubType>UserControl</SubType>
     </Compile>

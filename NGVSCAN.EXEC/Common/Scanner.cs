@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using NGVSCAN.DAL.ROC809Connection;
+using NGVSCAN.EXEC.Controls;
 
 namespace NGVSCAN.EXEC.Common
 {

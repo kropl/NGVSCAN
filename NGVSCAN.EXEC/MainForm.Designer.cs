@@ -1,13 +1,7 @@
-﻿namespace NGVSCAN.EXEC
-{
-    public class LogListView : System.Windows.Forms.ListView
-    {
-        public LogListView() : base()
-        {
-            DoubleBuffered = true;
-        }
-    }
+﻿using NGVSCAN.EXEC.Controls;
 
+namespace NGVSCAN.EXEC
+{
     partial class MainForm
     {
         /// <summary>
@@ -37,7 +31,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("1 Газ на собственные нужды");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("2 Газ на сепаратор С-1");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("185 Расход газа", new System.Windows.Forms.TreeNode[] {
@@ -51,12 +44,14 @@
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("SEM-SRV", new System.Windows.Forms.TreeNode[] {
             treeNode3,
             treeNode6});
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupEstimatorsLog = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.listLogMessages = new LogListView();
-            this.columnStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnDateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnLogStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnLogType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnLogTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnLogMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageListLog = new System.Windows.Forms.ImageList(this.components);
             this.groupEstimatorsProperties = new System.Windows.Forms.GroupBox();
             this.groupEstimators = new System.Windows.Forms.GroupBox();
@@ -79,7 +74,11 @@
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.groupEstimatorsLog.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.groupEstimators.SuspendLayout();
             this.contextMenuEstimators.SuspendLayout();
             this.menu.SuspendLayout();
@@ -95,7 +94,7 @@
             // 
             // groupEstimatorsLog
             // 
-            this.groupEstimatorsLog.Controls.Add(this.listLogMessages);
+            this.groupEstimatorsLog.Controls.Add(this.tableLayoutPanel1);
             this.groupEstimatorsLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupEstimatorsLog.Location = new System.Drawing.Point(0, 0);
             this.groupEstimatorsLog.Name = "groupEstimatorsLog";
@@ -104,40 +103,63 @@
             this.groupEstimatorsLog.TabStop = false;
             this.groupEstimatorsLog.Text = "Сообщения";
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.button3, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.button2, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.listLogMessages, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.button1, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(878, 163);
+            this.tableLayoutPanel1.TabIndex = 1;
+            // 
             // listLogMessages
             // 
             this.listLogMessages.BackColor = System.Drawing.SystemColors.Control;
             this.listLogMessages.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listLogMessages.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnStatus,
-            this.columnType,
-            this.columnDateTime,
-            this.columnMessage});
+            this.columnLogStatus,
+            this.columnLogType,
+            this.columnLogTimestamp,
+            this.columnLogMessage});
+            this.tableLayoutPanel1.SetColumnSpan(this.listLogMessages, 4);
             this.listLogMessages.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listLogMessages.FullRowSelect = true;
-            this.listLogMessages.Location = new System.Drawing.Point(3, 16);
+            this.listLogMessages.Location = new System.Drawing.Point(3, 33);
+            this.listLogMessages.MultiSelect = false;
             this.listLogMessages.Name = "listLogMessages";
-            this.listLogMessages.Size = new System.Drawing.Size(878, 163);
-            this.listLogMessages.SmallImageList = this.imageListLog;
+            this.listLogMessages.Size = new System.Drawing.Size(872, 127);
+            this.listLogMessages.StateImageList = this.imageListLog;
             this.listLogMessages.TabIndex = 0;
             this.listLogMessages.UseCompatibleStateImageBehavior = false;
             this.listLogMessages.View = System.Windows.Forms.View.Details;
             // 
-            // columnStatus
+            // columnLogStatus
             // 
-            this.columnStatus.Text = "Статус";
+            this.columnLogStatus.Text = "Статус";
             // 
-            // columnType
+            // columnLogType
             // 
-            this.columnType.Text = "Тип";
+            this.columnLogType.Text = "Тип";
             // 
-            // columnDateTime
+            // columnLogTimestamp
             // 
-            this.columnDateTime.Text = "Дата и время";
+            this.columnLogTimestamp.Text = "Дата и время";
             // 
-            // columnMessage
+            // columnLogMessage
             // 
-            this.columnMessage.Text = "Сообщение";
+            this.columnLogMessage.Text = "Сообщение";
             // 
             // imageListLog
             // 
@@ -366,6 +388,39 @@
             this.splitContainer2.SplitterDistance = 246;
             this.splitContainer2.TabIndex = 0;
             // 
+            // button1
+            // 
+            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Location = new System.Drawing.Point(3, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(24, 23);
+            this.button1.TabIndex = 2;
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button2.Location = new System.Drawing.Point(33, 3);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(24, 23);
+            this.button2.TabIndex = 3;
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
+            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button3.Location = new System.Drawing.Point(63, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(24, 23);
+            this.button3.TabIndex = 4;
+            this.button3.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -382,6 +437,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupEstimatorsLog.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.groupEstimators.ResumeLayout(false);
             this.contextMenuEstimators.ResumeLayout(false);
             this.menu.ResumeLayout(false);
@@ -418,16 +474,20 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem menuRestore;
         private System.Windows.Forms.ImageList imageList;
-        private System.Windows.Forms.ColumnHeader columnDateTime;
-        private System.Windows.Forms.ColumnHeader columnMessage;
         private System.Windows.Forms.ImageList imageListLog;
-        private System.Windows.Forms.ColumnHeader columnStatus;
         private System.Windows.Forms.ToolStripMenuItem menuRun;
         private System.Windows.Forms.ToolStripMenuItem menuStop;
-        private LogListView listLogMessages;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.ColumnHeader columnType;
+        private LogListView listLogMessages;
+        private System.Windows.Forms.ColumnHeader columnLogStatus;
+        private System.Windows.Forms.ColumnHeader columnLogType;
+        private System.Windows.Forms.ColumnHeader columnLogTimestamp;
+        private System.Windows.Forms.ColumnHeader columnLogMessage;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button3;
     }
 }
 
