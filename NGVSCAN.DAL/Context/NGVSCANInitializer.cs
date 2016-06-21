@@ -338,9 +338,9 @@ namespace NGVSCAN.DAL.Context
 
             List<FloutecSensorsTypes> sensorsTypes = new List<FloutecSensorsTypes>();
 
-            sensorsTypes.Add(new FloutecSensorsTypes() { Code = 1, Name = "Диафрагма" });
-            sensorsTypes.Add(new FloutecSensorsTypes() { Code = 2, Name = "Счётчик" });
-            sensorsTypes.Add(new FloutecSensorsTypes() { Code = 3, Name = "Массовый расходомер" });
+            sensorsTypes.Add(new FloutecSensorsTypes() { Code = 1, Description = "Диафрагма" });
+            sensorsTypes.Add(new FloutecSensorsTypes() { Code = 2, Description = "Счётчик" });
+            sensorsTypes.Add(new FloutecSensorsTypes() { Code = 3, Description = "Массовый расходомер" });
 
             sensorsTypes.ForEach((s) => { context.FloutecSensorsTypes.Add(s); });
 

@@ -1,9 +1,11 @@
-﻿namespace NGVSCAN.CORE.Entities.Floutecs.Common
+﻿using NGVSCAN.CORE.Entities.Common;
+
+namespace NGVSCAN.CORE.Entities.Floutecs.Common
 {
     /// <summary>
     /// Описание сущности "Типы вмешательств вычислителей ФЛОУТЭК"
     /// </summary>
-    public class FloutecIntersTypes
+    public class FloutecIntersTypes : ICatalog
     {
         /// <summary>
         /// Код вмешательства

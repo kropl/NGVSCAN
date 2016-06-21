@@ -160,6 +160,11 @@ namespace NGVSCAN.DAL.Context
         /// </summary>
         public IDbSet<ROC809AlarmsCodes> ROC809AlarmsCodes { get; set; }
 
+        /// <summary>
+        /// Данные аварий вычислителей ROC809
+        /// </summary>
+        public IDbSet<ROC809AlarmData> ROC809AlarmData { get; set; }
+
         #endregion
 
         // Конфигурирование базы данных при создании
@@ -191,6 +196,7 @@ namespace NGVSCAN.DAL.Context
             modelBuilder.Configurations.Add(new ROC809EventDataConfiguration());
             modelBuilder.Configurations.Add(new ROC809AlarmsTypesConfiguration());
             modelBuilder.Configurations.Add(new ROC809AlarmsCodesConfiguration());
+            modelBuilder.Configurations.Add(new ROC809AlarmDataConfiguration());
         }
     }
 }

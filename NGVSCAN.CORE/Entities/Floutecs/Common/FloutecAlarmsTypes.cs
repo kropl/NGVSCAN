@@ -1,9 +1,11 @@
-﻿namespace NGVSCAN.CORE.Entities.Floutecs.Common
+﻿using NGVSCAN.CORE.Entities.Common;
+
+namespace NGVSCAN.CORE.Entities.Floutecs.Common
 {
     /// <summary>
     /// Описание сущности "Типы аварий вычислителей ФЛОУТЭК"
     /// </summary>
-    public class FloutecAlarmsTypes
+    public class FloutecAlarmsTypes : ICatalog
     {
         /// <summary>
         /// Код аварии

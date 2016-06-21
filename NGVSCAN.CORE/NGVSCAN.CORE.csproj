@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Common\ICatalog.cs" />
     <Compile Include="Entities\Floutecs\Common\FloutecIntersTypes.cs" />
     <Compile Include="Entities\Floutecs\Common\FloutecAlarmsTypes.cs" />
     <Compile Include="Entities\Common\IEntity.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Entities\ROC809s\Common\ROC809AlarmsTypes.cs" />
     <Compile Include="Entities\ROC809s\Common\ROC809EventsTypes.cs" />
     <Compile Include="Entities\ROC809s\ROC809.cs" />
+    <Compile Include="Entities\ROC809s\ROC809AlarmData.cs" />
     <Compile Include="Entities\ROC809s\ROC809EventData.cs" />
     <Compile Include="Entities\ROC809s\ROC809MeasurePoint.cs" />
     <Compile Include="Entities\Floutecs\Common\FloutecSensorsTypes.cs" />

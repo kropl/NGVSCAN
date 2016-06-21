@@ -1,9 +1,11 @@
-﻿namespace NGVSCAN.CORE.Entities.ROC809s.Common
+﻿using NGVSCAN.CORE.Entities.Common;
+
+namespace NGVSCAN.CORE.Entities.ROC809s.Common
 {
     /// <summary>
     /// Описание сущности "Дополнительные коды типов событий вычислителей ROC809"
     /// </summary>
-    public class ROC809EventsCodes
+    public class ROC809EventsCodes : ICatalog
     {
         /// <summary>
         /// Дополнительный код типа события

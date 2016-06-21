@@ -1,9 +1,11 @@
-﻿namespace NGVSCAN.CORE.Entities.Floutecs.Common
+﻿using NGVSCAN.CORE.Entities.Common;
+
+namespace NGVSCAN.CORE.Entities.Floutecs.Common
 {
     /// <summary>
     /// Описание сущности "Типы параметров вычислителей ФЛОУТЭК"
     /// </summary>
-    public class FloutecParamsTypes
+    public class FloutecParamsTypes : ICatalog
     {
         /// <summary>
         /// Код параметра
