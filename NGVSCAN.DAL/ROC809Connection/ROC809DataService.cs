@@ -50,35 +50,48 @@ namespace NGVSCAN.DAL.ROC809Connection
             try
             {
                 ROC809TCPClient client = new ROC809TCPClient(roc.Address, roc.Port);
+
+                int startIndex = request.GetInt16(7);
+                int totalIndex;
+
                 do
                 {
                     response = client.GetData(request);
 
-                    for (int j = 0; j < (response[11] / 2); j++)
+                    totalIndex = request.GetInt16(9);
+                    int recordsToProcess = (totalIndex - startIndex) >= 30 ? 30 : (totalIndex - startIndex);
+
+                    for (int j = 0; j < recordsToProcess; j++)
                     {
+                        int offset = j * 8;
+
                         DateTime period = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                         double value = 0;
 
                         for (int k = 0; k < 2; k++)
                         {
+                            int dataOffset = k * 4 + offset;
+
                             if (k == 0)
-                                period = period.AddSeconds(BitConverter.ToUInt32(SubArray(response, 12 + (k * 4) + (j * 8), 4), 0));
+                                period = period.AddSeconds(response.GetUInt32(12 + dataOffset));
                             else
-                                value = BitConverter.ToSingle(SubArray(response, 12 + (k * 4) + (j * 8), 4), 0);
+                                value = response.GetSingle(12 + dataOffset);
                         }
 
                         data.Add(new ROC809PeriodicDataModel { DatePeriod = period, Value = value });
                     }
 
-                    request[7] = response[9];
-                    request[8] = response[10];
+                    startIndex = BitConverter.ToInt32(BitConverter.GetBytes(startIndex + 10), 0);
+
+                    request[7] = BitConverter.GetBytes(startIndex)[0];
+                    request[8] = BitConverter.GetBytes(startIndex)[1];
 
                     crc = BitConverter.GetBytes(Crc16.Compute(request));
 
                     request[13] = crc[1];
                     request[14] = crc[0];
 
-                } while (response[11] % request[12] == 0);
+                } while (startIndex < totalIndex);
             }
             catch(Exception ex)
             {
@@ -304,71 +317,68 @@ namespace NGVSCAN.DAL.ROC809Connection
             try
             {
                 ROC809TCPClient client = new ROC809TCPClient(roc.Address, roc.Port);
+                int startIndex = request.GetInt16(7);
+                int totalIndex;
                 do
                 {
                     response = client.GetData(request);
 
-                    for (int i = 0; i < response[6]; i++)
+                    totalIndex = request.GetInt16(9);
+                    int alarmsToProcess = (totalIndex - startIndex) >= 10 ? 10 : (totalIndex - startIndex);
+
+                    for (int i = 0; i < alarmsToProcess; i++)
                     {
+                        int offset = i * 23;
+
                         var record = new ROC809AlarmData();
                         DateTime time = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
-                        record.SRBX = (response[11] & (1 << 7)) != 0;
-                        record.Condition = (response[11] & (1 << 6)) != 0;
-                        record.Type = response[11] & 63;
+                        record.SRBX = (response[11 + offset] & (1 << 7)) != 0;
+                        record.Condition = (response[11 + offset] & (1 << 6)) != 0;
+                        record.Type = response[11 + offset] & 63;
 
-                        record.Time = time.AddSeconds(BitConverter.ToUInt32(SubArray(response, 12, 4), 0));
+                        record.Time = time.AddSeconds(response.GetUInt32(12 + offset));
 
                         switch (record.Type)
                         {
                             case 0:
                                 break;
                             case 1:
-                                {
-                                    record.Code = response[16];
-                                    record.T = response[17];
-                                    record.L = response[18];
-                                    record.P = response[19];
-                                    record.Description = Encoding.UTF8.GetString(SubArray(response, 20, 10));
-                                    record.Value = BitConverter.ToSingle(SubArray(response, 30, 4), 0).ToString();
-
+                                    record.Code = response[16 + offset];
+                                    record.T = response[17 + offset];
+                                    record.L = response[18 + offset];
+                                    record.P = response[19 + offset];
+                                    record.Description = response.GetString(20 + offset, 10);
+                                    record.Value = response.GetSingle(30 + offset).ToString();
                                     break;
-                                }
                             case 2:
-                                {
-                                    record.FST = response[16];
-                                    record.Description = Encoding.UTF8.GetString(SubArray(response, 17, 13));
-                                    record.Value = BitConverter.ToSingle(SubArray(response, 30, 4), 0).ToString();
-
+                                    record.FST = response[16 + offset];
+                                    record.Description = response.GetString(17 + offset, 13);
+                                    record.Value = response.GetSingle(30 + offset).ToString();
                                     break;
-                                }
                             case 3:
-                                {
-                                    record.Description = Encoding.UTF8.GetString(SubArray(response, 16, 18));
-
+                                    record.Description = response.GetString(16 + offset, 18);
                                     break;
-                                }
                             case 4:
-                                {
-                                    record.Description = Encoding.UTF8.GetString(SubArray(response, 16, 14));
-                                    record.Value = BitConverter.ToSingle(SubArray(response, 30, 4), 0).ToString();
-
+                                    record.Description = response.GetString(16 + offset, 14);
+                                    record.Value = response.GetSingle(30 + offset).ToString();
                                     break;
-                                }
                         }
 
                         data.Add(record);
                     }
 
-                    request[7] = response[9];
-                    request[8] = response[10];
+                    startIndex = BitConverter.ToInt32(BitConverter.GetBytes(startIndex + 10), 0);
+
+                    request[7] = BitConverter.GetBytes(startIndex)[0];
+                    request[8] = BitConverter.GetBytes(startIndex)[1];
 
                     crc = BitConverter.GetBytes(Crc16.Compute(request));
 
-                    request[13] = crc[1];
-                    request[14] = crc[0];
+                    request[9] = crc[1];
+                    request[10] = crc[0];
 
-                } while (response[6] % request[6] == 0);
+                } while (startIndex < totalIndex);
             }
             catch (Exception ex)
             {
