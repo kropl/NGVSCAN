@@ -91,6 +91,7 @@
     <Compile Include="Common\LogType.cs" />
     <Compile Include="Common\LogStatus.cs" />
     <Compile Include="Common\Scanner.cs" />
+    <Compile Include="Common\ScannerActions.cs" />
     <Compile Include="Controls\FieldDetails.cs">
       <SubType>UserControl</SubType>
     </Compile>
