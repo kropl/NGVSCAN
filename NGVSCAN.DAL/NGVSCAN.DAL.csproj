@@ -79,7 +79,7 @@
     <Compile Include="EntityConfigurations\ROC809sConfigurations\ROC809PeriodicDataConfiguration.cs" />
     <Compile Include="EntityConfigurations\ROC809sConfigurations\ROC809MinuteDataConfiguration.cs" />
     <Compile Include="Extensions\FloutecDataExtensions.cs" />
-    <Compile Include="Extensions\ROC809Extensions.cs" />
+    <Compile Include="ROC809Connection\ROC809DataService.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.Designer.cs">
       <DependentUpon>201605141507267_InitialMigration.cs</DependentUpon>
@@ -172,13 +172,23 @@
     <Compile Include="Migrations\201606210711546_AddedROCAlarmDataEntity.Designer.cs">
       <DependentUpon>201606210711546_AddedROCAlarmDataEntity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606260803261_SettedROCEventDataValueFieldsOptional.cs" />
+    <Compile Include="Migrations\201606260803261_SettedROCEventDataValueFieldsOptional.Designer.cs">
+      <DependentUpon>201606260803261_SettedROCEventDataValueFieldsOptional.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606260813443_SettedROCEventValueTo20.cs" />
+    <Compile Include="Migrations\201606260813443_SettedROCEventValueTo20.Designer.cs">
+      <DependentUpon>201606260813443_SettedROCEventValueTo20.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbfRepository.cs" />
     <Compile Include="Repositories\SqlRepository.cs" />
     <Compile Include="ROC809Connection\Crc16.cs" />
+    <Compile Include="ROC809Connection\ROC809DataServiceExtensions.cs" />
     <Compile Include="ROC809Connection\ROC809HistoryType.cs" />
-    <Compile Include="ROC809Connection\TCPIPClient.cs" />
+    <Compile Include="ROC809Connection\ROC809PeriodicDataModel.cs" />
+    <Compile Include="ROC809Connection\ROC809TCPClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NGVSCAN.CORE\NGVSCAN.CORE.csproj">
@@ -259,6 +269,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606210711546_AddedROCAlarmDataEntity.resx">
       <DependentUpon>201606210711546_AddedROCAlarmDataEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606260803261_SettedROCEventDataValueFieldsOptional.resx">
+      <DependentUpon>201606260803261_SettedROCEventDataValueFieldsOptional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606260813443_SettedROCEventValueTo20.resx">
+      <DependentUpon>201606260813443_SettedROCEventValueTo20.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

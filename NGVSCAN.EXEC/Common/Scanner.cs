@@ -380,21 +380,32 @@ namespace NGVSCAN.EXEC.Common
                         {
                             if (getEventDataLogResult.Exception == null)
                             {
-                                SaveEventData(point, getEventDataLogResult.Result);
-                                return true;
+                                if (getEventDataLogResult.Result == null)
+                                    return 0;
+                                else if (getEventDataLogResult.Result.Count == 0)
+                                    return 1;
+                                else
+                                {
+                                    SaveEventData(point, getEventDataLogResult.Result);
+                                    return 2;
+                                }
                             }
                             else
-                                return false;
+                                return -1;
                         },
                         TaskContinuationOptions.LongRunning)
                             .ContinueWith((saveEventDataResult) =>
                             {
                                 if (saveEventDataResult.Exception != null)
+                                {
                                     LogException(log, "Ошибка сохранения данных событий точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, saveEventDataResult.Exception, LogType.ROC);
-                                else if (saveEventDataResult.Result)
+                                    rocsScanningState[ident + "_event"] = false;
+                                }
+                                else if (saveEventDataResult.Result == 2)
                                     Logger.Log(log, new LogEntry { Message = "Опрос данных событий точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
-                                rocsScanningState[ident + "_event"] = false;
+                                if (saveEventDataResult.Result != 0)
+                                    rocsScanningState[ident + "_event"] = false;
                             },
                             uiSyncContext)
 
@@ -422,18 +433,23 @@ namespace NGVSCAN.EXEC.Common
                                         {
                                             if (getAlarmDataLogResult.Exception == null)
                                             {
-                                                SaveAlarmData(point, getAlarmDataLogResult.Result);
-                                                return true;
+                                                if (getAlarmDataLogResult.Result.Count > 0)
+                                                {
+                                                    SaveAlarmData(point, getAlarmDataLogResult.Result);
+                                                    return 1;
+                                                }
+                                                else
+                                                    return 0;
                                             }
                                             else
-                                                return false;
+                                                return -1;
                                         },
                                         TaskContinuationOptions.LongRunning)
                                             .ContinueWith((saveAlarmDataResult) =>
                                             {
                                                 if (saveAlarmDataResult.Exception != null)
                                                     LogException(log, "Ошибка сохранения данных аварий точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, saveAlarmDataResult.Exception, LogType.ROC);
-                                                else if (saveAlarmDataResult.Result)
+                                                else if (saveAlarmDataResult.Result == 1)
                                                     Logger.Log(log, new LogEntry { Message = "Опрос данных аварий точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
                                                 rocsScanningState[ident + "_alarm"] = false;
@@ -997,14 +1013,15 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    eventData = point.GetEventData();
+                    ROC809DataService ext = new ROC809DataService();
+                    eventData = ext.GetEventData(point);
 
                     if (eventData.Count > 0)
                     {
-                        DateTime? lastData = point.EventData.OrderBy(o => o.Time).LastOrDefault().Time;
+                        ROC809EventData lastData = point.EventData.OrderBy(o => o.Time).LastOrDefault();
 
-                        if (lastData.HasValue)
-                            return eventData.Where(e => e.Time > lastData.Value).ToList();
+                        if (lastData != null)
+                            return eventData.Where(e => e.Time > lastData.Time).ToList();                        
                     }
 
                     return eventData;
@@ -1016,7 +1033,7 @@ namespace NGVSCAN.EXEC.Common
             }
             else
             {
-                return eventData;
+                return null;
             }
         }
 
@@ -1033,7 +1050,8 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    alarmData = point.GetAlarmData();
+                    ROC809DataService ext = new ROC809DataService();
+                    //alarmData = ext.GetAlarmData(point);
 
                     if (alarmData.Count > 0)
                     {
@@ -1114,27 +1132,28 @@ namespace NGVSCAN.EXEC.Common
 
             try
             {
-                var result = point.GetPeriodicData(ROC809HistoryType.Minute);
+                //ROC809Extensions ext = new ROC809Extensions();
+                //var result = ext.GetPeriodicData(point, ROC809HistoryType.Minute);
 
-                if (result.Count > 0)
-                {
-                    DateTime? lastData = point.MinuteData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
+                //if (result.Count > 0)
+                //{
+                //    DateTime? lastData = point.MinuteData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
 
-                    if (!lastData.HasValue)
-                    {
-                        foreach (var item in result)
-                        {
-                            minuteData.Add(new ROC809MinuteData() { DatePeriod = item.Key, Value = item.Value });
-                        }
-                    }
-                    else
-                    {
-                        foreach (var item in result.Where(m => m.Key > lastData.Value))
-                        {
-                            minuteData.Add(new ROC809MinuteData() { DatePeriod = item.Key, Value = item.Value });
-                        }
-                    }
-                }
+                //    if (!lastData.HasValue)
+                //    {
+                //        foreach (var item in result)
+                //        {
+                //            minuteData.Add(new ROC809MinuteData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                //        }
+                //    }
+                //    else
+                //    {
+                //        foreach (var item in result.Where(m => m.DatePeriod > lastData.Value))
+                //        {
+                //            minuteData.Add(new ROC809MinuteData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                //        }
+                //    }
+                //}
 
                 return minuteData;
             }
@@ -1191,27 +1210,28 @@ namespace NGVSCAN.EXEC.Common
 
             try
             {
-                var result = point.GetPeriodicData(ROC809HistoryType.Periodic);
+                //ROC809Extensions ext = new ROC809Extensions();
+                //var result = ext.GetPeriodicData(point, ROC809HistoryType.Periodic);
 
-                if (result.Count > 0)
-                {
-                    DateTime? lastData = point.PeriodicData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
+                //if (result.Count > 0)
+                //{
+                //    DateTime? lastData = point.PeriodicData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
 
-                    if (!lastData.HasValue)
-                    {
-                        foreach (var item in result)
-                        {
-                            periodicData.Add(new ROC809PeriodicData() { DatePeriod = item.Key, Value = item.Value });
-                        }
-                    }
-                    else
-                    {
-                        foreach (var item in result.Where(m => m.Key > lastData.Value))
-                        {
-                            periodicData.Add(new ROC809PeriodicData() { DatePeriod = item.Key, Value = item.Value });
-                        }
-                    }
-                }
+                //    if (!lastData.HasValue)
+                //    {
+                //        foreach (var item in result)
+                //        {
+                //            periodicData.Add(new ROC809PeriodicData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                //        }
+                //    }
+                //    else
+                //    {
+                //        foreach (var item in result.Where(m => m.DatePeriod > lastData.Value))
+                //        {
+                //            periodicData.Add(new ROC809PeriodicData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                //        }
+                //    }
+                //}
 
                 return periodicData;
             }
@@ -1268,27 +1288,28 @@ namespace NGVSCAN.EXEC.Common
 
             try
             {
-                var result = point.GetPeriodicData(ROC809HistoryType.Daily);
+                //ROC809Extensions ext = new ROC809Extensions();
+                //var result = ext.GetPeriodicData(point, ROC809HistoryType.Daily);
 
-                if (result.Count > 0)
-                {
-                    DateTime? lastData = point.DailyData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
+                //if (result.Count > 0)
+                //{
+                //    DateTime? lastData = point.DailyData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
 
-                    if (!lastData.HasValue)
-                    {
-                        foreach (var item in result)
-                        {
-                            dailyData.Add(new ROC809DailyData() { DatePeriod = item.Key, Value = item.Value });
-                        }
-                    }
-                    else
-                    {
-                        foreach (var item in result.Where(m => m.Key > lastData.Value))
-                        {
-                            dailyData.Add(new ROC809DailyData() { DatePeriod = item.Key, Value = item.Value });
-                        }
-                    }
-                }
+                //    if (!lastData.HasValue)
+                //    {
+                //        foreach (var item in result)
+                //        {
+                //            dailyData.Add(new ROC809DailyData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                //        }
+                //    }
+                //    else
+                //    {
+                //        foreach (var item in result.Where(m => m.DatePeriod > lastData.Value))
+                //        {
+                //            dailyData.Add(new ROC809DailyData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                //        }
+                //    }
+                //}
 
                 return dailyData;
             }
