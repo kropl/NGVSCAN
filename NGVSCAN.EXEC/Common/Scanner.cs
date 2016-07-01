@@ -396,6 +396,8 @@ namespace NGVSCAN.EXEC.Common
                                     LogException(log, "Ошибка сохранения данных событий точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, saveEventDataResult.Exception, LogType.ROC);
                                     rocsScanningState[ident + "_event"] = false;
                                 }
+                                else if (saveEventDataResult.Result == 1)
+                                    Logger.Log(log, new LogEntry { Message = "Данные событий точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " отсутствуют", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
                                 else if (saveEventDataResult.Result == 2)
                                     Logger.Log(log, new LogEntry { Message = "Опрос данных событий точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
@@ -450,6 +452,8 @@ namespace NGVSCAN.EXEC.Common
                                                     rocsScanningState[ident + "_alarm"] = false;
                                                 }
                                                 else if (saveAlarmDataResult.Result == 1)
+                                                    Logger.Log(log, new LogEntry { Message = "Данные аварий точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " отсутствуют", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
+                                                else if (saveAlarmDataResult.Result == 2)
                                                     Logger.Log(log, new LogEntry { Message = "Опрос данных аварий точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
                                                 if (saveAlarmDataResult.Result != 0)
@@ -482,18 +486,24 @@ namespace NGVSCAN.EXEC.Common
                                                     if (getMinuteDataLogResult.Exception == null)
                                                     {
                                                         SaveMinuteData(point, getMinuteDataLogResult.Result);
-                                                        return true;
+
+                                                        if (getMinuteDataLogResult.Result.Count == 0)
+                                                            return 0;
+                                                        else
+                                                            return 1;
                                                     }
                                                     else
-                                                        return false;
+                                                        return -1;
                                                 },
                                                 TaskContinuationOptions.LongRunning)
                                                     .ContinueWith((saveMinuteDataResult) =>
                                                     {
                                                         if (saveMinuteDataResult.Exception != null)
                                                             LogException(log, "Ошибка сохранения минутных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, saveMinuteDataResult.Exception, LogType.ROC);
-                                                        else if (saveMinuteDataResult.Result)
-                                                            Logger.Log(log, new LogEntry { Message = "Опрос минутных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
+                                                        else if (saveMinuteDataResult.Result == 0)
+                                                            Logger.Log(log, new LogEntry { Message = "Минутные данные точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " отсутствуют", Status = LogStatus.Warning, Type = LogType.ROC, Timestamp = DateTime.Now });
+                                                        else if (saveMinuteDataResult.Result == 1)
+                                                            Logger.Log(log, new LogEntry { Message = "Опрос минутных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
                                                         rocsScanningState[ident + "_minute"] = false;
                                                     },
@@ -523,18 +533,24 @@ namespace NGVSCAN.EXEC.Common
                                                     if (getPeriodicDataLogResult.Exception == null)
                                                     {
                                                         SavePeriodicData(point, getPeriodicDataLogResult.Result);
-                                                        return true;
+
+                                                        if (getPeriodicDataLogResult.Result.Count == 0)
+                                                            return 0;
+                                                        else
+                                                            return 1;
                                                     }
                                                     else
-                                                        return false;
+                                                        return -1;
                                                 },
                                                 TaskContinuationOptions.LongRunning)
                                                     .ContinueWith((savePeriodicDataResult) =>
                                                     {
                                                         if (savePeriodicDataResult.Exception != null)
                                                             LogException(log, "Ошибка сохранения периодических данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, savePeriodicDataResult.Exception, LogType.ROC);
-                                                        else if (savePeriodicDataResult.Result)
-                                                            Logger.Log(log, new LogEntry { Message = "Опрос периодических данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
+                                                        else if (savePeriodicDataResult.Result == 0)
+                                                            Logger.Log(log, new LogEntry { Message = "Периодические данные точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " отсутствуют", Status = LogStatus.Warning, Type = LogType.ROC, Timestamp = DateTime.Now });
+                                                        else if (savePeriodicDataResult.Result == 1)
+                                                            Logger.Log(log, new LogEntry { Message = "Опрос периодических данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
                                                         rocsScanningState[ident + "_periodic"] = false;
                                                     },
@@ -564,18 +580,24 @@ namespace NGVSCAN.EXEC.Common
                                                     if (getDailyDataLogResult.Exception == null)
                                                     {
                                                         SaveDailyData(point, getDailyDataLogResult.Result);
-                                                        return true;
+
+                                                        if (getDailyDataLogResult.Result.Count == 0)
+                                                            return 0;
+                                                        else
+                                                            return 1;
                                                     }
                                                     else
-                                                        return false;
+                                                        return -1;
                                                 },
                                                 TaskContinuationOptions.LongRunning)
                                                     .ContinueWith((saveDailyDataResult) =>
                                                     {
                                                         if (saveDailyDataResult.Exception != null)
                                                             LogException(log, "Ошибка сохранения суточных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, saveDailyDataResult.Exception, LogType.ROC);
-                                                        else if (saveDailyDataResult.Result)
-                                                            Logger.Log(log, new LogEntry { Message = "Опрос суточных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address, Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
+                                                        else if (saveDailyDataResult.Result == 0)
+                                                            Logger.Log(log, new LogEntry { Message = "Суточные данные точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " отсутствуют", Status = LogStatus.Warning, Type = LogType.ROC, Timestamp = DateTime.Now });
+                                                        else if (saveDailyDataResult.Result == 1)
+                                                            Logger.Log(log, new LogEntry { Message = "Опрос суточных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
                                                         rocsScanningState[ident + "_daily"] = false;
                                                     },

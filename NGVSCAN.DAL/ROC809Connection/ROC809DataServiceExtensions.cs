@@ -19,10 +19,6 @@ namespace NGVSCAN.DAL.ROC809Connection
             T[] result;
             if (length == 3)
                 result = new T[4];
-            else if (length == 7)
-                result = new T[8];
-            else if (length == 10)
-                result = new T[16];
             else
                 result = new T[length];
 
@@ -70,22 +66,14 @@ namespace NGVSCAN.DAL.ROC809Connection
             return Encoding.UTF8.GetString(data.SubArray(index, length));
         }
 
+        public static string GetASCII(this byte[] data, int index, int length)
+        {
+            return Encoding.ASCII.GetString(data.SubArray(index, length)).TrimEnd('\0');
+        }
+
         public static string GetTLP(this byte[] data, int index)
         {
             return data[index] + ", " + data[index + 1] + ", " + data[index + 2];
-        }
-
-        public static decimal GetDecimal(this byte[] data, int index, int length = 10)
-        {
-            byte[] arr = data.SubArray(index, length);
-
-            using (MemoryStream stream = new MemoryStream(arr))
-            {
-                using (BinaryReader reader = new BinaryReader(stream))
-                {
-                    return reader.ReadDecimal();
-                }
-            }
         }
     }
 }

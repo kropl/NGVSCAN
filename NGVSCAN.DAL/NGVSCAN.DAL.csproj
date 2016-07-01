@@ -79,6 +79,10 @@
     <Compile Include="EntityConfigurations\ROC809sConfigurations\ROC809PeriodicDataConfiguration.cs" />
     <Compile Include="EntityConfigurations\ROC809sConfigurations\ROC809MinuteDataConfiguration.cs" />
     <Compile Include="Extensions\FloutecDataExtensions.cs" />
+    <Compile Include="Migrations\201606300848256_ChangedOperatorIdToString.cs" />
+    <Compile Include="Migrations\201606300848256_ChangedOperatorIdToString.Designer.cs">
+      <DependentUpon>201606300848256_ChangedOperatorIdToString.cs</DependentUpon>
+    </Compile>
     <Compile Include="ROC809Connection\ROC809DataService.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.Designer.cs">
@@ -275,6 +279,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606260813443_SettedROCEventValueTo20.resx">
       <DependentUpon>201606260813443_SettedROCEventValueTo20.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606300848256_ChangedOperatorIdToString.resx">
+      <DependentUpon>201606300848256_ChangedOperatorIdToString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

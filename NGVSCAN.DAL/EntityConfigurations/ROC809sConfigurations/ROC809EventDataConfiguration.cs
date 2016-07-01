@@ -15,7 +15,7 @@ namespace NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations
         {
             Property(e => e.Type).IsRequired();
             Property(e => e.Time).IsRequired().HasColumnType("datetime2");
-            Property(e => e.OperatorId).IsOptional();
+            Property(e => e.OperatorId).IsOptional().HasMaxLength(3);
             Property(e => e.T).IsOptional();
             Property(e => e.L).IsOptional();
             Property(e => e.P).IsOptional();

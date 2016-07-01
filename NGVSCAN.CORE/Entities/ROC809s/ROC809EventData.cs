@@ -52,7 +52,7 @@ namespace NGVSCAN.CORE.Entities.ROC809s
         /// <summary>
         /// Идентификатор оператора
         /// </summary>
-        public int? OperatorId { get; set; }
+        public string OperatorId { get; set; }
 
         /// <summary>
         /// Type

@@ -1,9 +1,6 @@
 ﻿using NGVSCAN.CORE.Entities.ROC809s;
-using NGVSCAN.DAL.ROC809Connection;
 using System;
 using System.Collections.Generic;
-using NGVSCAN.CORE.Entities.ROC809s.Common;
-using System.Text;
 
 namespace NGVSCAN.DAL.ROC809Connection
 {
@@ -52,14 +49,13 @@ namespace NGVSCAN.DAL.ROC809Connection
                 ROC809TCPClient client = new ROC809TCPClient(roc.Address, roc.Port);
 
                 int startIndex = request.GetInt16(7);
-                int totalIndex;
+                int recordsToProcess;
 
                 do
                 {
                     response = client.GetData(request);
 
-                    totalIndex = request.GetInt16(9);
-                    int recordsToProcess = (totalIndex - startIndex) >= 30 ? 30 : (totalIndex - startIndex);
+                    recordsToProcess = response[11] / 2;
 
                     for (int j = 0; j < recordsToProcess; j++)
                     {
@@ -81,7 +77,7 @@ namespace NGVSCAN.DAL.ROC809Connection
                         data.Add(new ROC809PeriodicDataModel { DatePeriod = period, Value = value });
                     }
 
-                    startIndex = BitConverter.ToInt32(BitConverter.GetBytes(startIndex + 10), 0);
+                    startIndex = BitConverter.ToInt32(BitConverter.GetBytes(startIndex + 30), 0);
 
                     request[7] = BitConverter.GetBytes(startIndex)[0];
                     request[8] = BitConverter.GetBytes(startIndex)[1];
@@ -91,7 +87,7 @@ namespace NGVSCAN.DAL.ROC809Connection
                     request[13] = crc[1];
                     request[14] = crc[0];
 
-                } while (startIndex < totalIndex);
+                } while (request[12] == recordsToProcess);
             }
             catch(Exception ex)
             {
@@ -139,7 +135,7 @@ namespace NGVSCAN.DAL.ROC809Connection
                 {
                     response = client.GetData(request);
 
-                    totalIndex = request.GetInt16(9);
+                    totalIndex = response.GetInt16(9);
                     int eventsToProcess = (totalIndex - startIndex) >= 10 ? 10 : (totalIndex - startIndex);
 
                     for (int i = 0; i < eventsToProcess; i++)
@@ -159,7 +155,7 @@ namespace NGVSCAN.DAL.ROC809Connection
                             case 0:
                                 break;
                             case 1:
-                                    record.OperatorId = response.GetInt32(16 + offset);
+                                    record.OperatorId = response.GetASCII(16 + offset, 3);
 
                                     record.T = response[19 + offset];
                                     record.L = response[20 + offset];
@@ -204,26 +200,26 @@ namespace NGVSCAN.DAL.ROC809Connection
                                                 record.OldValue = response.GetTLP(27 + offset);
                                                 break;                                           
                                         case 9:                                           
-                                                record.NewValue = response.GetSingle(23 + offset, 3).ToString();
-                                                record.OldValue = response.GetSingle(27 + offset, 3).ToString();
+                                                record.NewValue = response.GetASCII(23 + offset, 3).ToString();
+                                                record.OldValue = response.GetASCII(27 + offset, 3).ToString();
                                                 break;                                           
                                         case 10:
-                                                record.NewValue = response.GetDouble(23 + offset, 7).ToString();
+                                                record.NewValue = response.GetASCII(23 + offset, 7).ToString();
                                                 break;
                                         case 11:
-                                                record.NewValue = response.GetDecimal(23 + offset).ToString();
+                                                record.NewValue = response.GetASCII(23 + offset, 10).ToString();
                                                 break;
                                         case 12:
-                                                record.NewValue = response.GetDecimal(23 + offset).ToString();
+                                                record.NewValue = response.GetASCII(23 + offset, 10).ToString();
                                                 break;
                                         case 13:
-                                                record.NewValue = response.GetDecimal(23 + offset).ToString();
+                                                record.NewValue = response.GetASCII(23 + offset, 10).ToString();
                                                 break;
                                         case 14:
-                                                record.NewValue = response.GetDecimal(23 + offset).ToString();
+                                                record.NewValue = response.GetASCII(23 + offset, 10).ToString();
                                                 break;
                                         case 15:
-                                                record.NewValue = response.GetDecimal(23 + offset).ToString();
+                                                record.NewValue = response.GetASCII(23 + offset, 10).ToString();
                                                 break;
                                         case 16:
                                                 record.NewValue = response.GetDouble(23 + offset).ToString();
@@ -243,7 +239,7 @@ namespace NGVSCAN.DAL.ROC809Connection
                                     record.Value = response.GetSingle(17 + offset).ToString();
                                     break;
                             case 4:
-                                    record.OperatorId = response.GetInt32(16 + offset, 3);
+                                    record.OperatorId = response.GetASCII(16 + offset, 3);
                                     record.Code = response[19 + offset];
                                     record.Description = response.GetString(20 + offset, 13);
                                     break;
@@ -254,7 +250,7 @@ namespace NGVSCAN.DAL.ROC809Connection
                                     record.Value = time.AddSeconds(response.GetUInt32(16 + offset)).ToString("dd.MM.yyyy HH:mm:ss");
                                     break;
                             case 7:
-                                    record.OperatorId = response.GetInt32(16 + offset, 3);
+                                    record.OperatorId = response.GetASCII(16 + offset, 3);
                                     record.T = response[19 + offset];
                                     record.L = response[20 + offset];
                                     record.P = response[21 + offset];
@@ -323,7 +319,7 @@ namespace NGVSCAN.DAL.ROC809Connection
                 {
                     response = client.GetData(request);
 
-                    totalIndex = request.GetInt16(9);
+                    totalIndex = response.GetInt16(9);
                     int alarmsToProcess = (totalIndex - startIndex) >= 10 ? 10 : (totalIndex - startIndex);
 
                     for (int i = 0; i < alarmsToProcess; i++)

@@ -522,14 +522,14 @@ namespace NGVSCAN.EXEC.Common
                 try
                 {
                     ROC809DataService ext = new ROC809DataService();
-                    //alarmData = ext.GetAlarmData(point);
+                    alarmData = ext.GetAlarmData(point);
 
                     if (alarmData.Count > 0)
                     {
-                        DateTime? lastData = point.AlarmData.OrderBy(o => o.Time).LastOrDefault().Time;
+                        ROC809AlarmData lastData = point.AlarmData.OrderBy(o => o.Time).LastOrDefault();
 
-                        if (lastData.HasValue)
-                            return alarmData.Where(e => e.Time > lastData.Value).ToList();
+                        if (lastData != null)
+                            return alarmData.Where(e => e.Time > lastData.Time).ToList();
                     }
 
                     return alarmData;
@@ -578,34 +578,38 @@ namespace NGVSCAN.EXEC.Common
 
         private List<ROC809MinuteData> GetMinuteData(ROC809MeasurePoint point)
         {
+            string address = ((ROC809)point.Estimator).Address;
+            string ident = address + "_" + point.Number + "_" + point.HistSegment;
+            rocsScanningState[ident + "_minute"] = true;
+
             dateStartMinuteDataScan = DateTime.Now;
 
             List<ROC809MinuteData> minuteData = new List<ROC809MinuteData>();
 
             try
             {
-                //ROC809Extensions ext = new ROC809Extensions();
-                //var result = ext.GetPeriodicData(point, ROC809HistoryType.Minute);
+                ROC809DataService ext = new ROC809DataService();
+                var result = ext.GetPeriodicData(point, ROC809HistoryType.Minute);
 
-                //if (result.Count > 0)
-                //{
-                //    DateTime? lastData = point.MinuteData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
+                if (result.Count > 0)
+                {
+                    ROC809MinuteData lastData = point.MinuteData.OrderBy(o => o.DatePeriod).LastOrDefault();
 
-                //    if (!lastData.HasValue)
-                //    {
-                //        foreach (var item in result)
-                //        {
-                //            minuteData.Add(new ROC809MinuteData() { DatePeriod = item.DatePeriod, Value = item.Value });
-                //        }
-                //    }
-                //    else
-                //    {
-                //        foreach (var item in result.Where(m => m.DatePeriod > lastData.Value))
-                //        {
-                //            minuteData.Add(new ROC809MinuteData() { DatePeriod = item.DatePeriod, Value = item.Value });
-                //        }
-                //    }
-                //}
+                    if (lastData == null)
+                    {
+                        foreach (var item in result)
+                        {
+                            minuteData.Add(new ROC809MinuteData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in result.Where(m => m.DatePeriod > lastData.DatePeriod))
+                        {
+                            minuteData.Add(new ROC809MinuteData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                        }
+                    }
+                }
 
                 return minuteData;
             }
@@ -660,34 +664,38 @@ namespace NGVSCAN.EXEC.Common
 
         private List<ROC809PeriodicData> GetPeriodicData(ROC809MeasurePoint point)
         {
+            string address = ((ROC809)point.Estimator).Address;
+            string ident = address + "_" + point.Number + "_" + point.HistSegment;
+            rocsScanningState[ident + "_periodic"] = true;
+
             dateStartPeriodicDataScan = DateTime.Now;
 
             List<ROC809PeriodicData> periodicData = new List<ROC809PeriodicData>();
 
             try
             {
-                //ROC809Extensions ext = new ROC809Extensions();
-                //var result = ext.GetPeriodicData(point, ROC809HistoryType.Periodic);
+                ROC809DataService ext = new ROC809DataService();
+                var result = ext.GetPeriodicData(point, ROC809HistoryType.Periodic);
 
-                //if (result.Count > 0)
-                //{
-                //    DateTime? lastData = point.PeriodicData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
+                if (result.Count > 0)
+                {
+                    ROC809PeriodicData lastData = point.PeriodicData.OrderBy(o => o.DatePeriod).LastOrDefault();
 
-                //    if (!lastData.HasValue)
-                //    {
-                //        foreach (var item in result)
-                //        {
-                //            periodicData.Add(new ROC809PeriodicData() { DatePeriod = item.DatePeriod, Value = item.Value });
-                //        }
-                //    }
-                //    else
-                //    {
-                //        foreach (var item in result.Where(m => m.DatePeriod > lastData.Value))
-                //        {
-                //            periodicData.Add(new ROC809PeriodicData() { DatePeriod = item.DatePeriod, Value = item.Value });
-                //        }
-                //    }
-                //}
+                    if (lastData == null)
+                    {
+                        foreach (var item in result)
+                        {
+                            periodicData.Add(new ROC809PeriodicData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in result.Where(m => m.DatePeriod > lastData.DatePeriod))
+                        {
+                            periodicData.Add(new ROC809PeriodicData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                        }
+                    }
+                }
 
                 return periodicData;
             }
@@ -742,34 +750,38 @@ namespace NGVSCAN.EXEC.Common
 
         private List<ROC809DailyData> GetDailyData(ROC809MeasurePoint point)
         {
+            string address = ((ROC809)point.Estimator).Address;
+            string ident = address + "_" + point.Number + "_" + point.HistSegment;
+            rocsScanningState[ident + "_daily"] = true;
+
             dateStartDailyDataScan = DateTime.Now;
 
             List<ROC809DailyData> dailyData = new List<ROC809DailyData>();
 
             try
             {
-                //ROC809Extensions ext = new ROC809Extensions();
-                //var result = ext.GetPeriodicData(point, ROC809HistoryType.Daily);
+                ROC809DataService ext = new ROC809DataService();
+                var result = ext.GetPeriodicData(point, ROC809HistoryType.Daily);
 
-                //if (result.Count > 0)
-                //{
-                //    DateTime? lastData = point.DailyData.OrderBy(o => o.DatePeriod).LastOrDefault().DatePeriod;
+                if (result.Count > 0)
+                {
+                    ROC809DailyData lastData = point.DailyData.OrderBy(o => o.DatePeriod).LastOrDefault();
 
-                //    if (!lastData.HasValue)
-                //    {
-                //        foreach (var item in result)
-                //        {
-                //            dailyData.Add(new ROC809DailyData() { DatePeriod = item.DatePeriod, Value = item.Value });
-                //        }
-                //    }
-                //    else
-                //    {
-                //        foreach (var item in result.Where(m => m.DatePeriod > lastData.Value))
-                //        {
-                //            dailyData.Add(new ROC809DailyData() { DatePeriod = item.DatePeriod, Value = item.Value });
-                //        }
-                //    }
-                //}
+                    if (lastData == null)
+                    {
+                        foreach (var item in result)
+                        {
+                            dailyData.Add(new ROC809DailyData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in result.Where(m => m.DatePeriod > lastData.DatePeriod))
+                        {
+                            dailyData.Add(new ROC809DailyData() { DatePeriod = item.DatePeriod, Value = item.Value });
+                        }
+                    }
+                }
 
                 return dailyData;
             }
