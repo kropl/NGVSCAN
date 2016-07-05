@@ -44,6 +44,11 @@ namespace NGVSCAN.EXEC
 
         Scanner scanner;
 
+        bool showInfo = true;
+        bool showSucces = true;
+        bool showWarning = true;
+        bool showAlarm = true;
+
         // Конструктор формы
         public MainForm()
         {
@@ -60,6 +65,35 @@ namespace NGVSCAN.EXEC
             scanTimer = new Timer();
 
             scanner = new Scanner(sqlConnection);
+
+            string[] args = Environment.GetCommandLineArgs();
+
+            if (args.Contains("start"))
+                menuRun_Click(this, new EventArgs());
+
+            buttonShowAlarm.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            buttonShowInfo.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            buttonShowSuccess.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            buttonShowWarning.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == NativeMethods.WM_SHOWME)
+            {
+                ShowMe();
+            }
+            base.WndProc(ref m);
+        }
+
+        private void ShowMe()
+        {
+            Show();
+
+            if (WindowState == FormWindowState.Minimized)
+            {
+                WindowState = FormWindowState.Normal;
+            }
         }
 
         #endregion
@@ -256,6 +290,11 @@ namespace NGVSCAN.EXEC
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+            }
         }
 
         // Событие открытия контекстного меню дерева объектов на закладке вычислителей ФЛОУТЭК
@@ -1210,5 +1249,73 @@ namespace NGVSCAN.EXEC
         }
 
         #endregion
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show(
+                                "Вы действительно хотите выйти из программы?",
+                                "Выход",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button2);
+
+            if (confirmResult == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ShowMe();
+        }
+
+        private void buttonShowInfo_Click(object sender, EventArgs e)
+        {
+            showInfo = !showInfo;
+
+            if (showInfo)
+                buttonShowInfo.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            else
+                buttonShowInfo.FlatAppearance.BorderColor = Color.FromKnownColor(KnownColor.Control);
+
+            Logger.UpdateConsole(listLogMessages, showInfo, showSucces, showWarning, showAlarm);
+        }
+
+        private void buttonShowSuccess_Click(object sender, EventArgs e)
+        {
+            showSucces = !showSucces;
+
+            if (showSucces)
+                buttonShowSuccess.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            else
+                buttonShowSuccess.FlatAppearance.BorderColor = Color.FromKnownColor(KnownColor.Control);
+
+            Logger.UpdateConsole(listLogMessages, showInfo, showSucces, showWarning, showAlarm);
+        }
+
+        private void buttonShowWarning_Click(object sender, EventArgs e)
+        {
+            showWarning = !showWarning;
+
+            if (showWarning)
+                buttonShowWarning.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            else
+                buttonShowWarning.FlatAppearance.BorderColor = Color.FromKnownColor(KnownColor.Control);
+
+            Logger.UpdateConsole(listLogMessages, showInfo, showSucces, showWarning, showAlarm);
+        }
+
+        private void buttonShowAlarm_Click(object sender, EventArgs e)
+        {
+            showAlarm = !showAlarm;
+
+            if (showAlarm)
+                buttonShowAlarm.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
+            else
+                buttonShowAlarm.FlatAppearance.BorderColor = Color.FromKnownColor(KnownColor.Control);
+
+            Logger.UpdateConsole(listLogMessages, showInfo, showSucces, showWarning, showAlarm);
+        }
     }
 }

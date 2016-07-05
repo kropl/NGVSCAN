@@ -117,6 +117,7 @@ namespace NGVSCAN.EXEC.Common
                 floutecsScanningState[n_flonit.ToString() + "_ident"] = true;
 
                 FloutecIdentData identData = new FloutecIdentData();
+                identData.N_FLONIT = 0;
 
                 try
                 {
@@ -130,8 +131,6 @@ namespace NGVSCAN.EXEC.Common
 
                             if (!line.IdentData.OrderBy(o => o.DateCreated).Last().IsEqual(newData))
                                 identData = newData;
-                            else
-                                identData = null;
                         }
 
                         return identData;
@@ -177,6 +176,8 @@ namespace NGVSCAN.EXEC.Common
         private List<FloutecHourlyData> GetHourlyData(FloutecMeasureLine line)
         {
             int address = ((Floutec)line.Estimator).Address;
+            int n_flonit = address * 10 + line.Number;
+            floutecsScanningState[n_flonit.ToString() + "_hour"] = true;
 
             dateStartHourlyDataScan = DateTime.Now;
 
@@ -246,6 +247,8 @@ namespace NGVSCAN.EXEC.Common
         private FloutecInstantData GetInstantData(FloutecMeasureLine line)
         {
             int address = ((Floutec)line.Estimator).Address;
+            int n_flonit = address * 10 + line.Number;
+            floutecsScanningState[n_flonit.ToString() + "_inst"] = true;
 
             dateStartInstantDataScan = DateTime.Now;
 

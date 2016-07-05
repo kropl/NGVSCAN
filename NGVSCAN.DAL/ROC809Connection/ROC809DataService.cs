@@ -1,6 +1,8 @@
 ﻿using NGVSCAN.CORE.Entities.ROC809s;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.IO.Ports;
 
 namespace NGVSCAN.DAL.ROC809Connection
 {
@@ -35,7 +37,7 @@ namespace NGVSCAN.DAL.ROC809Connection
             request[7] = 0x00;
             request[8] = 0x00;
             request[9] = (byte)historyType;
-            request[10] = 0x00;
+            request[10] = (byte)(point.Number - 1);
             request[11] = 0x01;
             request[12] = 0x1e;
 
@@ -47,15 +49,26 @@ namespace NGVSCAN.DAL.ROC809Connection
             try
             {
                 ROC809TCPClient client = new ROC809TCPClient(roc.Address, roc.Port);
+                //ROC809GPRSClient client = new ROC809GPRSClient("COM5", 19200, Parity.Even, 8, StopBits.One, Handshake.None, "0503397563");
 
                 int startIndex = request.GetInt16(7);
-                int recordsToProcess;
+                int totalIndex;
 
                 do
                 {
                     response = client.GetData(request);
 
-                    recordsToProcess = response[11] / 2;
+                    if (historyType == ROC809HistoryType.Minute)
+                        totalIndex = 60;
+                    else
+                        totalIndex = response.GetInt16(9);
+
+                    int recordsToProcess;
+
+                    if (historyType == ROC809HistoryType.Minute)
+                        recordsToProcess = (response[11] / 2) >= 30 ? 30 : (response[11] / 2);
+                    else
+                        recordsToProcess = (totalIndex - startIndex) >= 30 ? 30 : (totalIndex - startIndex);
 
                     for (int j = 0; j < recordsToProcess; j++)
                     {
@@ -87,14 +100,14 @@ namespace NGVSCAN.DAL.ROC809Connection
                     request[13] = crc[1];
                     request[14] = crc[0];
 
-                } while (request[12] == recordsToProcess);
+                } while (startIndex < totalIndex);
             }
             catch(Exception ex)
             {
                 throw ex;
             }
 
-            return data;
+            return data.Distinct().ToList();
         }
 
         /// <summary>

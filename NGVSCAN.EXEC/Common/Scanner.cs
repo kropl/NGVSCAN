@@ -154,21 +154,34 @@ namespace NGVSCAN.EXEC.Common
                         {
                             if (getIdentDataLogResult.Exception == null)
                             {
-                                SaveIdentData(line, getIdentDataLogResult.Result);
-                                return true;
+                                if (getIdentDataLogResult.Result == null)
+                                    return 0;
+                                else if (getIdentDataLogResult.Result.N_FLONIT == 0)
+                                    return 1;
+                                else
+                                {
+                                    SaveIdentData(line, getIdentDataLogResult.Result);
+                                    return 2;
+                                }
                             }
                             else
-                                return false;
+                                return -1;
                         },
                         TaskContinuationOptions.LongRunning)
                             .ContinueWith((saveIdentDataResult) =>
                             {
                                 if (saveIdentDataResult.Exception != null)
+                                {
                                     LogException(log, "Ошибка сохранения данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveIdentDataResult.Exception, LogType.ROC);
-                                else if (saveIdentDataResult.Result)
+                                    floutecsScanningState[n_flonit.ToString() + "_ident"] = false;
+                                }
+                                else if (saveIdentDataResult.Result == 1)
+                                    Logger.Log(log, new LogEntry { Message = "Данные событий нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " отсутствуют", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
+                                else if (saveIdentDataResult.Result == 2)
                                     Logger.Log(log, new LogEntry { Message = "Опрос данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
-                                floutecsScanningState[n_flonit.ToString() + "_ident"] = false;
+                                if (saveIdentDataResult.Result != 0)
+                                    floutecsScanningState[n_flonit.ToString() + "_ident"] = false;
                             },
                             uiSyncContext)
 
@@ -196,21 +209,34 @@ namespace NGVSCAN.EXEC.Common
                                         {
                                             if (getAlarmDataLogResult.Exception == null)
                                             {
-                                                SaveAlarmData(line, getAlarmDataLogResult.Result);
-                                                return true;
+                                                if (getAlarmDataLogResult.Result == null)
+                                                    return 0;
+                                                else if (getAlarmDataLogResult.Result.Count == 0)
+                                                    return 1;
+                                                else
+                                                {
+                                                    SaveAlarmData(line, getAlarmDataLogResult.Result);
+                                                    return 2;
+                                                }
                                             }
                                             else
-                                                return false;
+                                                return -1;
                                         },
                                         TaskContinuationOptions.LongRunning)
                                             .ContinueWith((saveAlarmDataResult) =>
                                             {
                                                 if (saveAlarmDataResult.Exception != null)
-                                                    LogException(log, "Ошибка сохранения данных аварий нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveAlarmDataResult.Exception, LogType.Floutec);
-                                                else if (saveAlarmDataResult.Result)
+                                                {
+                                                    LogException(log, "Ошибка сохранения данных аварий нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveAlarmDataResult.Exception, LogType.ROC);
+                                                    floutecsScanningState[n_flonit.ToString() + "_alarm"] = false;
+                                                }
+                                                else if (saveAlarmDataResult.Result == 1)
+                                                    Logger.Log(log, new LogEntry { Message = "Данные аварий нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " отсутствуют", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
+                                                else if (saveAlarmDataResult.Result == 2)
                                                     Logger.Log(log, new LogEntry { Message = "Опрос данных аварий нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
-                                                floutecsScanningState[n_flonit.ToString() + "_alarm"] = false;
+                                                if (saveAlarmDataResult.Result != 0)
+                                                    floutecsScanningState[n_flonit.ToString() + "_alarm"] = false;
                                             }, 
                                             uiSyncContext)
 
@@ -238,21 +264,34 @@ namespace NGVSCAN.EXEC.Common
                                                         {
                                                             if (getInterDataLogResult.Exception == null)
                                                             {
-                                                                SaveInterData(line, getInterDataLogResult.Result);
-                                                                return true;
+                                                                if (getInterDataLogResult.Result == null)
+                                                                    return 0;
+                                                                else if (getInterDataLogResult.Result.Count == 0)
+                                                                    return 1;
+                                                                else
+                                                                {
+                                                                    SaveInterData(line, getInterDataLogResult.Result);
+                                                                    return 2;
+                                                                }
                                                             }
                                                             else
-                                                                return false;
+                                                                return -1;
                                                         },
                                                         TaskContinuationOptions.LongRunning)
                                                             .ContinueWith((saveInterDataResult) =>
                                                             {
                                                                 if (saveInterDataResult.Exception != null)
-                                                                    LogException(log, "Ошибка сохранения данных вмешательств нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveInterDataResult.Exception, LogType.Floutec);
-                                                                else if (saveInterDataResult.Result)
+                                                                {
+                                                                    LogException(log, "Ошибка сохранения данных вмешательств нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveInterDataResult.Exception, LogType.ROC);
+                                                                    floutecsScanningState[n_flonit.ToString() + "_inter"] = false;
+                                                                }
+                                                                else if (saveInterDataResult.Result == 1)
+                                                                    Logger.Log(log, new LogEntry { Message = "Данные вмешательств нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " отсутствуют", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
+                                                                else if (saveInterDataResult.Result == 2)
                                                                     Logger.Log(log, new LogEntry { Message = "Опрос данных вмешательств нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
-                                                                floutecsScanningState[n_flonit.ToString() + "_inter"] = false;
+                                                                if (saveInterDataResult.Result != 0)
+                                                                    floutecsScanningState[n_flonit.ToString() + "_inter"] = false;
                                                             },
                                                             uiSyncContext)
 
@@ -281,17 +320,23 @@ namespace NGVSCAN.EXEC.Common
                                                                                     if (getHourlyDataLogResult.Exception == null)
                                                                                     {
                                                                                         SaveHourlyData(line, getHourlyDataLogResult.Result);
-                                                                                        return true;
+
+                                                                                        if (getHourlyDataLogResult.Result.Count == 0)
+                                                                                            return 0;
+                                                                                        else
+                                                                                            return 1;
                                                                                     }
                                                                                     else
-                                                                                        return false;
+                                                                                        return -1;
                                                                                 },
                                                                                 TaskContinuationOptions.LongRunning)
                                                                                     .ContinueWith((saveHourlyDataResult) => 
                                                                                     {
                                                                                         if (saveHourlyDataResult.Exception != null)
                                                                                             LogException(log, "Ошибка сохранения часовых данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveHourlyDataResult.Exception, LogType.Floutec);
-                                                                                        else if (saveHourlyDataResult.Result)
+                                                                                        else if (saveHourlyDataResult.Result == 0)
+                                                                                            Logger.Log(log, new LogEntry { Message = "Часовые данные нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " отсутствуют", Status = LogStatus.Warning, Type = LogType.Floutec, Timestamp = DateTime.Now });
+                                                                                        else if (saveHourlyDataResult.Result == 1)
                                                                                             Logger.Log(log, new LogEntry { Message = "Опрос часовых данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
                                                                                         floutecsScanningState[n_flonit.ToString() + "_hour"] = false;
@@ -322,17 +367,23 @@ namespace NGVSCAN.EXEC.Common
                                                                                     if (getInstantDataLogResult.Exception == null)
                                                                                     {
                                                                                         SaveInstantData(line, getInstantDataLogResult.Result);
-                                                                                        return true;
+
+                                                                                        if (getInstantDataLogResult.Result == null)
+                                                                                            return 0;
+                                                                                        else 
+                                                                                            return 1;
                                                                                     }
                                                                                     else
-                                                                                        return false;
+                                                                                        return -1;
                                                                                 },
                                                                                 TaskContinuationOptions.LongRunning)
                                                                                     .ContinueWith((saveInstantDataResult) =>
                                                                                     {
                                                                                         if (saveInstantDataResult.Exception != null)
                                                                                             LogException(log, "Ошибка сохранения мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveInstantDataResult.Exception, LogType.Floutec);
-                                                                                        else if (saveInstantDataResult.Result)
+                                                                                        else if (saveInstantDataResult.Result == 0)
+                                                                                            Logger.Log(log, new LogEntry { Message = "Мгновенные данные нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " отсутствуют", Status = LogStatus.Warning, Type = LogType.Floutec, Timestamp = DateTime.Now });
+                                                                                        else if (saveInstantDataResult.Result == 1)
                                                                                             Logger.Log(log, new LogEntry { Message = "Опрос мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
                                                                                         floutecsScanningState[n_flonit.ToString() + "_inst"] = false;

@@ -31,6 +31,7 @@ namespace NGVSCAN.EXEC
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("1 Газ на собственные нужды");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("2 Газ на сепаратор С-1");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("185 Расход газа", new System.Windows.Forms.TreeNode[] {
@@ -44,15 +45,18 @@ namespace NGVSCAN.EXEC
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("SEM-SRV", new System.Windows.Forms.TreeNode[] {
             treeNode3,
             treeNode6});
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupEstimatorsLog = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonShowAlarm = new System.Windows.Forms.Button();
+            this.buttonShowWarning = new System.Windows.Forms.Button();
+            this.buttonShowSuccess = new System.Windows.Forms.Button();
             this.listLogMessages = new LogListView();
             this.columnLogStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnLogType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnLogTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnLogMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageListLog = new System.Windows.Forms.ImageList(this.components);
+            this.buttonShowInfo = new System.Windows.Forms.Button();
             this.groupEstimatorsProperties = new System.Windows.Forms.GroupBox();
             this.groupEstimators = new System.Windows.Forms.GroupBox();
             this.treeEstimators = new System.Windows.Forms.TreeView();
@@ -74,9 +78,10 @@ namespace NGVSCAN.EXEC
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuNotifyIcon = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.groupEstimatorsLog.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupEstimators.SuspendLayout();
@@ -90,6 +95,7 @@ namespace NGVSCAN.EXEC
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.contextMenuNotifyIcon.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupEstimatorsLog
@@ -105,15 +111,17 @@ namespace NGVSCAN.EXEC
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnCount = 5;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.button3, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.button2, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.buttonShowAlarm, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.buttonShowWarning, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.buttonShowSuccess, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.listLogMessages, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.button1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.buttonShowInfo, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
@@ -124,6 +132,45 @@ namespace NGVSCAN.EXEC
             this.tableLayoutPanel1.Size = new System.Drawing.Size(878, 163);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
+            // buttonShowAlarm
+            // 
+            this.buttonShowAlarm.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonShowAlarm.BackgroundImage")));
+            this.buttonShowAlarm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonShowAlarm.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.buttonShowAlarm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonShowAlarm.Location = new System.Drawing.Point(93, 3);
+            this.buttonShowAlarm.Name = "buttonShowAlarm";
+            this.buttonShowAlarm.Size = new System.Drawing.Size(24, 23);
+            this.buttonShowAlarm.TabIndex = 5;
+            this.buttonShowAlarm.UseVisualStyleBackColor = true;
+            this.buttonShowAlarm.Click += new System.EventHandler(this.buttonShowAlarm_Click);
+            // 
+            // buttonShowWarning
+            // 
+            this.buttonShowWarning.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonShowWarning.BackgroundImage")));
+            this.buttonShowWarning.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonShowWarning.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.buttonShowWarning.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonShowWarning.Location = new System.Drawing.Point(63, 3);
+            this.buttonShowWarning.Name = "buttonShowWarning";
+            this.buttonShowWarning.Size = new System.Drawing.Size(24, 23);
+            this.buttonShowWarning.TabIndex = 4;
+            this.buttonShowWarning.UseVisualStyleBackColor = true;
+            this.buttonShowWarning.Click += new System.EventHandler(this.buttonShowWarning_Click);
+            // 
+            // buttonShowSuccess
+            // 
+            this.buttonShowSuccess.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonShowSuccess.BackgroundImage")));
+            this.buttonShowSuccess.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonShowSuccess.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.buttonShowSuccess.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonShowSuccess.Location = new System.Drawing.Point(33, 3);
+            this.buttonShowSuccess.Name = "buttonShowSuccess";
+            this.buttonShowSuccess.Size = new System.Drawing.Size(24, 23);
+            this.buttonShowSuccess.TabIndex = 3;
+            this.buttonShowSuccess.UseVisualStyleBackColor = true;
+            this.buttonShowSuccess.Click += new System.EventHandler(this.buttonShowSuccess_Click);
+            // 
             // listLogMessages
             // 
             this.listLogMessages.BackColor = System.Drawing.SystemColors.Control;
@@ -133,7 +180,7 @@ namespace NGVSCAN.EXEC
             this.columnLogType,
             this.columnLogTimestamp,
             this.columnLogMessage});
-            this.tableLayoutPanel1.SetColumnSpan(this.listLogMessages, 4);
+            this.tableLayoutPanel1.SetColumnSpan(this.listLogMessages, 5);
             this.listLogMessages.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listLogMessages.FullRowSelect = true;
             this.listLogMessages.Location = new System.Drawing.Point(3, 33);
@@ -169,6 +216,19 @@ namespace NGVSCAN.EXEC
             this.imageListLog.Images.SetKeyName(1, "Ok-48.png");
             this.imageListLog.Images.SetKeyName(2, "Attention-48.png");
             this.imageListLog.Images.SetKeyName(3, "High Priority-48.png");
+            // 
+            // buttonShowInfo
+            // 
+            this.buttonShowInfo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonShowInfo.BackgroundImage")));
+            this.buttonShowInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonShowInfo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.buttonShowInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonShowInfo.Location = new System.Drawing.Point(3, 3);
+            this.buttonShowInfo.Name = "buttonShowInfo";
+            this.buttonShowInfo.Size = new System.Drawing.Size(24, 23);
+            this.buttonShowInfo.TabIndex = 2;
+            this.buttonShowInfo.UseVisualStyleBackColor = true;
+            this.buttonShowInfo.Click += new System.EventHandler(this.buttonShowInfo_Click);
             // 
             // groupEstimatorsProperties
             // 
@@ -388,38 +448,34 @@ namespace NGVSCAN.EXEC
             this.splitContainer2.SplitterDistance = 246;
             this.splitContainer2.TabIndex = 0;
             // 
-            // button1
+            // notifyIcon
             // 
-            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Location = new System.Drawing.Point(3, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 23);
-            this.button1.TabIndex = 2;
-            this.button1.UseVisualStyleBackColor = true;
+            this.notifyIcon.ContextMenuStrip = this.contextMenuNotifyIcon;
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "NGVSCAN";
+            this.notifyIcon.Visible = true;
             // 
-            // button2
+            // contextMenuNotifyIcon
             // 
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button2.Location = new System.Drawing.Point(33, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(24, 23);
-            this.button2.TabIndex = 3;
-            this.button2.UseVisualStyleBackColor = true;
+            this.contextMenuNotifyIcon.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2});
+            this.contextMenuNotifyIcon.Name = "contextMenuNotifyIcon";
+            this.contextMenuNotifyIcon.Size = new System.Drawing.Size(136, 48);
             // 
-            // button3
+            // toolStripMenuItem1
             // 
-            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button3.Location = new System.Drawing.Point(63, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(24, 23);
-            this.button3.TabIndex = 4;
-            this.button3.UseVisualStyleBackColor = true;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(135, 22);
+            this.toolStripMenuItem1.Text = "Развернуть";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(135, 22);
+            this.toolStripMenuItem2.Text = "Выйти";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // MainForm
             // 
@@ -433,7 +489,7 @@ namespace NGVSCAN.EXEC
             this.MainMenuStrip = this.menu;
             this.MinimumSize = new System.Drawing.Size(450, 300);
             this.Name = "MainForm";
-            this.Text = "mainform";
+            this.Text = "NGVSCAN";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupEstimatorsLog.ResumeLayout(false);
@@ -450,6 +506,7 @@ namespace NGVSCAN.EXEC
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.contextMenuNotifyIcon.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -485,9 +542,14 @@ namespace NGVSCAN.EXEC
         private System.Windows.Forms.ColumnHeader columnLogTimestamp;
         private System.Windows.Forms.ColumnHeader columnLogMessage;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button buttonShowSuccess;
+        private System.Windows.Forms.Button buttonShowInfo;
+        private System.Windows.Forms.Button buttonShowWarning;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.ContextMenuStrip contextMenuNotifyIcon;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.Button buttonShowAlarm;
     }
 }
 

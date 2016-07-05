@@ -190,6 +190,7 @@
     <Compile Include="Repositories\SqlRepository.cs" />
     <Compile Include="ROC809Connection\Crc16.cs" />
     <Compile Include="ROC809Connection\ROC809DataServiceExtensions.cs" />
+    <Compile Include="ROC809Connection\ROC809GPRSClient.cs" />
     <Compile Include="ROC809Connection\ROC809HistoryType.cs" />
     <Compile Include="ROC809Connection\ROC809PeriodicDataModel.cs" />
     <Compile Include="ROC809Connection\ROC809TCPClient.cs" />
