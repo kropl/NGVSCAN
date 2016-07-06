@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using NGVSCAN.EXEC.Common;
@@ -7,7 +8,7 @@ namespace NGVSCAN.EXEC
 {
     static class NGVSCAN
     {
-        private static Mutex mutex = new Mutex(true, "{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}");
+        private static Mutex mutex;
 
         /// <summary>
         /// Главная точка входа для приложения.
@@ -15,6 +16,9 @@ namespace NGVSCAN.EXEC
         [STAThread]
         static void Main()
         {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            mutex = new Mutex(true, assembly.GetType().GUID.ToString());
+
             if (mutex.WaitOne(TimeSpan.Zero, true))
             {
                 Application.EnableVisualStyles();

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -8,6 +9,8 @@ namespace NGVSCAN.EXEC.Common
     public static class Settings
     {
         private static readonly string _fileName = "Settings.ngv";
+
+        private static readonly string _filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NGVSCAN");
 
         #region Настройки
 
@@ -31,9 +34,9 @@ namespace NGVSCAN.EXEC.Common
         {
             Hashtable settings = null;
 
-            if (File.Exists(_fileName))
+            if (File.Exists(_filePath))
             {
-                using (FileStream fileStream = new FileStream(_fileName, FileMode.Open))
+                using (FileStream fileStream = new FileStream(Path.Combine(_filePath, _fileName), FileMode.Open))
                 {
                     try
                     {
@@ -68,7 +71,10 @@ namespace NGVSCAN.EXEC.Common
             settings.Add("SqlUserPassword", SqlUserPassword);
             settings.Add("DbfTablesPath", DbfTablesPath);
 
-            using (FileStream fileStream = new FileStream(_fileName, FileMode.Create))
+            if (!Directory.Exists(_filePath))
+                Directory.CreateDirectory(_filePath);
+
+            using (FileStream fileStream = new FileStream(Path.Combine(_filePath, _fileName), FileMode.Create))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
 

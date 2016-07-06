@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Linq;
+using System;
 
 namespace NGVSCAN.EXEC.Common
 {
     public static class Logger
     {
         private static readonly string _fileName = "Log.json";
+
+        private static readonly string _filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NGVSCAN");
 
         private static List<LogEntry> log;
 
@@ -26,7 +29,10 @@ namespace NGVSCAN.EXEC.Common
 
         private static void LogToFile(LogEntry entry)
         {
-            using (StreamWriter log = new StreamWriter(_fileName, true))
+            if (!Directory.Exists(_filePath))
+                Directory.CreateDirectory(_filePath);
+
+            using (StreamWriter log = new StreamWriter(Path.Combine(_filePath, _fileName), true))
             {
                 log.WriteLine(JsonConvert.SerializeObject(entry));
             }
@@ -154,7 +160,10 @@ namespace NGVSCAN.EXEC.Common
 
         private static List<LogEntry> GetExistingLog()
         {
-            using (StreamReader file = new StreamReader(_fileName))
+            if (!Directory.Exists(_filePath))
+                Directory.CreateDirectory(_filePath);
+
+            using (StreamReader file = new StreamReader(Path.Combine(_filePath, _fileName)))
             {
                 return JsonConvert.DeserializeObject<List<LogEntry>>(file.ReadToEnd());
             }
