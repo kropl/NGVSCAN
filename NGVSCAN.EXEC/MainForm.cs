@@ -264,6 +264,8 @@ namespace NGVSCAN.EXEC
                         });
                     }
                 });
+
+                treeEstimators.ExpandAll();
             }
             else
             {
@@ -397,6 +399,8 @@ namespace NGVSCAN.EXEC
                             ROC809sGroupDetails rocsGroupDetails = new ROC809sGroupDetails();
 
                             rocsGroupDetails.Dock = DockStyle.Fill;
+
+                            rocsGroupDetails.ROCs = rocs;
 
                             groupEstimatorsProperties.Controls.Add(rocsGroupDetails);
 
@@ -1245,7 +1249,8 @@ namespace NGVSCAN.EXEC
 
         private void scanner_Tick(object sender, EventArgs e)
         {
-            scanner.Process(listLogMessages);       
+            if (field != null)
+                scanner.Process(listLogMessages, field);       
         }
 
         #endregion

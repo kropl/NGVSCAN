@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NGVSCAN.EXEC.Controls;
+using NGVSCAN.CORE.Entities;
 
 namespace NGVSCAN.EXEC.Common
 {
@@ -45,13 +46,13 @@ namespace NGVSCAN.EXEC.Common
         /// <summary>
         /// Запуск опроса вычислителей на выполнение
         /// </summary>
-        public void Process(LogListView log)
+        public void Process(LogListView log, Field field)
         {
             // Контекст синхронизации задач с потоком интерфейса пользователя
             TaskScheduler uiSyncContext = TaskScheduler.FromCurrentSynchronizationContext();
 
             // Запуск задачи определения ниток для опроса
-            Task.Factory.StartNew(() => GetLinesForScanning(), TaskCreationOptions.LongRunning)
+            Task.Factory.StartNew(() => GetLinesForScanning(field), TaskCreationOptions.LongRunning)
                 // Запуск задачи после завершения предыдущей задачи
                 .ContinueWith((mainTaskResult) => 
                 {
@@ -86,7 +87,7 @@ namespace NGVSCAN.EXEC.Common
                     });
 
             // Запуск задачи определения точек для опроса
-            Task.Factory.StartNew(() => GetPointsForScanning(), TaskCreationOptions.LongRunning)
+            Task.Factory.StartNew(() => GetPointsForScanning(field), TaskCreationOptions.LongRunning)
                 // Запуск задачи после завершения предыдущей задачи
                 .ContinueWith((mainTaskResult) =>
                 {

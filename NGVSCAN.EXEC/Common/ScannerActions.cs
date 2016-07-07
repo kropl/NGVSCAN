@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using NGVSCAN.CORE.Entities;
 using NGVSCAN.CORE.Entities.Floutecs;
 using NGVSCAN.CORE.Entities.ROC809s;
 using NGVSCAN.DAL.Extensions;
@@ -15,7 +16,7 @@ namespace NGVSCAN.EXEC.Common
     {
         #region Определение ниток вычислителей ФЛОУТЭК и точек вычислителей ROC809 для сканирования
 
-        private List<FloutecMeasureLine> GetLinesForScanning()
+        private List<FloutecMeasureLine> GetLinesForScanning(Field field)
         {
             List<FloutecMeasureLine> lines;
 
@@ -30,7 +31,8 @@ namespace NGVSCAN.EXEC.Common
                     .Include(l => l.AlarmData)
                     .Include(l => l.InterData)
                     .Include(l => l.Estimator)
-                    .Where(l => !l.IsDeleted && !l.Estimator.IsDeleted)
+                    .Include(l => l.Estimator.Field)
+                    .Where(l => !l.IsDeleted && !l.Estimator.IsDeleted && l.Estimator.Field.Id == field.Id)
                     .ToList();
 
                     if (floutecsScanningState == null)
@@ -59,7 +61,7 @@ namespace NGVSCAN.EXEC.Common
             }
         }
 
-        private List<ROC809MeasurePoint> GetPointsForScanning()
+        private List<ROC809MeasurePoint> GetPointsForScanning(Field field)
         {
             List<ROC809MeasurePoint> points;
 
@@ -70,12 +72,13 @@ namespace NGVSCAN.EXEC.Common
                     points = repo.GetAll()
                         .Include(p => p.DailyData)
                         .Include(p => p.Estimator)
+                        .Include(p => p.Estimator.Field)
                         .Include(p => p.MinuteData)
                         .Include(p => p.PeriodicData)
                         .Include(p => p.DailyData)
                         .Include(p => p.AlarmData)
                         .Include(p => p.EventData)
-                        .Where(p => !p.IsDeleted && !p.Estimator.IsDeleted)
+                        .Where(p => !p.IsDeleted && !p.Estimator.IsDeleted && p.Estimator.Field.Id == field.Id)
                         .ToList();
 
                     if (rocsScanningState == null)

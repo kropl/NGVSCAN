@@ -16,7 +16,7 @@ namespace NGVSCAN.EXEC.Common
 
         public static string ServerName { get; set; } = "SEM-SRV";
 
-        public static string SqlServerPath { get; set; } = @"DESKTOP-UF08V9V\SQLEXPRESS";
+        public static string SqlServerPath { get; set; } = @"localhost";
 
         public static string SqlDatabaseName { get; set; } = "NGVSCAN";
 
@@ -34,7 +34,7 @@ namespace NGVSCAN.EXEC.Common
         {
             Hashtable settings = null;
 
-            if (File.Exists(_filePath))
+            if (File.Exists(Path.Combine(_filePath, _fileName)))
             {
                 using (FileStream fileStream = new FileStream(Path.Combine(_filePath, _fileName), FileMode.Open))
                 {

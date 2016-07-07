@@ -29,12 +29,11 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.labelField = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.labelDescription = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.labelAddress = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -52,10 +51,11 @@
             this.label21 = new System.Windows.Forms.Label();
             this.labelModified = new System.Windows.Forms.Label();
             this.listPoints = new System.Windows.Forms.ListView();
-            this.labelPoints = new System.Windows.Forms.Label();
             this.columnNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.labelPoints = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -112,15 +112,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(373, 353);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Установка:";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -148,15 +139,6 @@
             this.labelName.TabIndex = 3;
             this.labelName.Text = "label4";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 40);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(60, 13);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Описание:";
-            // 
             // labelDescription
             // 
             this.labelDescription.AutoSize = true;
@@ -165,6 +147,15 @@
             this.labelDescription.Size = new System.Drawing.Size(35, 13);
             this.labelDescription.TabIndex = 5;
             this.labelDescription.Text = "label6";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 40);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(60, 13);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Описание:";
             // 
             // label7
             // 
@@ -329,16 +320,6 @@
             this.listPoints.UseCompatibleStateImageBehavior = false;
             this.listPoints.View = System.Windows.Forms.View.Details;
             // 
-            // labelPoints
-            // 
-            this.labelPoints.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.labelPoints, 2);
-            this.labelPoints.Location = new System.Drawing.Point(3, 220);
-            this.labelPoints.Name = "labelPoints";
-            this.labelPoints.Size = new System.Drawing.Size(40, 13);
-            this.labelPoints.TabIndex = 23;
-            this.labelPoints.Text = "Точки:";
-            // 
             // columnNumber
             // 
             this.columnNumber.Text = "Номер";
@@ -350,6 +331,25 @@
             // columnDescription
             // 
             this.columnDescription.Text = "Описание";
+            // 
+            // labelPoints
+            // 
+            this.labelPoints.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelPoints, 2);
+            this.labelPoints.Location = new System.Drawing.Point(3, 220);
+            this.labelPoints.Name = "labelPoints";
+            this.labelPoints.Size = new System.Drawing.Size(40, 13);
+            this.labelPoints.TabIndex = 23;
+            this.labelPoints.Text = "Точки:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Установка:";
             // 
             // ROC809Details
             // 

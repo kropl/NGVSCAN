@@ -207,6 +207,9 @@
     <EmbeddedResource Include="Controls\ROC809PointDetails.resx">
       <DependentUpon>ROC809PointDetails.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ROC809sGroupDetails.resx">
+      <DependentUpon>ROC809sGroupDetails.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
