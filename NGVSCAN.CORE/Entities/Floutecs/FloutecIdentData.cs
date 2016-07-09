@@ -51,6 +51,11 @@ namespace NGVSCAN.CORE.Entities.Floutecs
         public TimeSpan KONTRH { get; set; }
 
         /// <summary>
+        /// Метод измерения расхода (0 - перепад, 1 - счётчик)
+        /// </summary>
+        public int SCHET { get; set; }
+
+        /// <summary>
         /// Молярная концентрация N2, %
         /// </summary>
         public double NO2 { get; set; }

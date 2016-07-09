@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace NGVSCAN.CORE.Entities.ROC809s
 {
     /// <summary>
@@ -6,6 +7,19 @@ namespace NGVSCAN.CORE.Entities.ROC809s
     /// </summary>
     public class ROC809 : Estimator
     {
+        #region Конструктор и поля
+
+        public ROC809()
+        {
+            // Инициализация коллекции данных событий
+            EventData = new HashSet<ROC809EventData>();
+
+            // Инициализация коллекции данных аварий
+            AlarmData = new HashSet<ROC809AlarmData>();
+        }
+
+        #endregion
+
         #region Свойства
 
         /// <summary>
@@ -37,6 +51,20 @@ namespace NGVSCAN.CORE.Entities.ROC809s
         /// HostGroup вычислителя ROC809
         /// </summary>
         public int HostGroup { get; set; }
+
+        #endregion
+
+        #region Навигационные свойства
+
+        /// <summary>
+        /// Коллекция данных событий 
+        /// </summary>
+        public virtual ICollection<ROC809EventData> EventData { get; set; }
+
+        /// <summary>
+        /// Коллекция данных аварий 
+        /// </summary>
+        public virtual ICollection<ROC809AlarmData> AlarmData { get; set; }
 
         #endregion
     }

@@ -99,14 +99,14 @@ namespace NGVSCAN.CORE.Entities.ROC809s
         #region Навигационные свойства
 
         /// <summary>
-        /// Идентификатор (первичный ключ) точки измерения 
+        /// Идентификатор (первичный ключ) выичлсителя ROC809 
         /// </summary>
-        public int ROC809MeasurePointId { get; set; }
+        public int ROC809Id { get; set; }
 
         /// <summary>
-        /// Точка измерения
+        /// Вычислитель ROC809
         /// </summary>
-        public virtual ROC809MeasurePoint MeasurePoint { get; set; }
+        public virtual ROC809 ROC809 { get; set; }
 
         #endregion
     }

@@ -83,6 +83,14 @@
     <Compile Include="Migrations\201606300848256_ChangedOperatorIdToString.Designer.cs">
       <DependentUpon>201606300848256_ChangedOperatorIdToString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607090953308_MovedEventAndAlarmDataToROC.cs" />
+    <Compile Include="Migrations\201607090953308_MovedEventAndAlarmDataToROC.Designer.cs">
+      <DependentUpon>201607090953308_MovedEventAndAlarmDataToROC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607091000429_AddedSCHETToFloutecIdentData.cs" />
+    <Compile Include="Migrations\201607091000429_AddedSCHETToFloutecIdentData.Designer.cs">
+      <DependentUpon>201607091000429_AddedSCHETToFloutecIdentData.cs</DependentUpon>
+    </Compile>
     <Compile Include="ROC809Connection\ROC809DataService.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.Designer.cs">
@@ -283,6 +291,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606300848256_ChangedOperatorIdToString.resx">
       <DependentUpon>201606300848256_ChangedOperatorIdToString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607090953308_MovedEventAndAlarmDataToROC.resx">
+      <DependentUpon>201607090953308_MovedEventAndAlarmDataToROC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607091000429_AddedSCHETToFloutecIdentData.resx">
+      <DependentUpon>201607091000429_AddedSCHETToFloutecIdentData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -19,6 +19,8 @@ namespace NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations
             Property(r => r.ROCGroup).IsRequired();
             Property(r => r.HostUnit).IsRequired();
             Property(r => r.HostGroup).IsRequired();
+            HasMany(r => r.EventData).WithRequired(r => r.ROC809);
+            HasMany(r => r.AlarmData).WithRequired(r => r.ROC809);
             ToTable("ROC809s");
         }
     }

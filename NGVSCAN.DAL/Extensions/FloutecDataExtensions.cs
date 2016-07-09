@@ -28,6 +28,7 @@ namespace NGVSCAN.DAL.Extensions
         public static void FromIdentTable(this FloutecIdentData identData, OleDbDataReader reader)
         {
             identData.KONTRH = DateTime.ParseExact(GetReaderValue(reader, "KONTRH", "").Trim(), timeFormats, CultureInfo.InvariantCulture, DateTimeStyles.None).TimeOfDay;
+            identData.SCHET = GetReaderValue(reader, "SCHET", 0);
             identData.KALIBSCH = GetReaderValue(reader, "KALIBSCH", 0.0);
             identData.MAXRSCH = GetReaderValue(reader, "MAXRSCH", 0.0);
             identData.MINRSCH = GetReaderValue(reader, "MINRSCH", 0.0);
@@ -71,7 +72,7 @@ namespace NGVSCAN.DAL.Extensions
         public static bool IsEqual(this FloutecIdentData newData, FloutecIdentData exData)
         {
             return newData != null && exData != null && newData.ACP.Equals(exData.ACP) && newData.ACS.Equals(exData.ACS) && newData.BCP.Equals(exData.BCP) && newData.BCS.Equals(exData.BCS)
-                && newData.CCP.Equals(exData.CCP) && newData.CCS.Equals(exData.CCS) && newData.CO2.Equals(exData.CO2) && newData.DSU.Equals(exData.DSU)
+                && newData.CCP.Equals(exData.CCP) && newData.CCS.Equals(exData.CCS) && newData.CO2.Equals(exData.CO2) && newData.DSU.Equals(exData.DSU) && newData.SCHET.Equals(exData.SCHET)
                 && newData.DTRUB.Equals(exData.DTRUB) && newData.KALIBSCH.Equals(exData.KALIBSCH) && newData.KONDENS.Equals(exData.KONDENS) && newData.KONTRH.Equals(exData.KONTRH)
                 && newData.MAXRSCH.Equals(exData.MAXRSCH) && newData.MINRSCH.Equals(exData.MINRSCH) && newData.NIZP.Equals(exData.NIZP) && newData.NIZT.Equals(exData.NIZT)
                 && newData.NO2.Equals(exData.NO2) && newData.OTBOR.Equals(exData.OTBOR) && newData.OTSECH.Equals(exData.OTSECH) && newData.PLOTN.Equals(exData.PLOTN)

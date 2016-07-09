@@ -70,35 +70,32 @@ namespace NGVSCAN.EXEC.Common
                 using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(connection))
                 {
                     points = repo.GetAll()
-                        .Include(p => p.DailyData)
-                        .Include(p => p.Estimator)
-                        .Include(p => p.Estimator.Field)
+                        .Where(p => !p.IsDeleted && !p.Estimator.IsDeleted && p.Estimator.Field.Id == field.Id)
                         .Include(p => p.MinuteData)
                         .Include(p => p.PeriodicData)
                         .Include(p => p.DailyData)
-                        .Include(p => p.AlarmData)
-                        .Include(p => p.EventData)
-                        .Where(p => !p.IsDeleted && !p.Estimator.IsDeleted && p.Estimator.Field.Id == field.Id)
+                        .Include(p => p.Estimator.Field)
+                        .Include(p => p.Estimator)
                         .ToList();
-
-                    if (rocsScanningState == null)
-                    {
-                        rocsScanningState = new Dictionary<string, bool>();
-
-                        points.ForEach((p) =>
-                        {
-                            string address = ((ROC809)p.Estimator).Address;
-                            string ident = address + "_" + p.Number + "_" + p.HistSegment;
-
-                            rocsScanningState.Add(ident + "_minute", false);
-                            rocsScanningState.Add(ident + "_periodic", false);
-                            rocsScanningState.Add(ident + "_daily", false);
-                            rocsScanningState.Add(ident + "_event", false);
-                            rocsScanningState.Add(ident + "_alarm", false);
-                        });
-                    }
-                    return points;
                 }
+
+                if (rocsScanningState == null)
+                {
+                    rocsScanningState = new Dictionary<string, bool>();
+
+                    points.ForEach((p) =>
+                    {
+                        string address = ((ROC809)p.Estimator).Address;
+                        string ident = address + "_" + p.Number + "_" + p.HistSegment;
+
+                        rocsScanningState.Add(ident + "_minute", false);
+                        rocsScanningState.Add(ident + "_periodic", false);
+                        rocsScanningState.Add(ident + "_daily", false);
+                        rocsScanningState.Add(ident + "_event", false);
+                        rocsScanningState.Add(ident + "_alarm", false);
+                    });
+                }
+                return points;
             }
             catch (Exception ex)
             {
@@ -466,10 +463,13 @@ namespace NGVSCAN.EXEC.Common
 
                     if (eventData.Count > 0)
                     {
-                        ROC809EventData lastData = point.EventData.OrderBy(o => o.Time).LastOrDefault();
+                        using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(connection))
+                        {
+                            ROC809EventData lastData = repo.Get(point.EstimatorId).EventData.OrderBy(o => o.Time).LastOrDefault();
 
-                        if (lastData != null)
-                            return eventData.Where(e => e.Time > lastData.Time).ToList();
+                            if (lastData != null)
+                                return eventData.Where(e => e.Time > lastData.Time).ToList();
+                        }
                     }
 
                     return eventData;
@@ -493,7 +493,7 @@ namespace NGVSCAN.EXEC.Common
                 {
                     d.DateCreated = DateTime.Now;
                     d.DateModified = DateTime.Now;
-                    d.ROC809MeasurePointId = point.Id;
+                    d.ROC809Id = point.Estimator.Id;
                 });
 
                 try
@@ -532,10 +532,13 @@ namespace NGVSCAN.EXEC.Common
 
                     if (alarmData.Count > 0)
                     {
-                        ROC809AlarmData lastData = point.AlarmData.OrderBy(o => o.Time).LastOrDefault();
+                        using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(connection))
+                        {
+                            ROC809AlarmData lastData = repo.Get(point.EstimatorId).AlarmData.OrderBy(o => o.Time).LastOrDefault();
 
-                        if (lastData != null)
-                            return alarmData.Where(e => e.Time > lastData.Time).ToList();
+                            if (lastData != null)
+                                return alarmData.Where(e => e.Time > lastData.Time).ToList();
+                        }
                     }
 
                     return alarmData;
@@ -561,7 +564,7 @@ namespace NGVSCAN.EXEC.Common
                 {
                     d.DateCreated = DateTime.Now;
                     d.DateModified = DateTime.Now;
-                    d.ROC809MeasurePointId = point.Id;
+                    d.ROC809Id = point.Estimator.Id;
                 });
 
                 try

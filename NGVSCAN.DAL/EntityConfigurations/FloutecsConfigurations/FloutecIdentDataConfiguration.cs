@@ -15,6 +15,7 @@ namespace NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations
         {
             Property(i => i.N_FLONIT).IsRequired();
             Property(i => i.KONTRH).IsRequired();
+            Property(i => i.SCHET).IsRequired();
             Property(i => i.NO2).IsRequired();
             Property(i => i.OTBOR).IsRequired();
             Property(i => i.ACP).IsRequired();
