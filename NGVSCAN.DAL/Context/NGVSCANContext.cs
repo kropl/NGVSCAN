@@ -36,7 +36,7 @@ namespace NGVSCAN.DAL.Context
         public NGVSCANContext(DbConnection connection) : base(connection, true)
         {
             // Инициализация базы данных при создании
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<NGVSCANContext, Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<NGVSCANContext, Configuration>(true));
         }
 
         #region Наборы сущностей

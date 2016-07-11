@@ -40,13 +40,13 @@
         "Entry"
         {
         "MsmKey" = "8:_3518392C1EF117EE7329A4D05B3894EE"
-        "OwnerKey" = "8:_03BF9E319E457E70CF76E6D679D8012F"
+        "OwnerKey" = "8:_4B4C87C0F31C47369AE5FC7FA92F7A17"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_3518392C1EF117EE7329A4D05B3894EE"
-        "OwnerKey" = "8:_4B4C87C0F31C47369AE5FC7FA92F7A17"
+        "OwnerKey" = "8:_03BF9E319E457E70CF76E6D679D8012F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -82,19 +82,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_07C37E1A8DB772012F467DE97A4D2372"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_03BF9E319E457E70CF76E6D679D8012F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5A0D1FCD1F22855143AFC8434F9C448C"
+        "OwnerKey" = "8:_70E6487723744E94B009BD0671C32D16"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -106,7 +94,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_70E6487723744E94B009BD0671C32D16"
+        "OwnerKey" = "8:_5A0D1FCD1F22855143AFC8434F9C448C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_03BF9E319E457E70CF76E6D679D8012F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_07C37E1A8DB772012F467DE97A4D2372"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -134,6 +134,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
             }
         }
         "Release"
@@ -203,11 +211,6 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_03BF9E319E457E70CF76E6D679D8012F"
-                    {
-                    "Name" = "8:EntityFramework.SqlServer.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:EntityFramework.SqlServer.dll"
             "TargetName" = "8:"
@@ -234,11 +237,6 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_07C37E1A8DB772012F467DE97A4D2372"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -285,11 +283,6 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_3518392C1EF117EE7329A4D05B3894EE"
-                    {
-                    "Name" = "8:EntityFramework.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:EntityFramework.dll"
             "TargetName" = "8:"
@@ -316,11 +309,6 @@
             "AssemblyAsmDisplayName" = "8:NGVSCAN.DAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_5A0D1FCD1F22855143AFC8434F9C448C"
-                    {
-                    "Name" = "8:NGVSCAN.DAL.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:NGVSCAN.DAL.dll"
             "TargetName" = "8:"
@@ -347,11 +335,6 @@
             "AssemblyAsmDisplayName" = "8:NGVSCAN.CORE, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_70E6487723744E94B009BD0671C32D16"
-                    {
-                    "Name" = "8:NGVSCAN.CORE.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:NGVSCAN.CORE.dll"
             "TargetName" = "8:"
@@ -427,15 +410,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:NGVSCAN"
-        "ProductCode" = "8:{54E9D35F-210B-4D01-A1FA-D939476976DD}"
-        "PackageCode" = "8:{6DBBFEAE-01BE-4DF0-B786-0B44CF1ACFEF}"
+        "ProductCode" = "8:{CDF50939-5D63-40F7-B0F8-F843760B6CFF}"
+        "PackageCode" = "8:{6CF2DCC9-492D-464F-9EB0-255DD5429B22}"
         "UpgradeCode" = "8:{9810F03E-755E-4549-8081-4617BED481CF}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.7"
+        "ProductVersion" = "8:1.0.8"
         "Manufacturer" = "8:Triada"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
