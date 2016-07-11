@@ -10,6 +10,7 @@ using System.Data.Common;
 using System.Data.Entity;
 using NGVSCAN.DAL.EntityConfigurations.ROC809sConfigurations.Common;
 using NGVSCAN.CORE.Entities.ROC809s.Common;
+using NGVSCAN.DAL.Migrations;
 
 namespace NGVSCAN.DAL.Context
 {
@@ -25,7 +26,7 @@ namespace NGVSCAN.DAL.Context
         public NGVSCANContext() : base("NGVSCAN")
         {
             // Инициализация базы данных при создании
-            Database.SetInitializer(new NGVSCANInitializer());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<NGVSCANContext, Configuration>("NGVSCAN"));
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace NGVSCAN.DAL.Context
         public NGVSCANContext(DbConnection connection) : base(connection, true)
         {
             // Инициализация базы данных при создании
-            Database.SetInitializer(new NGVSCANInitializer());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<NGVSCANContext, Configuration>());
         }
 
         #region Наборы сущностей
