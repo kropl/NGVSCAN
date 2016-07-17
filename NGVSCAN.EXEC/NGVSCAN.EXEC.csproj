@@ -189,6 +189,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Settings.cs" />
+    <Compile Include="Scanners\FloutecScanner.cs" />
+    <Compile Include="Scanners\ROC809Scanner.cs" />
     <EmbeddedResource Include="Controls\FieldDetails.resx">
       <DependentUpon>FieldDetails.cs</DependentUpon>
     </EmbeddedResource>

@@ -28,7 +28,7 @@ namespace NGVSCAN.DAL.Repositories
         /// </summary>
         public SqlRepository(string connectionString)
         {
-            SqlConnection connection = new SqlConnection(connectionString);
+            SqlConnection connection = new SqlConnection(connectionString);            
 
             // Инициализация контекста доступа к данным
             _context = new NGVSCANContext(connection);

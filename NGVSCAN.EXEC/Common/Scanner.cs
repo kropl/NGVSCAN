@@ -17,18 +17,18 @@ namespace NGVSCAN.EXEC.Common
         #region Конструктор и поля
 
         // Переменные для отслеживания состояния опроса ниток и точек
-        private Dictionary<string, bool> floutecsScanningState;
-        private Dictionary<string, bool> rocsScanningState;
+        private Dictionary<string, bool> _floutecsScanningState;
+        private Dictionary<string, bool> _rocsScanningState;
 
         // Переменные для хранения времени начала опроса данных вычислителей
-        private DateTime dateStartHourlyDataScan;
-        private DateTime dateStartInstantDataScan;
-        private DateTime dateStartMinuteDataScan;
-        private DateTime dateStartPeriodicDataScan;
-        private DateTime dateStartDailyDataScan;
+        private DateTime _dateStartHourlyDataScan;
+        private DateTime _dateStartInstantDataScan;
+        private DateTime _dateStartMinuteDataScan;
+        private DateTime _dateStartPeriodicDataScan;
+        private DateTime _dateStartDailyDataScan;
 
         // Соединение с БД SQL
-        private string connection;
+        private string _connection;
 
         /// <summary>
         /// Класс для выполнения опроса вычислителей
@@ -36,7 +36,7 @@ namespace NGVSCAN.EXEC.Common
         public Scanner(string connection)
         {
             // Инициализация соединения
-            this.connection = connection;
+            _connection = connection;
         }
 
         #endregion
@@ -135,9 +135,60 @@ namespace NGVSCAN.EXEC.Common
             bool timeToHourlyData = !line.DateHourlyDataLastScanned.HasValue || line.DateHourlyDataLastScanned.Value.AddMinutes(line.HourlyDataScanPeriod) <= DateTime.Now;
             bool timeToInstantData = !line.DateInstantDataLastScanned.HasValue || line.DateInstantDataLastScanned.Value.AddMinutes(line.InstantDataScanPeriod) <= DateTime.Now;
 
-            if ((timeToHourlyData && !floutecsScanningState[n_flonit.ToString() + "_hour"]) || (timeToInstantData && !floutecsScanningState[n_flonit.ToString() + "_inst"]))
+            if ((timeToHourlyData && !_floutecsScanningState[n_flonit.ToString() + "_hour"]) || (timeToInstantData && !_floutecsScanningState[n_flonit.ToString() + "_inst"]))
             {
                 #region Опрос и сохранение данных идентификации
+
+                Task.Factory.StartNew(() => 
+                {
+                    if (!_floutecsScanningState[n_flonit.ToString() + "_ident"])
+                    {
+                        _floutecsScanningState[n_flonit.ToString() + "_ident"] = true;
+
+                        return GetIdentData(line);
+                    }
+                    else
+                        return null;
+                }, 
+                TaskCreationOptions.LongRunning)
+                    .ContinueWith((getIdentDataResult) =>
+                    {
+                        if (getIdentDataResult.Exception != null)
+                        {
+                            LogException(log, "Ошибка опроса данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, getIdentDataResult.Exception, LogType.Floutec);
+                            throw getIdentDataResult.Exception;
+                        }
+                        else
+                            return getIdentDataResult.Result;
+                    },
+                    uiSyncContext)
+                        .ContinueWith((getIdentDataLogResult) => 
+                        {
+                            if (getIdentDataLogResult.Exception == null)
+                            {
+                                if (getIdentDataLogResult.Result == null)
+                                    return 0;
+                                else
+                                {
+                                    SaveIdentData(line, getIdentDataLogResult.Result);
+                                    return 1;
+                                }
+                            }
+                            else
+                                return -1;
+                        }, TaskContinuationOptions.LongRunning)
+                            .ContinueWith((saveIdentDataResult) => 
+                            {
+                                //if (saveIdentDataResult.Exception != null)
+                                //{
+                                //    LogException(log, "Ошибка сохранения данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveIdentDataResult.Exception, LogType.Floutec);
+                                //    _floutecsScanningState[n_flonit.ToString() + "_ident"] = false;
+                                //}
+                                //else if(saveIdentDataResult.Result == 0)
+
+                            },
+                            uiSyncContext);
+
 
                 Task.Factory.StartNew(() => GetIdentData(line), TaskCreationOptions.LongRunning)
                     .ContinueWith((getIdentDataResult) =>
@@ -173,8 +224,8 @@ namespace NGVSCAN.EXEC.Common
                             {
                                 if (saveIdentDataResult.Exception != null)
                                 {
-                                    LogException(log, "Ошибка сохранения данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveIdentDataResult.Exception, LogType.ROC);
-                                    floutecsScanningState[n_flonit.ToString() + "_ident"] = false;
+                                    LogException(log, "Ошибка сохранения данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveIdentDataResult.Exception, LogType.Floutec);
+                                    _floutecsScanningState[n_flonit.ToString() + "_ident"] = false;
                                 }
                                 else if (saveIdentDataResult.Result == 1)
                                     Logger.Log(log, new LogEntry { Message = "Данные событий нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " отсутствуют", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
@@ -182,7 +233,7 @@ namespace NGVSCAN.EXEC.Common
                                     Logger.Log(log, new LogEntry { Message = "Опрос данных идентификации нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
                                 if (saveIdentDataResult.Result != 0)
-                                    floutecsScanningState[n_flonit.ToString() + "_ident"] = false;
+                                    _floutecsScanningState[n_flonit.ToString() + "_ident"] = false;
                             },
                             uiSyncContext)
 
@@ -229,7 +280,7 @@ namespace NGVSCAN.EXEC.Common
                                                 if (saveAlarmDataResult.Exception != null)
                                                 {
                                                     LogException(log, "Ошибка сохранения данных аварий нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveAlarmDataResult.Exception, LogType.ROC);
-                                                    floutecsScanningState[n_flonit.ToString() + "_alarm"] = false;
+                                                    _floutecsScanningState[n_flonit.ToString() + "_alarm"] = false;
                                                 }
                                                 else if (saveAlarmDataResult.Result == 1)
                                                     Logger.Log(log, new LogEntry { Message = "Данные аварий нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " отсутствуют", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
@@ -237,7 +288,7 @@ namespace NGVSCAN.EXEC.Common
                                                     Logger.Log(log, new LogEntry { Message = "Опрос данных аварий нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
                                                 if (saveAlarmDataResult.Result != 0)
-                                                    floutecsScanningState[n_flonit.ToString() + "_alarm"] = false;
+                                                    _floutecsScanningState[n_flonit.ToString() + "_alarm"] = false;
                                             }, 
                                             uiSyncContext)
 
@@ -284,7 +335,7 @@ namespace NGVSCAN.EXEC.Common
                                                                 if (saveInterDataResult.Exception != null)
                                                                 {
                                                                     LogException(log, "Ошибка сохранения данных вмешательств нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address, saveInterDataResult.Exception, LogType.ROC);
-                                                                    floutecsScanningState[n_flonit.ToString() + "_inter"] = false;
+                                                                    _floutecsScanningState[n_flonit.ToString() + "_inter"] = false;
                                                                 }
                                                                 else if (saveInterDataResult.Result == 1)
                                                                     Logger.Log(log, new LogEntry { Message = "Данные вмешательств нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " отсутствуют", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
@@ -292,7 +343,7 @@ namespace NGVSCAN.EXEC.Common
                                                                     Logger.Log(log, new LogEntry { Message = "Опрос данных вмешательств нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
                                                                 if (saveInterDataResult.Result != 0)
-                                                                    floutecsScanningState[n_flonit.ToString() + "_inter"] = false;
+                                                                    _floutecsScanningState[n_flonit.ToString() + "_inter"] = false;
                                                             },
                                                             uiSyncContext)
 
@@ -302,7 +353,7 @@ namespace NGVSCAN.EXEC.Common
 
                                                                 .ContinueWith((saveAlarmDataLogResult) =>
                                                                 {
-                                                                    if (timeToHourlyData && !floutecsScanningState[n_flonit.ToString() + "_hour"])
+                                                                    if (timeToHourlyData && !_floutecsScanningState[n_flonit.ToString() + "_hour"])
                                                                     {
                                                                         Task.Factory.StartNew(() => GetHourlyData(line), TaskCreationOptions.LongRunning)
                                                                             .ContinueWith((getHourlyDataResult) =>
@@ -340,7 +391,7 @@ namespace NGVSCAN.EXEC.Common
                                                                                         else if (saveHourlyDataResult.Result == 1)
                                                                                             Logger.Log(log, new LogEntry { Message = "Опрос часовых данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
-                                                                                        floutecsScanningState[n_flonit.ToString() + "_hour"] = false;
+                                                                                        _floutecsScanningState[n_flonit.ToString() + "_hour"] = false;
                                                                                     },
                                                                                     uiSyncContext);
                                                                     }
@@ -349,7 +400,7 @@ namespace NGVSCAN.EXEC.Common
 
                 #region Опрос и сохранение мгновенных данных
 
-                                                                    if (timeToInstantData && !floutecsScanningState[n_flonit.ToString() + "_inst"])
+                                                                    if (timeToInstantData && !_floutecsScanningState[n_flonit.ToString() + "_inst"])
                                                                     {
                                                                         Task.Factory.StartNew(() => GetInstantData(line), TaskCreationOptions.LongRunning)
                                                                             .ContinueWith((getInstantDataResult) =>
@@ -387,7 +438,7 @@ namespace NGVSCAN.EXEC.Common
                                                                                         else if (saveInstantDataResult.Result == 1)
                                                                                             Logger.Log(log, new LogEntry { Message = "Опрос мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
-                                                                                        floutecsScanningState[n_flonit.ToString() + "_inst"] = false;
+                                                                                        _floutecsScanningState[n_flonit.ToString() + "_inst"] = false;
                                                                                     },
                                                                                     uiSyncContext); ;
                                                                     }
@@ -407,7 +458,7 @@ namespace NGVSCAN.EXEC.Common
             bool timeToPeriodicData = !point.DatePeriodicDataLastScanned.HasValue || point.DatePeriodicDataLastScanned.Value.AddMinutes(point.PeriodicDataScanPeriod) <= DateTime.Now;
             bool timeToDailyData = !point.DateDailyDataLastScanned.HasValue || point.DateDailyDataLastScanned.Value.AddMinutes(point.DailyDataScanPeriod) <= DateTime.Now;
 
-            if ((timeToMinuteData && !rocsScanningState[ident + "_minute"]) || (timeToPeriodicData && !rocsScanningState[ident + "_periodic"]) || (timeToDailyData && !rocsScanningState[ident + "_daily"]))
+            if ((timeToMinuteData && !_rocsScanningState[ident + "_minute"]) || (timeToPeriodicData && !_rocsScanningState[ident + "_periodic"]) || (timeToDailyData && !_rocsScanningState[ident + "_daily"]))
             {
                 #region Опрос и сохранение данных событий
 
@@ -446,7 +497,7 @@ namespace NGVSCAN.EXEC.Common
                                 if (saveEventDataResult.Exception != null)
                                 {
                                     LogException(log, "Ошибка сохранения данных событий вычислителя ROC809 с адресом " + address, saveEventDataResult.Exception, LogType.ROC);
-                                    rocsScanningState[ident + "_event"] = false;
+                                    _rocsScanningState[ident + "_event"] = false;
                                 }
                                 else if (saveEventDataResult.Result == 1)
                                     Logger.Log(log, new LogEntry { Message = "Данные событий вычислителя ROC809 с адресом " + address + " отсутствуют", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
@@ -454,7 +505,7 @@ namespace NGVSCAN.EXEC.Common
                                     Logger.Log(log, new LogEntry { Message = "Опрос данных событий вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
                                 if (saveEventDataResult.Result != 0)
-                                    rocsScanningState[ident + "_event"] = false;
+                                    _rocsScanningState[ident + "_event"] = false;
                             },
                             uiSyncContext)
 
@@ -501,7 +552,7 @@ namespace NGVSCAN.EXEC.Common
                                                 if (saveAlarmDataResult.Exception != null)
                                                 {
                                                     LogException(log, "Ошибка сохранения данных аварий вычислителя ROC809 с адресом " + address, saveAlarmDataResult.Exception, LogType.ROC);
-                                                    rocsScanningState[ident + "_alarm"] = false;
+                                                    _rocsScanningState[ident + "_alarm"] = false;
                                                 }
                                                 else if (saveAlarmDataResult.Result == 1)
                                                     Logger.Log(log, new LogEntry { Message = "Данные аварий вычислителя ROC809 с адресом " + address + " отсутствуют", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
@@ -509,7 +560,7 @@ namespace NGVSCAN.EXEC.Common
                                                     Logger.Log(log, new LogEntry { Message = "Опрос данных аварий вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
                                                 if (saveAlarmDataResult.Result != 0)
-                                                    rocsScanningState[ident + "_alarm"] = false;
+                                                    _rocsScanningState[ident + "_alarm"] = false;
                                             },
                                             uiSyncContext)
 
@@ -519,7 +570,7 @@ namespace NGVSCAN.EXEC.Common
 
                                 .ContinueWith((saveAlarmDataLogResult) =>
                                 {
-                                    if (timeToMinuteData && !rocsScanningState[ident + "_minute"])
+                                    if (timeToMinuteData && !_rocsScanningState[ident + "_minute"])
                                     {
                                         Task.Factory.StartNew(() => GetMinuteData(point), TaskCreationOptions.LongRunning)
                                             .ContinueWith((getMinuteDataResult) =>
@@ -557,7 +608,7 @@ namespace NGVSCAN.EXEC.Common
                                                         else if (saveMinuteDataResult.Result == 1)
                                                             Logger.Log(log, new LogEntry { Message = "Опрос минутных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
-                                                        rocsScanningState[ident + "_minute"] = false;
+                                                        _rocsScanningState[ident + "_minute"] = false;
                                                     },
                                                     uiSyncContext);
                                     }
@@ -566,7 +617,7 @@ namespace NGVSCAN.EXEC.Common
 
                 #region Опрос и сохранение периодических данных
 
-                                    if (timeToPeriodicData && !rocsScanningState[ident + "_periodic"])
+                                    if (timeToPeriodicData && !_rocsScanningState[ident + "_periodic"])
                                     {
                                         Task.Factory.StartNew(() => GetPeriodicData(point), TaskCreationOptions.LongRunning)
                                             .ContinueWith((getPeriodicDataResult) =>
@@ -604,7 +655,7 @@ namespace NGVSCAN.EXEC.Common
                                                         else if (savePeriodicDataResult.Result == 1)
                                                             Logger.Log(log, new LogEntry { Message = "Опрос периодических данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
-                                                        rocsScanningState[ident + "_periodic"] = false;
+                                                        _rocsScanningState[ident + "_periodic"] = false;
                                                     },
                                                     uiSyncContext);
                                     }
@@ -613,7 +664,7 @@ namespace NGVSCAN.EXEC.Common
 
                 #region Опрос и сохранение суточных данных
 
-                                    if (timeToDailyData && !rocsScanningState[ident + "_daily"])
+                                    if (timeToDailyData && !_rocsScanningState[ident + "_daily"])
                                     {
                                         Task.Factory.StartNew(() => GetDailyData(point), TaskCreationOptions.LongRunning)
                                             .ContinueWith((getDailyDataResult) =>
@@ -651,7 +702,7 @@ namespace NGVSCAN.EXEC.Common
                                                         else if (saveDailyDataResult.Result == 1)
                                                             Logger.Log(log, new LogEntry { Message = "Опрос суточных данных точки №" + point.Number + " в историческом сегменте №" + point.HistSegment + " вычислителя ROC809 с адресом " + address + " выполнен успешно", Status = LogStatus.Success, Type = LogType.ROC, Timestamp = DateTime.Now });
 
-                                                        rocsScanningState[ident + "_daily"] = false;
+                                                        _rocsScanningState[ident + "_daily"] = false;
                                                     },
                                                     uiSyncContext);
                                     }

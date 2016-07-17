@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using NGVSCAN.EXEC.Scanners;
 
 namespace NGVSCAN.EXEC
 {
@@ -42,7 +43,9 @@ namespace NGVSCAN.EXEC
 
         Timer scanTimer;
 
-        Scanner scanner;
+        //Scanner scanner;
+        FloutecScanner floutecScanner;
+        ROC809Scanner rocScanner;
 
         bool showInfo = true;
         bool showSucces = true;
@@ -64,7 +67,9 @@ namespace NGVSCAN.EXEC
 
             scanTimer = new Timer();
 
-            scanner = new Scanner(sqlConnection);
+            //scanner = new Scanner(sqlConnection);
+            floutecScanner = new FloutecScanner(listLogMessages);
+            rocScanner = new ROC809Scanner(listLogMessages);
 
             string[] args = Environment.GetCommandLineArgs();
 
@@ -1206,7 +1211,7 @@ namespace NGVSCAN.EXEC
                 InitializeSqlConnection();
                 UpdateData();
                 FillFloutecsTree(field, floutecs, floutecLines, rocs, rocPoints);
-                scanner = new Scanner(sqlConnection);
+                //scanner = new Scanner(sqlConnection);
             }
         }
 
@@ -1250,7 +1255,11 @@ namespace NGVSCAN.EXEC
         private void scanner_Tick(object sender, EventArgs e)
         {
             if (field != null)
-                scanner.Process(listLogMessages, field);       
+            {
+                floutecScanner.Process(field.Id, sqlConnection, Settings.DbfTablesPath);
+                rocScanner.Process(field.Id, sqlConnection);
+            }
+                //scanner.Process(listLogMessages, field);       
         }
 
         #endregion

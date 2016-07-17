@@ -9,7 +9,9 @@ namespace NGVSCAN.EXEC.Common
 {
     public static class Logger
     {
-        private static readonly string _fileName = "Log.json";
+        private static string _fileName;
+
+        static int day;
 
         private static readonly string _filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NGVSCAN");
 
@@ -17,8 +19,13 @@ namespace NGVSCAN.EXEC.Common
 
         public static void Log(ListView console, LogEntry entry)
         {
-            if (log == null)
+            if (day != DateTime.Now.Day)
+            {
+                day = DateTime.Now.Day;
                 log = new List<LogEntry>();
+                _fileName = Settings.ServerName + "_" + DateTime.Now.ToString("dd.MM.yyyy") + "_log.json";
+                console.Items.Clear();
+            }
 
             log.Add(entry);
 

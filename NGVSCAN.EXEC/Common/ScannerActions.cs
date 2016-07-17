@@ -22,38 +22,32 @@ namespace NGVSCAN.EXEC.Common
 
             try
             {
-                using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(connection))
+                using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(_connection))
                 {
                     lines = repo.GetAll()
-                    .Include(l => l.HourlyData)
-                    .Include(l => l.IdentData)
-                    .Include(l => l.InstantData)
-                    .Include(l => l.AlarmData)
-                    .Include(l => l.InterData)
-                    .Include(l => l.Estimator)
-                    .Include(l => l.Estimator.Field)
                     .Where(l => !l.IsDeleted && !l.Estimator.IsDeleted && l.Estimator.Field.Id == field.Id)
+                    .Include(l => l.Estimator)
                     .ToList();
 
-                    if (floutecsScanningState == null)
+                    if (_floutecsScanningState == null)
                     {
-                        floutecsScanningState = new Dictionary<string, bool>();
+                        _floutecsScanningState = new Dictionary<string, bool>();
 
                         lines.ForEach((l) =>
                         {
                             int address = ((Floutec)l.Estimator).Address;
                             int n_flonit = address * 10 + l.Number;
 
-                            floutecsScanningState.Add(n_flonit.ToString() + "_ident", false);
-                            floutecsScanningState.Add(n_flonit.ToString() + "_alarm", false);
-                            floutecsScanningState.Add(n_flonit.ToString() + "_inter", false);
-                            floutecsScanningState.Add(n_flonit.ToString() + "_inst", false);
-                            floutecsScanningState.Add(n_flonit.ToString() + "_hour", false);
+                            _floutecsScanningState.Add(n_flonit.ToString() + "_ident", false);
+                            _floutecsScanningState.Add(n_flonit.ToString() + "_alarm", false);
+                            _floutecsScanningState.Add(n_flonit.ToString() + "_inter", false);
+                            _floutecsScanningState.Add(n_flonit.ToString() + "_inst", false);
+                            _floutecsScanningState.Add(n_flonit.ToString() + "_hour", false);
                         });
                     }
-
-                    return lines;
                 }
+
+                return lines;
             }
             catch (Exception ex)
             {
@@ -67,34 +61,31 @@ namespace NGVSCAN.EXEC.Common
 
             try
             {
-                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(connection))
+                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(_connection))
                 {
                     points = repo.GetAll()
                         .Where(p => !p.IsDeleted && !p.Estimator.IsDeleted && p.Estimator.Field.Id == field.Id)
-                        .Include(p => p.MinuteData)
-                        .Include(p => p.PeriodicData)
-                        .Include(p => p.DailyData)
-                        .Include(p => p.Estimator.Field)
                         .Include(p => p.Estimator)
                         .ToList();
-                }
 
-                if (rocsScanningState == null)
-                {
-                    rocsScanningState = new Dictionary<string, bool>();
-
-                    points.ForEach((p) =>
+                    if (_rocsScanningState == null)
                     {
-                        string address = ((ROC809)p.Estimator).Address;
-                        string ident = address + "_" + p.Number + "_" + p.HistSegment;
+                        _rocsScanningState = new Dictionary<string, bool>();
 
-                        rocsScanningState.Add(ident + "_minute", false);
-                        rocsScanningState.Add(ident + "_periodic", false);
-                        rocsScanningState.Add(ident + "_daily", false);
-                        rocsScanningState.Add(ident + "_event", false);
-                        rocsScanningState.Add(ident + "_alarm", false);
-                    });
+                        points.ForEach((p) =>
+                        {
+                            string address = ((ROC809)p.Estimator).Address;
+                            string ident = address + "_" + p.Number + "_" + p.HistSegment;
+
+                            _rocsScanningState.Add(ident + "_minute", false);
+                            _rocsScanningState.Add(ident + "_periodic", false);
+                            _rocsScanningState.Add(ident + "_daily", false);
+                            _rocsScanningState.Add(ident + "_event", false);
+                            _rocsScanningState.Add(ident + "_alarm", false);
+                        });
+                    }
                 }
+
                 return points;
             }
             catch (Exception ex)
@@ -110,40 +101,17 @@ namespace NGVSCAN.EXEC.Common
         private FloutecIdentData GetIdentData(FloutecMeasureLine line)
         {
             int address = ((Floutec)line.Estimator).Address;
-            int n_flonit = address * 10 + line.Number;
 
-            if (!floutecsScanningState[n_flonit.ToString() + "_ident"])
+            try
             {
-                floutecsScanningState[n_flonit.ToString() + "_ident"] = true;
-
-                FloutecIdentData identData = new FloutecIdentData();
-                identData.N_FLONIT = 0;
-
-                try
+                using (DbfRepository repo = new DbfRepository(Settings.DbfTablesPath))
                 {
-                    using (DbfRepository repo = new DbfRepository(Settings.DbfTablesPath))
-                    {
-                        if (line.IdentData.Count == 0)
-                            identData = repo.GetIdentData(address, line.Number);
-                        else
-                        {
-                            FloutecIdentData newData = repo.GetIdentData(address, line.Number);
-
-                            if (!line.IdentData.OrderBy(o => o.DateCreated).Last().IsEqual(newData))
-                                identData = newData;
-                        }
-
-                        return identData;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
+                    return repo.GetIdentData(address, line.Number);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return null;
+                throw ex;
             }
         }
 
@@ -157,7 +125,7 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    using (SqlRepository<FloutecIdentData> repo = new SqlRepository<FloutecIdentData>(connection))
+                    using (SqlRepository<FloutecIdentData> repo = new SqlRepository<FloutecIdentData>(_connection))
                     {
                         repo.Insert(data);
                     }
@@ -177,9 +145,9 @@ namespace NGVSCAN.EXEC.Common
         {
             int address = ((Floutec)line.Estimator).Address;
             int n_flonit = address * 10 + line.Number;
-            floutecsScanningState[n_flonit.ToString() + "_hour"] = true;
+            _floutecsScanningState[n_flonit.ToString() + "_hour"] = true;
 
-            dateStartHourlyDataScan = DateTime.Now;
+            _dateStartHourlyDataScan = DateTime.Now;
 
             List<FloutecHourlyData> hourlyData = new List<FloutecHourlyData>();
 
@@ -214,29 +182,22 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    using (SqlRepository<FloutecHourlyData> repo = new SqlRepository<FloutecHourlyData>(connection))
+                    using (SqlRepository<FloutecHourlyData> repo = new SqlRepository<FloutecHourlyData>(_connection))
                     {
                         repo.Insert(data);
+                    }
+
+                    using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(_connection))
+                    {
+                        FloutecMeasureLine existingLine = repo.Get(line.Id);
+                        existingLine.DateHourlyDataLastScanned = _dateStartHourlyDataScan;
+                        repo.Update(existingLine);
                     }
                 }
                 catch (Exception ex)
                 {
                     throw ex;
                 }
-            }
-
-            try
-            {
-                using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(connection))
-                {
-                    FloutecMeasureLine existingLine = repo.Get(line.Id);
-                    existingLine.DateHourlyDataLastScanned = dateStartHourlyDataScan;
-                    repo.Update(existingLine);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
         }
 
@@ -248,9 +209,9 @@ namespace NGVSCAN.EXEC.Common
         {
             int address = ((Floutec)line.Estimator).Address;
             int n_flonit = address * 10 + line.Number;
-            floutecsScanningState[n_flonit.ToString() + "_inst"] = true;
+            _floutecsScanningState[n_flonit.ToString() + "_inst"] = true;
 
-            dateStartInstantDataScan = DateTime.Now;
+            _dateStartInstantDataScan = DateTime.Now;
 
             FloutecInstantData instantData = new FloutecInstantData();
 
@@ -289,29 +250,22 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    using (SqlRepository<FloutecInstantData> repo = new SqlRepository<FloutecInstantData>(connection))
+                    using (SqlRepository<FloutecInstantData> repo = new SqlRepository<FloutecInstantData>(_connection))
                     {
                         repo.Insert(data);
+                    }
+
+                    using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(_connection))
+                    {
+                        FloutecMeasureLine existingLine = repo.Get(line.Id);
+                        existingLine.DateInstantDataLastScanned = _dateStartInstantDataScan;
+                        repo.Update(existingLine);
                     }
                 }
                 catch (Exception ex)
                 {
                     throw ex;
                 }
-            }
-
-            try
-            {
-                using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(connection))
-                {
-                    FloutecMeasureLine existingLine = repo.Get(line.Id);
-                    existingLine.DateInstantDataLastScanned = dateStartInstantDataScan;
-                    repo.Update(existingLine);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
         }
 
@@ -324,9 +278,9 @@ namespace NGVSCAN.EXEC.Common
             int address = ((Floutec)line.Estimator).Address;
             int n_flonit = address * 10 + line.Number;
 
-            if (!floutecsScanningState[n_flonit.ToString() + "_alarm"])
+            if (!_floutecsScanningState[n_flonit.ToString() + "_alarm"])
             {
-                floutecsScanningState[n_flonit.ToString() + "_alarm"] = true;
+                _floutecsScanningState[n_flonit.ToString() + "_alarm"] = true;
 
                 List<FloutecAlarmData> alarmData = new List<FloutecAlarmData>();
 
@@ -366,7 +320,7 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    using (SqlRepository<FloutecAlarmData> repo = new SqlRepository<FloutecAlarmData>(connection))
+                    using (SqlRepository<FloutecAlarmData> repo = new SqlRepository<FloutecAlarmData>(_connection))
                     {
                         repo.Insert(data);
                     }
@@ -387,9 +341,9 @@ namespace NGVSCAN.EXEC.Common
             int address = ((Floutec)line.Estimator).Address;
             int n_flonit = address * 10 + line.Number;
 
-            if (!floutecsScanningState[n_flonit.ToString() + "_inter"])
+            if (!_floutecsScanningState[n_flonit.ToString() + "_inter"])
             {
-                floutecsScanningState[n_flonit.ToString() + "_inter"] = true;
+                _floutecsScanningState[n_flonit.ToString() + "_inter"] = true;
 
                 List<FloutecInterData> interData = new List<FloutecInterData>();
 
@@ -429,7 +383,7 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    using (SqlRepository<FloutecInterData> repo = new SqlRepository<FloutecInterData>(connection))
+                    using (SqlRepository<FloutecInterData> repo = new SqlRepository<FloutecInterData>(_connection))
                     {
                         repo.Insert(data);
                     }
@@ -452,9 +406,9 @@ namespace NGVSCAN.EXEC.Common
 
             List<ROC809EventData> eventData = new List<ROC809EventData>();
 
-            if (!rocsScanningState[ident + "_event"])
+            if (!_rocsScanningState[ident + "_event"])
             {
-                rocsScanningState[ident + "_event"] = true;
+                _rocsScanningState[ident + "_event"] = true;
 
                 try
                 {
@@ -463,7 +417,7 @@ namespace NGVSCAN.EXEC.Common
 
                     if (eventData.Count > 0)
                     {
-                        using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(connection))
+                        using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(_connection))
                         {
                             ROC809EventData lastData = repo.Get(point.EstimatorId).EventData.OrderBy(o => o.Time).LastOrDefault();
 
@@ -498,7 +452,7 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    using (SqlRepository<ROC809EventData> repo = new SqlRepository<ROC809EventData>(connection))
+                    using (SqlRepository<ROC809EventData> repo = new SqlRepository<ROC809EventData>(_connection))
                     {
                         repo.Insert(data);
                     }
@@ -521,9 +475,9 @@ namespace NGVSCAN.EXEC.Common
 
             List<ROC809AlarmData> alarmData = new List<ROC809AlarmData>();
 
-            if (!rocsScanningState[ident + "_alarm"])
+            if (!_rocsScanningState[ident + "_alarm"])
             {
-                rocsScanningState[ident + "_alarm"] = true;
+                _rocsScanningState[ident + "_alarm"] = true;
 
                 try
                 {
@@ -532,7 +486,7 @@ namespace NGVSCAN.EXEC.Common
 
                     if (alarmData.Count > 0)
                     {
-                        using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(connection))
+                        using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(_connection))
                         {
                             ROC809AlarmData lastData = repo.Get(point.EstimatorId).AlarmData.OrderBy(o => o.Time).LastOrDefault();
 
@@ -569,7 +523,7 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    using (SqlRepository<ROC809AlarmData> repo = new SqlRepository<ROC809AlarmData>(connection))
+                    using (SqlRepository<ROC809AlarmData> repo = new SqlRepository<ROC809AlarmData>(_connection))
                     {
                         repo.Insert(data);
                     }
@@ -589,9 +543,9 @@ namespace NGVSCAN.EXEC.Common
         {
             string address = ((ROC809)point.Estimator).Address;
             string ident = address + "_" + point.Number + "_" + point.HistSegment;
-            rocsScanningState[ident + "_minute"] = true;
+            _rocsScanningState[ident + "_minute"] = true;
 
-            dateStartMinuteDataScan = DateTime.Now;
+            _dateStartMinuteDataScan = DateTime.Now;
 
             List<ROC809MinuteData> minuteData = new List<ROC809MinuteData>();
 
@@ -641,7 +595,7 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    using (SqlRepository<ROC809MinuteData> repo = new SqlRepository<ROC809MinuteData>(connection))
+                    using (SqlRepository<ROC809MinuteData> repo = new SqlRepository<ROC809MinuteData>(_connection))
                     {
                         repo.Insert(data);
                     }
@@ -654,10 +608,10 @@ namespace NGVSCAN.EXEC.Common
 
             try
             {
-                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(connection))
+                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(_connection))
                 {
                     ROC809MeasurePoint existingPoint = repo.Get(point.Id);
-                    existingPoint.DateMinuteDataLastScanned = dateStartMinuteDataScan;
+                    existingPoint.DateMinuteDataLastScanned = _dateStartMinuteDataScan;
                     repo.Update(existingPoint);
                 }
             }
@@ -675,9 +629,9 @@ namespace NGVSCAN.EXEC.Common
         {
             string address = ((ROC809)point.Estimator).Address;
             string ident = address + "_" + point.Number + "_" + point.HistSegment;
-            rocsScanningState[ident + "_periodic"] = true;
+            _rocsScanningState[ident + "_periodic"] = true;
 
-            dateStartPeriodicDataScan = DateTime.Now;
+            _dateStartPeriodicDataScan = DateTime.Now;
 
             List<ROC809PeriodicData> periodicData = new List<ROC809PeriodicData>();
 
@@ -727,7 +681,7 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    using (SqlRepository<ROC809PeriodicData> repo = new SqlRepository<ROC809PeriodicData>(connection))
+                    using (SqlRepository<ROC809PeriodicData> repo = new SqlRepository<ROC809PeriodicData>(_connection))
                     {
                         repo.Insert(data);
                     }
@@ -740,10 +694,10 @@ namespace NGVSCAN.EXEC.Common
 
             try
             {
-                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(connection))
+                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(_connection))
                 {
                     ROC809MeasurePoint existingPoint = repo.Get(point.Id);
-                    existingPoint.DatePeriodicDataLastScanned = dateStartPeriodicDataScan;
+                    existingPoint.DatePeriodicDataLastScanned = _dateStartPeriodicDataScan;
                     repo.Update(existingPoint);
                 }
             }
@@ -761,9 +715,9 @@ namespace NGVSCAN.EXEC.Common
         {
             string address = ((ROC809)point.Estimator).Address;
             string ident = address + "_" + point.Number + "_" + point.HistSegment;
-            rocsScanningState[ident + "_daily"] = true;
+            _rocsScanningState[ident + "_daily"] = true;
 
-            dateStartDailyDataScan = DateTime.Now;
+            _dateStartDailyDataScan = DateTime.Now;
 
             List<ROC809DailyData> dailyData = new List<ROC809DailyData>();
 
@@ -813,7 +767,7 @@ namespace NGVSCAN.EXEC.Common
 
                 try
                 {
-                    using (SqlRepository<ROC809DailyData> repo = new SqlRepository<ROC809DailyData>(connection))
+                    using (SqlRepository<ROC809DailyData> repo = new SqlRepository<ROC809DailyData>(_connection))
                     {
                         repo.Insert(data);
                     }
@@ -826,10 +780,10 @@ namespace NGVSCAN.EXEC.Common
 
             try
             {
-                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(connection))
+                using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(_connection))
                 {
                     ROC809MeasurePoint existingPoint = repo.Get(point.Id);
-                    existingPoint.DateDailyDataLastScanned = dateStartDailyDataScan;
+                    existingPoint.DateDailyDataLastScanned = _dateStartDailyDataScan;
                     repo.Update(existingPoint);
                 }
             }
@@ -843,14 +797,13 @@ namespace NGVSCAN.EXEC.Common
 
         #region Вспомогательные методы
 
-        private void LogException(LogListView log, string message, AggregateException exception, LogType type)
+        private void LogException(LogListView log, string message, Exception exception, LogType type)
         {
             Logger.Log(log, new LogEntry { Message = message, Status = LogStatus.Error, Timestamp = DateTime.Now, Type = type });
             Logger.Log(log, new LogEntry { Message = exception.Message, Status = LogStatus.Error, Timestamp = DateTime.Now, Type = type });
-            foreach (var item in exception.InnerExceptions)
-            {
-                Logger.Log(log, new LogEntry { Message = item.Message, Status = LogStatus.Error, Type = type, Timestamp = DateTime.Now });
-            }
+
+            if (exception.InnerException != null)
+                Logger.Log(log, new LogEntry { Message = exception.InnerException.Message, Status = LogStatus.Error, Type = type, Timestamp = DateTime.Now });
         }
 
         #endregion
