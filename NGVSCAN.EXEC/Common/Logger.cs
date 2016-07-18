@@ -27,7 +27,7 @@ namespace NGVSCAN.EXEC.Common
                 month = DateTime.Now.Month;
                 year = DateTime.Now.Year;
                 log = new List<LogEntry>();
-                _fileName = DateTime.Now.ToString("dd.MM.yyyy") + "_" + Settings.ServerName + "_log.json";
+                _fileName = DateTime.Now.ToString("yyyy.MM.dd") + "_" + Settings.ServerName + "_log.json";
                 console.Items.Clear();
             }
 
