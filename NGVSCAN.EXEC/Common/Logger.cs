@@ -12,6 +12,8 @@ namespace NGVSCAN.EXEC.Common
         private static string _fileName;
 
         static int day;
+        static int month;
+        static int year;
 
         private static readonly string _filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NGVSCAN");
 
@@ -19,11 +21,13 @@ namespace NGVSCAN.EXEC.Common
 
         public static void Log(ListView console, LogEntry entry)
         {
-            if (day != DateTime.Now.Day)
+            if (day != DateTime.Now.Day || month != DateTime.Now.Month || year != DateTime.Now.Year)
             {
                 day = DateTime.Now.Day;
+                month = DateTime.Now.Month;
+                year = DateTime.Now.Year;
                 log = new List<LogEntry>();
-                _fileName = Settings.ServerName + "_" + DateTime.Now.ToString("dd.MM.yyyy") + "_log.json";
+                _fileName = DateTime.Now.ToString("dd.MM.yyyy") + "_" + Settings.ServerName + "_log.json";
                 console.Items.Clear();
             }
 
