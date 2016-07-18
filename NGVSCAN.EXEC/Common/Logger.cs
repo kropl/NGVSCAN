@@ -90,7 +90,7 @@ namespace NGVSCAN.EXEC.Common
                 default:
                     break;
             }
-
+            console.BeginUpdate();
             console.Items.Add(item);
 
             console.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.HeaderSize);
@@ -99,6 +99,7 @@ namespace NGVSCAN.EXEC.Common
             console.AutoResizeColumn(3, ColumnHeaderAutoResizeStyle.ColumnContent);
 
             console.Items[console.Items.Count - 1].EnsureVisible();
+            console.EndUpdate();
         }
 
         public static void UpdateConsole(ListView console, bool showInfo, bool showSuccess, bool showWarning, bool showAlarm)
