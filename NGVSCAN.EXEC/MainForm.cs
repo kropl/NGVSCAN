@@ -47,11 +47,6 @@ namespace NGVSCAN.EXEC
         FloutecScanner floutecScanner;
         ROC809Scanner rocScanner;
 
-        bool showInfo = true;
-        bool showSucces = true;
-        bool showWarning = true;
-        bool showAlarm = true;
-
         // Конструктор формы
         public MainForm()
         {
@@ -75,11 +70,6 @@ namespace NGVSCAN.EXEC
 
             if (args.Contains("start"))
                 menuRun_Click(this, new EventArgs());
-
-            buttonShowAlarm.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
-            buttonShowInfo.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
-            buttonShowSuccess.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
-            buttonShowWarning.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
         }
 
         protected override void WndProc(ref Message m)
@@ -1282,54 +1272,6 @@ namespace NGVSCAN.EXEC
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ShowMe();
-        }
-
-        private void buttonShowInfo_Click(object sender, EventArgs e)
-        {
-            showInfo = !showInfo;
-
-            if (showInfo)
-                buttonShowInfo.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
-            else
-                buttonShowInfo.FlatAppearance.BorderColor = Color.FromKnownColor(KnownColor.Control);
-
-            Logger.UpdateConsole(listLogMessages, showInfo, showSucces, showWarning, showAlarm);
-        }
-
-        private void buttonShowSuccess_Click(object sender, EventArgs e)
-        {
-            showSucces = !showSucces;
-
-            if (showSucces)
-                buttonShowSuccess.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
-            else
-                buttonShowSuccess.FlatAppearance.BorderColor = Color.FromKnownColor(KnownColor.Control);
-
-            Logger.UpdateConsole(listLogMessages, showInfo, showSucces, showWarning, showAlarm);
-        }
-
-        private void buttonShowWarning_Click(object sender, EventArgs e)
-        {
-            showWarning = !showWarning;
-
-            if (showWarning)
-                buttonShowWarning.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
-            else
-                buttonShowWarning.FlatAppearance.BorderColor = Color.FromKnownColor(KnownColor.Control);
-
-            Logger.UpdateConsole(listLogMessages, showInfo, showSucces, showWarning, showAlarm);
-        }
-
-        private void buttonShowAlarm_Click(object sender, EventArgs e)
-        {
-            showAlarm = !showAlarm;
-
-            if (showAlarm)
-                buttonShowAlarm.FlatAppearance.BorderColor = Color.FromArgb(0, 0, 192);
-            else
-                buttonShowAlarm.FlatAppearance.BorderColor = Color.FromKnownColor(KnownColor.Control);
-
-            Logger.UpdateConsole(listLogMessages, showInfo, showSucces, showWarning, showAlarm);
         }
     }
 }

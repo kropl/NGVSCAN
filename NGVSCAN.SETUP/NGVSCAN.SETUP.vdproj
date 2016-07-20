@@ -40,13 +40,13 @@
         "Entry"
         {
         "MsmKey" = "8:_3518392C1EF117EE7329A4D05B3894EE"
-        "OwnerKey" = "8:_03BF9E319E457E70CF76E6D679D8012F"
+        "OwnerKey" = "8:_4B4C87C0F31C47369AE5FC7FA92F7A17"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_3518392C1EF117EE7329A4D05B3894EE"
-        "OwnerKey" = "8:_4B4C87C0F31C47369AE5FC7FA92F7A17"
+        "OwnerKey" = "8:_03BF9E319E457E70CF76E6D679D8012F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -82,19 +82,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_07C37E1A8DB772012F467DE97A4D2372"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_03BF9E319E457E70CF76E6D679D8012F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5A0D1FCD1F22855143AFC8434F9C448C"
+        "OwnerKey" = "8:_70E6487723744E94B009BD0671C32D16"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -106,7 +94,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_70E6487723744E94B009BD0671C32D16"
+        "OwnerKey" = "8:_5A0D1FCD1F22855143AFC8434F9C448C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_03BF9E319E457E70CF76E6D679D8012F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_07C37E1A8DB772012F467DE97A4D2372"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -211,11 +211,6 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_03BF9E319E457E70CF76E6D679D8012F"
-                    {
-                    "Name" = "8:EntityFramework.SqlServer.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:EntityFramework.SqlServer.dll"
             "TargetName" = "8:"
@@ -242,11 +237,6 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_07C37E1A8DB772012F467DE97A4D2372"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -293,11 +283,6 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_3518392C1EF117EE7329A4D05B3894EE"
-                    {
-                    "Name" = "8:EntityFramework.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:EntityFramework.dll"
             "TargetName" = "8:"
@@ -324,11 +309,6 @@
             "AssemblyAsmDisplayName" = "8:NGVSCAN.DAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_5A0D1FCD1F22855143AFC8434F9C448C"
-                    {
-                    "Name" = "8:NGVSCAN.DAL.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:NGVSCAN.DAL.dll"
             "TargetName" = "8:"
@@ -355,11 +335,6 @@
             "AssemblyAsmDisplayName" = "8:NGVSCAN.CORE, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_70E6487723744E94B009BD0671C32D16"
-                    {
-                    "Name" = "8:NGVSCAN.CORE.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:NGVSCAN.CORE.dll"
             "TargetName" = "8:"
@@ -435,15 +410,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:NGVSCAN"
-        "ProductCode" = "8:{C66F03D5-A645-4555-A337-40E7B2058844}"
-        "PackageCode" = "8:{3DF76CB7-0755-43DA-8FDC-547B3F11597E}"
+        "ProductCode" = "8:{8FECAF68-BE9D-48DE-A456-E5F209399984}"
+        "PackageCode" = "8:{FED8A044-C162-4BE1-BC11-77CADDBC9207}"
         "UpgradeCode" = "8:{9810F03E-755E-4549-8081-4617BED481CF}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.1.2"
+        "ProductVersion" = "8:1.1.3"
         "Manufacturer" = "8:Triada"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -597,7 +572,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_2421DCD6E48F49F9837440436049E464"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Progress"
+                    "DisplayName" = "8:Ход выполнения"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdProgressDlg.wid"
@@ -647,7 +622,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_D7327C034A6A46E39AD039269846D03E"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Finished"
+                    "DisplayName" = "8:Готово"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdFinishedDlg.wid"
@@ -691,7 +666,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_5048415B62D644CD8F3AC87F72F2F84E"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Progress"
+                    "DisplayName" = "8:Ход выполнения"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdAdminProgressDlg.wid"
@@ -735,7 +710,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_41B340859DFD44E2BA03C2C5CCACBBAA"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Finished"
+                    "DisplayName" = "8:Готово"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdAdminFinishedDlg.wid"
@@ -766,7 +741,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_25F941D99A674444BAC68306EC0EDF3D"
                     {
                     "Sequence" = "3:200"
-                    "DisplayName" = "8:Installation Folder"
+                    "DisplayName" = "8:Папка установки"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdAdminFolderDlg.wid"
@@ -788,7 +763,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_AA586EDED40842089D42AF399D2BD132"
                     {
                     "Sequence" = "3:300"
-                    "DisplayName" = "8:Confirm Installation"
+                    "DisplayName" = "8:Подтверждение установки"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdAdminConfirmDlg.wid"
@@ -810,7 +785,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_BE849A9F5E444724A33A73813C83907F"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Welcome"
+                    "DisplayName" = "8:Добро пожаловать!"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdAdminWelcomeDlg.wid"
@@ -873,7 +848,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_0294A0CEEE18452394D2188AA74F1E5E"
                     {
                     "Sequence" = "3:300"
-                    "DisplayName" = "8:Confirm Installation"
+                    "DisplayName" = "8:Подтверждение установки"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdConfirmDlg.wid"
@@ -895,7 +870,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_171EF6F3ED034A06AE1B370F833747AE"
                     {
                     "Sequence" = "3:100"
-                    "DisplayName" = "8:Welcome"
+                    "DisplayName" = "8:Добро пожаловать!"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdWelcomeDlg.wid"
@@ -943,7 +918,7 @@
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_58557E3B8BC24C1389861091B7FCA838"
                     {
                     "Sequence" = "3:200"
-                    "DisplayName" = "8:Installation Folder"
+                    "DisplayName" = "8:Папка установки"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
                     "SourcePath" = "8:<VsdDialogDir>\\VsdFolderDlg.wid"
