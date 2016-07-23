@@ -107,6 +107,7 @@ namespace NGVSCAN.EXEC.Popups
             if (IsEdit)
             {
                 numericNumber.Value = FloutecLine.Number;
+                numericNumber.Enabled = false;
                 textName.Text = FloutecLine.Name;
                 textDescription.Text = FloutecLine.Description;
                 comboSensorTypes.SelectedIndex = FloutecLine.SensorType - 1;

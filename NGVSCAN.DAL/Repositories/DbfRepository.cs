@@ -141,32 +141,23 @@ namespace NGVSCAN.DAL.Repositories
                 // Определение коллекции дней в указанном периоде
                 List<DateTime> days = new List<DateTime>();
 
-                for (var date = from; date <= to; date = date.AddDays(1))
-                {
-                    days.Add(date);
-                }
+                // Формирование запроса
+                _command.CommandText = "SELECT DISTINCT * FROM rour.DBF WHERE N_FLONIT=" + n_flonit;
 
-                // Для каждого дня в указанном периоде
-                foreach (var date in days)
+                try
                 {
-                    // Формирование запроса
-                    _command.CommandText = "SELECT DISTINCT * FROM rour.DBF WHERE N_FLONIT=" + n_flonit + " AND DAT LIKE('" + date.ToString("dd.MM.yyyy") + "')";
-
-                    try
+                    // Выполнение команды
+                    using (OleDbDataReader reader = _command.ExecuteReader())
                     {
-                        // Выполнение команды
-                        using (OleDbDataReader reader = _command.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
-                            {
-                                hourlyData.FromHourTable(reader);
-                            }
+                            hourlyData.FromHourTable(reader);
                         }
                     }
-                    catch(Exception ex)
-                    {
-                        throw ex;
-                    }
+                }
+                catch(Exception ex)
+                {
+                    throw ex;
                 }
 
                 hourlyData.ForEach(h => h.N_FLONIT = n_flonit);
@@ -279,32 +270,23 @@ namespace NGVSCAN.DAL.Repositories
                 // Определение коллекции дней в указанном периоде
                 List<DateTime> days = new List<DateTime>();
 
-                for (var date = from; date <= to; date = date.AddDays(1))
-                {
-                    days.Add(date);
-                }
+                // Формирование запроса
+                _command.CommandText = "SELECT DISTINCT * FROM avar.DBF WHERE N_FLONIT=" + n_flonit;
 
-                // Для каждого дня в указанном периоде
-                foreach (var date in days)
+                try
                 {
-                    // Формирование запроса
-                    _command.CommandText = "SELECT DISTINCT * FROM avar.DBF WHERE N_FLONIT=" + n_flonit + " AND DAT LIKE('" + date.ToString("dd.MM.yyyy") + "')";
-
-                    try
+                    // Выполнение команды
+                    using (OleDbDataReader reader = _command.ExecuteReader())
                     {
-                        // Выполнение команды
-                        using (OleDbDataReader reader = _command.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
-                            {
-                                alarmData.FromAvarTable(reader);
-                            }
+                            alarmData.FromAvarTable(reader);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
 
                 alarmData.ForEach(h => h.N_FLONIT = n_flonit);
@@ -412,32 +394,23 @@ namespace NGVSCAN.DAL.Repositories
                 // Определение коллекции дней в указанном периоде
                 List<DateTime> days = new List<DateTime>();
 
-                for (var date = from; date <= to; date = date.AddDays(1))
-                {
-                    days.Add(date);
-                }
+                // Формирование запроса
+                _command.CommandText = "SELECT DISTINCT * FROM vmesh.DBF WHERE N_FLONIT=" + n_flonit;
 
-                // Для каждого дня в указанном периоде
-                foreach (var date in days)
+                try
                 {
-                    // Формирование запроса
-                    _command.CommandText = "SELECT DISTINCT * FROM vmesh.DBF WHERE N_FLONIT=" + n_flonit + " AND DAT LIKE('" + date.ToString("dd.MM.yyyy") + "')";
-
-                    try
+                    // Выполнение команды
+                    using (OleDbDataReader reader = _command.ExecuteReader())
                     {
-                        // Выполнение команды
-                        using (OleDbDataReader reader = _command.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
-                            {
-                                interData.FromVmeshTable(reader);
-                            }
+                            interData.FromVmeshTable(reader);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
 
                 interData.ForEach(h => h.N_FLONIT = n_flonit);

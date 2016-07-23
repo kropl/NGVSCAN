@@ -339,14 +339,24 @@ namespace NGVSCAN.EXEC
             // Пункт меню "Изменить" доступен для вычислителей и ниток вычислителей, не отмеченных как удалённые
             contextMenuEstimators.Items[3].Enabled = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedMeasureLine.IsDeleted ? true : false;
             contextMenuEstimators.Items[3].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedMeasureLine.IsDeleted ? true : false;
-            contextMenuEstimators.Items[4].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && !selectedMeasureLine.IsDeleted ? true : false;
+
+            contextMenuEstimators.Items[4].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted || 
+                treeEstimators.SelectedNode.Level == 3 && !selectedMeasureLine.IsDeleted ? true : false;
 
             // Пункт меню "Удалить" доступен для вычислителей и ниток вычислителей
-            contextMenuEstimators.Items[5].Enabled = treeEstimators.SelectedNode.Level > 1 ? true : false;
-            contextMenuEstimators.Items[5].Visible = treeEstimators.SelectedNode.Level > 1 ? true : false;
+            contextMenuEstimators.Items[5].Enabled = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted || 
+                treeEstimators.SelectedNode.Level == 2 && selectedEstimator.IsDeleted && ModifierKeys == Keys.Shift || 
+                treeEstimators.SelectedNode.Level == 3 && !selectedMeasureLine.IsDeleted ||
+                treeEstimators.SelectedNode.Level == 3 && selectedMeasureLine.IsDeleted && ModifierKeys == Keys.Shift ? true : false;
+            contextMenuEstimators.Items[5].Visible = treeEstimators.SelectedNode.Level == 2 && !selectedEstimator.IsDeleted ||
+                treeEstimators.SelectedNode.Level == 2 && selectedEstimator.IsDeleted && ModifierKeys == Keys.Shift ||
+                treeEstimators.SelectedNode.Level == 3 && !selectedMeasureLine.IsDeleted ||
+                treeEstimators.SelectedNode.Level == 3 && selectedMeasureLine.IsDeleted && ModifierKeys == Keys.Shift ? true : false;
 
             // Пункт меню "Восстановить" доступен для вычислителей и ниток вычислителей, отмеченных как удалённые
-            contextMenuEstimators.Items[6].Visible = treeEstimators.SelectedNode.Level == 2 && selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedMeasureLine.IsDeleted ? true : false;
+            contextMenuEstimators.Items[6].Visible = (treeEstimators.SelectedNode.Level == 2 && selectedEstimator.IsDeleted && ModifierKeys == Keys.Shift) || 
+                (treeEstimators.SelectedNode.Level == 3 && selectedMeasureLine.IsDeleted && ModifierKeys == Keys.Shift) ? true : false;
+
             contextMenuEstimators.Items[7].Enabled = treeEstimators.SelectedNode.Level == 2 && selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedMeasureLine.IsDeleted ? true : false;
             contextMenuEstimators.Items[7].Visible = treeEstimators.SelectedNode.Level == 2 && selectedEstimator.IsDeleted || treeEstimators.SelectedNode.Level == 3 && selectedMeasureLine.IsDeleted ? true : false;
         }
@@ -838,9 +848,21 @@ namespace NGVSCAN.EXEC
                             {
                                 try
                                 {
-                                    using (SqlRepository<Floutec> repo = new SqlRepository<Floutec>(sqlConnection))
+                                    using (SqlRepository<FloutecHourlyData> repo1 = new SqlRepository<FloutecHourlyData>(sqlConnection))
+                                    using (SqlRepository<FloutecInstantData> repo2 = new SqlRepository<FloutecInstantData>(sqlConnection))
+                                    using (SqlRepository<FloutecIdentData> repo3 = new SqlRepository<FloutecIdentData>(sqlConnection))
+                                    using (SqlRepository<FloutecAlarmData> repo4 = new SqlRepository<FloutecAlarmData>(sqlConnection))
+                                    using (SqlRepository<FloutecInterData> repo5 = new SqlRepository<FloutecInterData>(sqlConnection))
+                                    using (SqlRepository<FloutecMeasureLine> repo6 = new SqlRepository<FloutecMeasureLine>(sqlConnection))
+                                    using (SqlRepository<Floutec> repo7 = new SqlRepository<Floutec>(sqlConnection))
                                     {
-                                        repo.Delete(selectedFloutec.Id);
+                                        repo1.Delete(repo1.GetAll().Where(d => d.MeasureLine.EstimatorId == selectedFloutec.Id));
+                                        repo2.Delete(repo2.GetAll().Where(d => d.MeasureLine.EstimatorId == selectedFloutec.Id));
+                                        repo3.Delete(repo3.GetAll().Where(d => d.MeasureLine.EstimatorId == selectedFloutec.Id));
+                                        repo4.Delete(repo4.GetAll().Where(d => d.MeasureLine.EstimatorId == selectedFloutec.Id));
+                                        repo5.Delete(repo5.GetAll().Where(d => d.MeasureLine.EstimatorId == selectedFloutec.Id));
+                                        repo6.Delete(repo6.GetAll().Where(l => l.EstimatorId == selectedFloutec.Id));
+                                        repo7.Delete(selectedFloutec.Id);
                                     }
                                 }
                                 catch (Exception ex)
@@ -904,9 +926,21 @@ namespace NGVSCAN.EXEC
                             {
                                 try
                                 {
-                                    using (SqlRepository<ROC809> repo = new SqlRepository<ROC809>(sqlConnection))
+                                    using (SqlRepository<ROC809MinuteData> repo1 = new SqlRepository<ROC809MinuteData>(sqlConnection))
+                                    using (SqlRepository<ROC809PeriodicData> repo2 = new SqlRepository<ROC809PeriodicData>(sqlConnection))
+                                    using (SqlRepository<ROC809DailyData> repo3 = new SqlRepository<ROC809DailyData>(sqlConnection))
+                                    using (SqlRepository<ROC809MeasurePoint> repo4 = new SqlRepository<ROC809MeasurePoint>(sqlConnection))
+                                    using (SqlRepository<ROC809EventData> repo5 = new SqlRepository<ROC809EventData>(sqlConnection))
+                                    using (SqlRepository<ROC809AlarmData> repo6 = new SqlRepository<ROC809AlarmData>(sqlConnection))
+                                    using (SqlRepository<ROC809> repo7 = new SqlRepository<ROC809>(sqlConnection))
                                     {
-                                        repo.Delete(selectedROC.Id);
+                                        repo1.Delete(repo1.GetAll().Where(d => d.MeasurePoint.EstimatorId == selectedROC.Id));
+                                        repo2.Delete(repo2.GetAll().Where(d => d.MeasurePoint.EstimatorId == selectedROC.Id));
+                                        repo3.Delete(repo3.GetAll().Where(d => d.MeasurePoint.EstimatorId == selectedROC.Id));
+                                        repo4.Delete(repo4.GetAll().Where(p => p.EstimatorId == selectedROC.Id));
+                                        repo5.Delete(repo5.GetAll().Where(d => d.ROC809Id == selectedROC.Id));
+                                        repo6.Delete(repo6.GetAll().Where(d => d.ROC809Id == selectedROC.Id));
+                                        repo7.Delete(selectedROC.Id);
                                     }
                                 }
                                 catch (Exception ex)
@@ -973,9 +1007,19 @@ namespace NGVSCAN.EXEC
                             {
                                 try
                                 {
-                                    using (SqlRepository<FloutecMeasureLine> repo = new SqlRepository<FloutecMeasureLine>(sqlConnection))
+                                    using (SqlRepository<FloutecHourlyData> repo1 = new SqlRepository<FloutecHourlyData>(sqlConnection))
+                                    using (SqlRepository<FloutecInstantData> repo2 = new SqlRepository<FloutecInstantData>(sqlConnection))
+                                    using (SqlRepository<FloutecIdentData> repo3 = new SqlRepository<FloutecIdentData>(sqlConnection))
+                                    using (SqlRepository<FloutecAlarmData> repo4 = new SqlRepository<FloutecAlarmData>(sqlConnection))
+                                    using (SqlRepository<FloutecInterData> repo5 = new SqlRepository<FloutecInterData>(sqlConnection))
+                                    using (SqlRepository<FloutecMeasureLine> repo6 = new SqlRepository<FloutecMeasureLine>(sqlConnection))
                                     {
-                                        repo.Delete(selectedFloutecLine.Id);
+                                        repo1.Delete(repo1.GetAll().Where(d => d.FloutecMeasureLineId == selectedFloutecLine.Id));
+                                        repo2.Delete(repo2.GetAll().Where(d => d.FloutecMeasureLineId == selectedFloutecLine.Id));
+                                        repo3.Delete(repo3.GetAll().Where(d => d.FloutecMeasureLineId == selectedFloutecLine.Id));
+                                        repo4.Delete(repo4.GetAll().Where(d => d.FloutecMeasureLineId == selectedFloutecLine.Id));
+                                        repo5.Delete(repo5.GetAll().Where(d => d.FloutecMeasureLineId == selectedFloutecLine.Id));
+                                        repo6.Delete(selectedFloutecLine.Id);
                                     }
                                 }
                                 catch (Exception ex)
@@ -1039,9 +1083,15 @@ namespace NGVSCAN.EXEC
                             {
                                 try
                                 {
-                                    using (SqlRepository<ROC809MeasurePoint> repo = new SqlRepository<ROC809MeasurePoint>(sqlConnection))
+                                    using (SqlRepository<ROC809MinuteData> repo1 = new SqlRepository<ROC809MinuteData>(sqlConnection))
+                                    using (SqlRepository<ROC809PeriodicData> repo2 = new SqlRepository<ROC809PeriodicData>(sqlConnection))
+                                    using (SqlRepository<ROC809DailyData> repo3 = new SqlRepository<ROC809DailyData>(sqlConnection))
+                                    using (SqlRepository<ROC809MeasurePoint> repo4 = new SqlRepository<ROC809MeasurePoint>(sqlConnection))
                                     {
-                                        repo.Delete(selectedROCPoint.Id);
+                                        repo1.Delete(repo1.GetAll().Where(d => d.ROC809MeasurePointId == selectedROCPoint.Id));
+                                        repo2.Delete(repo2.GetAll().Where(d => d.ROC809MeasurePointId == selectedROCPoint.Id));
+                                        repo3.Delete(repo3.GetAll().Where(d => d.ROC809MeasurePointId == selectedROCPoint.Id));
+                                        repo4.Delete(selectedROCPoint.Id);
                                     }
                                 }
                                 catch (Exception ex)

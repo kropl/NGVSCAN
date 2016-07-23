@@ -93,6 +93,7 @@ namespace NGVSCAN.EXEC.Popups
             if (IsEdit)
             {
                 numericAddress.Value = Floutec.Address;
+                numericAddress.Enabled = false;
                 textName.Text = Floutec.Name;
                 textDescription.Text = Floutec.Description;
             }
