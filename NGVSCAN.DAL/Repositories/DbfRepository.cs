@@ -155,9 +155,24 @@ namespace NGVSCAN.DAL.Repositories
                         }
                     }
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
-                    throw ex;
+                    _command.CommandText = "SELECT DISTINCT * FROM rou45.DBF WHERE N_FLONIT=" + n_flonit;
+
+                    try
+                    {
+                        using (OleDbDataReader reader = _command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                hourlyData.FromHourTable(reader);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
 
                 hourlyData.ForEach(h => h.N_FLONIT = n_flonit);
@@ -193,9 +208,24 @@ namespace NGVSCAN.DAL.Repositories
                     }
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                throw ex;
+                _command.CommandText = "SELECT DISTINCT * FROM rou45.DBF WHERE N_FLONIT=" + n_flonit;
+
+                try
+                {
+                    using (OleDbDataReader reader = _command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            hourlyData.FromHourTable(reader);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
 
             hourlyData.ForEach(h => h.N_FLONIT = n_flonit);
