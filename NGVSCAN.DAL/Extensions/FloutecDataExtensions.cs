@@ -16,7 +16,7 @@ namespace NGVSCAN.DAL.Extensions
         private static string[] datetimeFormats = { @"M/d/yyyy hh:mm:ss tt", @"dd.MM.yyyy HH:mm:ss", @"dd.MM.yyyy H:mm:ss", @"dd.MM.yyyy" };
 
         // Форматы дат для преобразования полей KONTRH
-        private static string[] timeFormats = { @"hh:mm:ss tt", @"HH:mm:ss" };
+        private static string[] timeFormats = { @"hh:mm:ss tt", @"HH:mm:ss", @"H:mm:ss" };
 
         #region Методы расширения для FloutecIdentData
 

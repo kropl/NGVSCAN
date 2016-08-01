@@ -411,7 +411,7 @@ namespace NGVSCAN.EXEC.Scanners
                             else if (res.Result == 0)
                                 Logger.Log(_log, new LogEntry { Message = "Опрос мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно. Новые данные отсутствуют", Status = LogStatus.Warning, Type = LogType.Floutec, Timestamp = DateTime.Now });
                             else if (res.Result > 0)
-                                Logger.Log(_log, new LogEntry { Message = "Опрос мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно" + res.Result, Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
+                                Logger.Log(_log, new LogEntry { Message = "Опрос мгновенных данных нитки №" + line.Number + " вычислителя ФЛОУТЭК с адресом " + address + " выполнен успешно. Добавлено данных: " + res.Result, Status = LogStatus.Success, Type = LogType.Floutec, Timestamp = DateTime.Now });
 
                             _scanningState[n_flonit + "_inst"] = false;
                         },
