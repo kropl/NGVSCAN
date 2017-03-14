@@ -149,6 +149,11 @@ namespace NGVSCAN.DAL.Repositories
                     // Выполнение команды
                     using (OleDbDataReader reader = _command.ExecuteReader())
                     {
+                        if (!reader.HasRows)
+                        {
+                            throw new Exception("Hour data in rour.DBF was not found!");
+                        }
+
                         while (reader.Read())
                         {
                             hourlyData.FromHourTable(reader);
@@ -202,6 +207,11 @@ namespace NGVSCAN.DAL.Repositories
                 // Выполнение команды
                 using (OleDbDataReader reader = _command.ExecuteReader())
                 {
+                    if (!reader.HasRows)
+                    {
+                        throw new Exception("Hour data in rour.DBF was not found!");
+                    }
+
                     while (reader.Read())
                     {
                         hourlyData.FromHourTable(reader);

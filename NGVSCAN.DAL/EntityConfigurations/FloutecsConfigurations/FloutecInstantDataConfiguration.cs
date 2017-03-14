@@ -44,6 +44,8 @@ namespace NGVSCAN.DAL.EntityConfigurations.FloutecsConfigurations
             Property(i => i.STPRES).IsRequired();
             Property(i => i.TEMP).IsRequired();
             Property(i => i.YESTSPEND).IsRequired();
+            Property(i => i.PRITUPL).IsRequired();
+            Property(i => i.REZ).IsRequired();
             ToTable("FloutecInstantData");
         }
     }

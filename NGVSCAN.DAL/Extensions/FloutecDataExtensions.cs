@@ -148,6 +148,8 @@ namespace NGVSCAN.DAL.Extensions
             instantData.STPRES = GetReaderValue(reader, "STPRES", 0.0);
             instantData.TEMP = GetReaderValue(reader, "TEMP", 0.0);
             instantData.YESTSPEND = GetReaderValue(reader, "YESTSPEND", 0.0);
+            instantData.PRITUPL = GetReaderValue(reader, "PRITUPL", 0.0);
+            instantData.REZ = GetReaderValue(reader, "REZ", 0.0);
         }
 
         /// <summary>

@@ -91,6 +91,10 @@
     <Compile Include="Migrations\201607091000429_AddedSCHETToFloutecIdentData.Designer.cs">
       <DependentUpon>201607091000429_AddedSCHETToFloutecIdentData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703140941277_AddedCounterFields.cs" />
+    <Compile Include="Migrations\201703140941277_AddedCounterFields.Designer.cs">
+      <DependentUpon>201703140941277_AddedCounterFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="ROC809Connection\ROC809DataService.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.cs" />
     <Compile Include="Migrations\201605141507267_InitialMigration.Designer.cs">
@@ -297,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607091000429_AddedSCHETToFloutecIdentData.resx">
       <DependentUpon>201607091000429_AddedSCHETToFloutecIdentData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703140941277_AddedCounterFields.resx">
+      <DependentUpon>201703140941277_AddedCounterFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

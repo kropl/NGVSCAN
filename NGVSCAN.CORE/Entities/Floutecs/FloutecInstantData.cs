@@ -195,6 +195,10 @@ namespace NGVSCAN.CORE.Entities.Floutecs
         /// </summary>
         public int PDLITMAS { get; set; }
 
+        public double PRITUPL { get; set; }
+
+        public double REZ { get; set; }
+
         #endregion
 
         #region Навигационные свойства
