@@ -489,11 +489,9 @@ namespace NGVSCAN.EXEC.Scanners
 
             using (var repo = new SqlRepository<ROC809PeriodicData>(_sqlConnection))
             {                    
-                var existentData = repo.GetAll().Where(d => d.ROC809MeasurePointId == point.Id);
-
                 var q =
                     from d in data
-                    join ed in existentData
+                    join ed in repo.GetAll().Where(d => d.ROC809MeasurePointId == point.Id)
                     on d.DatePeriod equals ed.DatePeriod
                     into nd
                     from ed in nd.DefaultIfEmpty()
