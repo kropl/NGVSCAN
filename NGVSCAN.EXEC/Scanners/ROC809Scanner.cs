@@ -482,29 +482,40 @@ namespace NGVSCAN.EXEC.Scanners
 
         private int SavePeriodicData(ROC809MeasurePoint point, List<ROC809PeriodicData> data)
         {
-            if (data.Count > 0)
+            if (data.Count <= 0)
             {
-                using (SqlRepository<ROC809PeriodicData> repo = new SqlRepository<ROC809PeriodicData>(_sqlConnection))
+                return 0;
+            }
+
+            using (var repo = new SqlRepository<ROC809PeriodicData>(_sqlConnection))
+            {                    
+                var existentData = repo.GetAll().Where(d => d.ROC809MeasurePointId == point.Id);
+
+                var q =
+                    from d in data
+                    join ed in existentData
+                    on d.DatePeriod equals ed.DatePeriod
+                    into nd
+                    from ed in nd.DefaultIfEmpty()
+                    select d;
+
+                var newData = q as List<ROC809PeriodicData> ?? q.ToList();
+                if (!newData.Any())
                 {
-                    ROC809PeriodicData lastData = repo.GetAll().Where(d => d.ROC809MeasurePointId == point.Id).OrderByDescending(o => o.DatePeriod).FirstOrDefault();
-
-                    if (lastData != null)
-                        data = data.Where(d => d.DatePeriod > lastData.DatePeriod).ToList();
-
-                    data.ForEach((d) =>
-                    {
-                        d.DateCreated = DateTime.Now;
-                        d.DateModified = DateTime.Now;
-                        d.ROC809MeasurePointId = point.Id;
-                    });
-
-                    repo.Insert(data);
+                    return 0;
                 }
 
-                return data.Count;
+                newData.ForEach(d =>
+                {
+                    d.DateCreated = DateTime.Now;
+                    d.DateModified = DateTime.Now;
+                    d.ROC809MeasurePointId = point.Id;
+                });
+
+                repo.Insert(newData);
+
+                return newData.Count;
             }
-            else
-                return 0;
         }
 
         private void UpdatePeriodicDataLastScanned(ROC809MeasurePoint point)
