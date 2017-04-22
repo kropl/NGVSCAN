@@ -488,31 +488,24 @@ namespace NGVSCAN.EXEC.Scanners
             }
 
             using (var repo = new SqlRepository<ROC809PeriodicData>(_sqlConnection))
-            {                    
-                var q =
-                    from d in data
-                    join ed in repo.GetAll().Where(d => d.ROC809MeasurePointId == point.Id)
-                    on d.DatePeriod equals ed.DatePeriod
-                    into nd
-                    from ed in nd.DefaultIfEmpty()
-                    select d;
-
-                var newData = q as List<ROC809PeriodicData> ?? q.ToList();
-                if (!newData.Any())
+            {
+                var existent = repo.GetAll().Where(d => d.ROC809MeasurePointId == point.Id).Select(d => d.DatePeriod);
+                var filtered = data.Where(d => !existent.Contains(d.DatePeriod)).ToList();
+                if (!filtered.Any())
                 {
                     return 0;
                 }
 
-                newData.ForEach(d =>
+                filtered.ForEach(d =>
                 {
                     d.DateCreated = DateTime.Now;
                     d.DateModified = DateTime.Now;
                     d.ROC809MeasurePointId = point.Id;
                 });
 
-                repo.Insert(newData);
+                repo.Insert(filtered);
 
-                return newData.Count;
+                return filtered.Count;
             }
         }
 
