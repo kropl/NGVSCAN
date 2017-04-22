@@ -231,6 +231,11 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_481C680510973245BFBAFE181BDCF96A"
+                    {
+                    "Name" = "8:EntityFramework.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:EntityFramework.dll"
             "TargetName" = "8:"
@@ -257,6 +262,11 @@
             "AssemblyAsmDisplayName" = "8:NGVSCAN.CORE, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_92DEE0523DE6BBD943934CFF1A28B705"
+                    {
+                    "Name" = "8:NGVSCAN.CORE.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:NGVSCAN.CORE.dll"
             "TargetName" = "8:"
@@ -283,6 +293,11 @@
             "AssemblyAsmDisplayName" = "8:EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_BA78DB92314EF8894BD7E16CE898AC91"
+                    {
+                    "Name" = "8:EntityFramework.SqlServer.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:EntityFramework.SqlServer.dll"
             "TargetName" = "8:"
@@ -309,6 +324,11 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_BE5F97172FA55284249A7F825067A35C"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -335,6 +355,11 @@
             "AssemblyAsmDisplayName" = "8:NGVSCAN.DAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_F6EB7C8075311E80C16962F64F20DC0A"
+                    {
+                    "Name" = "8:NGVSCAN.DAL.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:NGVSCAN.DAL.dll"
             "TargetName" = "8:"
@@ -410,15 +435,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:NGVSCAN"
-        "ProductCode" = "8:{39ADCBFC-3618-44B6-B9FA-F021C5C71112}"
-        "PackageCode" = "8:{AA369B5A-2E49-490A-ABDD-F3B4E4D8902D}"
+        "ProductCode" = "8:{F41D979C-5913-49AA-883D-025667F1858F}"
+        "PackageCode" = "8:{D4F3AD8A-2129-4A04-9A8D-51581F4B16FE}"
         "UpgradeCode" = "8:{9810F03E-755E-4549-8081-4617BED481CF}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.1.8"
+        "ProductVersion" = "8:1.1.9"
         "Manufacturer" = "8:Triada"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
